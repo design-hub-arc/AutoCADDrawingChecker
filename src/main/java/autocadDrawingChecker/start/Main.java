@@ -1,10 +1,9 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.excel.ExcelFileVectorParser;
 import autocadDrawingChecker.gui.AppWindow;
 import java.io.IOException;
 import java.io.InputStream;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 
 public class Main {
     /**
@@ -12,11 +11,13 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         new AppWindow();
+        /*
         InputStream in = Main.class.getResourceAsStream("/testWorkbook.xlsx");
-        System.out.println(in);
-        XSSFWorkbook workbook = new XSSFWorkbook(in);
-        
-        XSSFExcelExtractor reader = new XSSFExcelExtractor(workbook);
-        System.out.println("Application runs properly");
+        if(in == null){
+            System.err.println("Can't find test workbook!");
+        } else {
+            ExcelFileVectorParser.parse(in);
+        }
+        */
     }
 }

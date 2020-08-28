@@ -1,8 +1,12 @@
 package autocadDrawingChecker.gui;
 
+import autocadDrawingChecker.excel.ExcelFileVectorParser;
 import autocadDrawingChecker.files.FileChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -22,6 +26,13 @@ public class AppPane extends JPanel {
         open.addActionListener((e)->{
             FileChooser.chooseExcelFile("Select the master comparison file", (path)->{
                 System.out.println(path);
+                try {
+                    ExcelFileVectorParser.parse(new FileInputStream(path));
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             });
         });
         toolBar.add(open);
