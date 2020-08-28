@@ -1,5 +1,6 @@
 package autocadDrawingChecker.gui;
 
+import autocadDrawingChecker.files.FileChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JButton;
@@ -19,7 +20,9 @@ public class AppPane extends JPanel {
         JToolBar toolBar = new JToolBar();
         JButton open = new JButton("Choose master comparison file");
         open.addActionListener((e)->{
-            System.out.println("open");
+            FileChooser.chooseExcelFile("Select the master comparison file", (path)->{
+                System.out.println(path);
+            });
         });
         toolBar.add(open);
         add(toolBar, BorderLayout.PAGE_START);
