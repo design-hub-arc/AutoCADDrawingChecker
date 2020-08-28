@@ -1,2 +1,5 @@
 .gradle/
 .nb-gradle/
+/build/classes/*
+/build/tmp/*
+!/build/libs/*

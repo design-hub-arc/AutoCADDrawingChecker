@@ -14,6 +14,28 @@ if (!hasProperty('mainClass')) {
     ext.mainClass = 'autocadDrawingChecker.start.Main'
 }
 
+jar {
+    //need to manually set main class, otherwise, it just compiles the JAR as a library
+    manifest {
+        attributes(
+            'Main-Class': 'autocadDrawingChecker.start.Main'
+        )
+    }
+
+    //include dependencies in JAR file
+    doFirst {
+        from {
+            configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+    }
+    /*
+     * https://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
+     * Need to exclude signitures from the Google API files, otherwise this causes errors when attempting
+     * to run the JAR file.
+    */
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA' 
+}
+
 repositories {
     mavenCentral()
     // You may define additional repositories, or even remove "mavenCentral()".
