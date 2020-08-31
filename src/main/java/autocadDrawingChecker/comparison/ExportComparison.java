@@ -1,8 +1,8 @@
 package autocadDrawingChecker.comparison;
 
 import autocadDrawingChecker.autocadData.AutoCADExport;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 public class ExportComparison {
     private final AutoCADExport src;
     private final AutoCADExport compareTo;
-    private final ArrayList<AttributeToCompare> attrs;
+    private final List<AttributeToCompare> attrs;
     
-    public ExportComparison(AutoCADExport xp1, AutoCADExport xp2, ArrayList<AttributeToCompare> criteria){
+    public ExportComparison(AutoCADExport xp1, AutoCADExport xp2, List<AttributeToCompare> criteria){
         src = xp1;
         compareTo = xp2;
         attrs = criteria;
