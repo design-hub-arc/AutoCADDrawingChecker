@@ -1,6 +1,7 @@
 package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.autocadData.AutoCADExcelParser;
+import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.files.FileChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -27,7 +28,8 @@ public class AppPane extends JPanel {
             FileChooser.chooseExcelFile("Select the master comparison file", (path)->{
                 System.out.println(path);
                 try {
-                    AutoCADExcelParser.parse(new FileInputStream(path));
+                    AutoCADExport xp = AutoCADExcelParser.parse(new FileInputStream(path));
+                    System.out.println(xp.toString());
                 } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
                 } catch (IOException ex) {
