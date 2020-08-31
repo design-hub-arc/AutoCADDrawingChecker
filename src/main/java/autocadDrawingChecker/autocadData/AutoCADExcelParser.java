@@ -1,15 +1,10 @@
 package autocadDrawingChecker.autocadData;
 
-import autocadDrawingChecker.autocadData.AutoCADExportVector;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -49,6 +44,18 @@ public class AutoCADExcelParser {
                 ));
             } catch(NullPointerException ex){
                 // there is no way to find the last row with data as far as I know
+                /*
+                From the documentation:
+                "Gets the last row on the sheet 
+                Note: rows which had content before 
+                and were set to empty later 
+                might still be counted as rows 
+                by Excel and Apache POI, 
+                so the result of this method 
+                will include such rows and 
+                thus the returned value 
+                might be higher than expected!"
+                */
                 //System.err.println(ex.getMessage());
             }
         }
