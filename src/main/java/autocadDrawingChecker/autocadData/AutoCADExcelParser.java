@@ -1,6 +1,6 @@
-package autocadDrawingChecker.excel;
+package autocadDrawingChecker.autocadData;
 
-import autocadDrawingChecker.vector.AutoCADExportVector;
+import autocadDrawingChecker.autocadData.AutoCADExportVector;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author Matt
  */
-public class ExcelFileVectorParser {
+public class AutoCADExcelParser {
     
     public static List<AutoCADExportVector> parse(InputStream in) throws IOException{
         ArrayList<AutoCADExportVector> vectors = new ArrayList<>();

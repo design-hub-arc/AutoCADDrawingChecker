@@ -1,4 +1,4 @@
-package autocadDrawingChecker.vector;
+package autocadDrawingChecker.autocadData;
 
 /**
  *

@@ -1,6 +1,6 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.excel.ExcelFileVectorParser;
+import autocadDrawingChecker.autocadData.AutoCADExcelParser;
 import autocadDrawingChecker.gui.AppWindow;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ public class Main {
         if(in == null){
             System.err.println("Can't find test workbook!");
         } else {
-            ExcelFileVectorParser.parse(in);
+            AutoCADExcelParser.parse(in);
         }
         */
     }
