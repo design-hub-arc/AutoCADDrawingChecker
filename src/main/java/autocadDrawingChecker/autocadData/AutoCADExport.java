@@ -1,5 +1,6 @@
 package autocadDrawingChecker.autocadData;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
@@ -10,6 +11,18 @@ public class AutoCADExport extends LinkedList<AutoCADRow> {
     public AutoCADExport(){
         super();
     }
+    
+    public final HashMap<String, Integer> getLayerLineCounts(){
+        HashMap<String, Integer> lineCounts = new HashMap<>();
+        forEach((AutoCADRow row)->{
+            String layer = row.getLayer();
+            if(!lineCounts.containsKey(layer)){
+                lineCounts.put(layer, 0);
+            }
+            lineCounts.put(layer, lineCounts.get(layer) + 1);
+        });
+        return lineCounts;
+    } 
     
     @Override
     public String toString(){
