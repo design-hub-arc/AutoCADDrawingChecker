@@ -1,51 +1,38 @@
 package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.comparison.AttributeToCompare;
-import autocadDrawingChecker.files.FileChooser;
 import autocadDrawingChecker.reportGeneration.Grader;
 import autocadDrawingChecker.reportGeneration.GradingReport;
 import autocadDrawingChecker.reportGeneration.ReportWriter;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 
 /**
  *
  * @author Matt
  */
 public class AppPane extends JPanel {
-    private String masterFilePath;
-    private String compareFilePath;
+    private final ExcelFileChooser srcChooser;
+    private final ExcelFileChooser cmpChooser;
     
     public AppPane(){
         super();
         setBackground(Color.GREEN);
         setLayout(new BorderLayout());
         
-        JToolBar toolBar = new JToolBar();
-        
-        JButton chooseMaster = new JButton("Choose master comparison file");
-        chooseMaster.addActionListener((e)->{
-            FileChooser.chooseExcelFile("Select the master comparison file", (path)->{
-                masterFilePath = path;
-            });
-        });
-        toolBar.add(chooseMaster);
-        
-        JButton chooseCompare = new JButton("Choose files to grade");
-        chooseCompare.addActionListener((e)->{
-            FileChooser.chooseExcelFileOrDir("Select the files to grade", (path)->{
-                compareFilePath = path;
-            });
-        });
-        toolBar.add(chooseCompare);
-        
-        add(toolBar, BorderLayout.PAGE_START);
+        JPanel choosers = new JPanel();
+        choosers.setLayout(new GridLayout(1, 2));
+        srcChooser = new ExcelFileChooser("Master Comparison File", "choose the master comparison Excel file", false);
+        choosers.add(srcChooser);
+        cmpChooser = new ExcelFileChooser("Student Files", "choose a single student file, or a whole folder of them", true);
+        choosers.add(cmpChooser);
+        add(choosers, BorderLayout.PAGE_START);
         
         JPanel end = new JPanel();
         JButton run = new JButton("Run Comparison");
@@ -53,7 +40,7 @@ public class AppPane extends JPanel {
             if(canCompare()){
                 runComparison();
             } else {
-                JOptionPane.showMessageDialog(chooseCompare, "Please choose both a master and grade file");
+                JOptionPane.showMessageDialog(run, "Please choose both a master and grade file");
             }
         });
         end.add(run);
@@ -61,7 +48,7 @@ public class AppPane extends JPanel {
     }
     
     private boolean canCompare(){
-        return masterFilePath != null && compareFilePath != null;
+        return srcChooser.isFileSelected() && cmpChooser.isFileSelected();
     }
     
     private void runComparison(){
@@ -69,17 +56,15 @@ public class AppPane extends JPanel {
         for(AttributeToCompare c : AttributeToCompare.values()){
             attrs.add(c);
         }
-        Grader autoGrader = new Grader(masterFilePath, compareFilePath, attrs);
+        Grader autoGrader = new Grader(srcChooser.getSelectedFile().getAbsolutePath(), cmpChooser.getSelectedFile().getAbsolutePath(), attrs);
         
         GradingReport report = autoGrader.grade();
         System.out.println(report.toString());
         
-        FileChooser.createFile("Where do you want to save this grading report?", (newFile)->{
-            try {
-                ReportWriter.writeReportTo(report, newFile);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
+        try {
+            ReportWriter.showSavePopup(report);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
