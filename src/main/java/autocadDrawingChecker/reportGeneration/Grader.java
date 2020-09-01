@@ -2,7 +2,7 @@ package autocadDrawingChecker.reportGeneration;
 
 import autocadDrawingChecker.autocadData.AutoCADExcelParser;
 import autocadDrawingChecker.autocadData.AutoCADExport;
-import autocadDrawingChecker.comparison.AttributeToCompare;
+import autocadDrawingChecker.comparison.AbstractGradingCriteria;
 import autocadDrawingChecker.comparison.ExportComparison;
 import autocadDrawingChecker.files.ExcelFileLocator;
 import java.io.IOException;
@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 public class Grader {
     private final String srcPath;
     private final String cmpPath;
-    private final ArrayList<AttributeToCompare> criteria;
+    private final ArrayList<AbstractGradingCriteria> criteria;
     
-    public Grader(String src, String cmp, ArrayList<AttributeToCompare> gradeThese){
+    public Grader(String src, String cmp, ArrayList<AbstractGradingCriteria> gradeThese){
         srcPath = src;
         cmpPath = cmp;
         criteria = gradeThese;

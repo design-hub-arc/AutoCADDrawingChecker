@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui;
 
-import autocadDrawingChecker.comparison.AttributeToCompare;
+import autocadDrawingChecker.comparison.GradingCriteriaLoader;
 import autocadDrawingChecker.reportGeneration.Grader;
 import autocadDrawingChecker.reportGeneration.GradingReport;
 import autocadDrawingChecker.reportGeneration.ReportWriter;
@@ -52,11 +52,11 @@ public class AppPane extends JPanel {
     }
     
     private void runComparison(){
-        ArrayList<AttributeToCompare> attrs = new ArrayList<>();
-        for(AttributeToCompare c : AttributeToCompare.values()){
-            attrs.add(c);
-        }
-        Grader autoGrader = new Grader(srcChooser.getSelectedFile().getAbsolutePath(), cmpChooser.getSelectedFile().getAbsolutePath(), attrs);
+        Grader autoGrader = new Grader(
+            srcChooser.getSelectedFile().getAbsolutePath(), 
+            cmpChooser.getSelectedFile().getAbsolutePath(), 
+            GradingCriteriaLoader.getAllCriteria()
+        );
         
         GradingReport report = autoGrader.grade();
         System.out.println(report.toString());
