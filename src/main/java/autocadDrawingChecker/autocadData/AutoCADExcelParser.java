@@ -1,5 +1,6 @@
 package autocadDrawingChecker.autocadData;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,10 +29,11 @@ public class AutoCADExcelParser {
         return attributes;
     }
     
-    public static AutoCADExport parse(InputStream in) throws IOException{
+    public static AutoCADExport parse(String fileName) throws IOException{
+        InputStream in = new FileInputStream(fileName);
         XSSFWorkbook workbook = new XSSFWorkbook(in);
         XSSFSheet sheet = workbook.getSheetAt(0);
-        AutoCADExport containedTherein = new AutoCADExport();
+        AutoCADExport containedTherein = new AutoCADExport(fileName);
         HashMap<AutoCADAttribute, Integer> headerToCol = locateColumns(sheet.getRow(0));
         int max = sheet.getLastRowNum();
         XSSFRow currRow = null;

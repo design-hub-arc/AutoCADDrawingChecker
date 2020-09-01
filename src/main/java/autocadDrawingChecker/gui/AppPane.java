@@ -1,19 +1,11 @@
 package autocadDrawingChecker.gui;
 
-import autocadDrawingChecker.autocadData.AutoCADExcelParser;
-import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.comparison.AttributeToCompare;
-import autocadDrawingChecker.comparison.ExportComparison;
-import autocadDrawingChecker.files.ExcelFileLocator;
 import autocadDrawingChecker.files.FileChooser;
+import autocadDrawingChecker.reportGeneration.Grader;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -69,37 +61,13 @@ public class AppPane extends JPanel {
         return masterFilePath != null && compareFilePath != null;
     }
     
-    private final void runComparison(){
-        try {
-            AutoCADExport master = AutoCADExcelParser.parse(new FileInputStream(masterFilePath));
-            List<AutoCADExport> cmp = ExcelFileLocator.locateExcelFilesInDir(compareFilePath).stream().map((fileName)->{
-                AutoCADExport e = null;
-                try {
-                    e = AutoCADExcelParser.parse(new FileInputStream(fileName));
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                return e;
-            }).filter((e)->e != null).collect(Collectors.toList());
-            
-            ArrayList<AttributeToCompare> attrs = new ArrayList<>();
-            for(AttributeToCompare c : AttributeToCompare.values()){
-                attrs.add(c);
-            }
-            
-            cmp.forEach((exp)->{
-                ExportComparison comparison = new ExportComparison(master, exp, attrs);
-                System.out.println(comparison);
-                double score = comparison.runComparison();
-                System.out.println("Score: " + score);
-            });
-            
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    private void runComparison(){
+        ArrayList<AttributeToCompare> attrs = new ArrayList<>();
+        for(AttributeToCompare c : AttributeToCompare.values()){
+            attrs.add(c);
         }
+        Grader autoGrader = new Grader(masterFilePath, compareFilePath, attrs);
+        
+        autoGrader.grade();
     }
 }

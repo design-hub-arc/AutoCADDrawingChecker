@@ -8,8 +8,15 @@ import java.util.LinkedList;
  * @author Matt
  */
 public class AutoCADExport extends LinkedList<AutoCADRow> {
-    public AutoCADExport(){
+    private final String fileName;
+    
+    public AutoCADExport(String fileName){
         super();
+        this.fileName = fileName;
+    }
+    
+    public final String getFileName(){
+        return fileName;
     }
     
     public final HashMap<String, Integer> getLayerLineCounts(){

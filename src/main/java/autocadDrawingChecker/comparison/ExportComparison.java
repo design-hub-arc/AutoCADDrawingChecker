@@ -20,6 +20,10 @@ public class ExportComparison {
         attrs = criteria;
     }
     
+    public final AutoCADExport getCmpFile(){
+        return compareTo;
+    }
+    
     private double lineCountCompare(){
         return 1.0 - MathUtil.percentError(src.size(), compareTo.size());
     }
