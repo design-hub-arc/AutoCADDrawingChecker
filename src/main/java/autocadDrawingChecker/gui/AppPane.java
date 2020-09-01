@@ -4,8 +4,10 @@ import autocadDrawingChecker.comparison.AttributeToCompare;
 import autocadDrawingChecker.files.FileChooser;
 import autocadDrawingChecker.reportGeneration.Grader;
 import autocadDrawingChecker.reportGeneration.GradingReport;
+import autocadDrawingChecker.reportGeneration.ReportWriter;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -71,5 +73,13 @@ public class AppPane extends JPanel {
         
         GradingReport report = autoGrader.grade();
         System.out.println(report.toString());
+        
+        FileChooser.createFile("Where do you want to save this grading report?", (newFile)->{
+            try {
+                ReportWriter.writeReportTo(report, newFile);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 }

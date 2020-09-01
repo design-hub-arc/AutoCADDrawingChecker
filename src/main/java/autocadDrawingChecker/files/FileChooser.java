@@ -1,5 +1,11 @@
 package autocadDrawingChecker.files;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.function.Consumer;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -27,5 +33,26 @@ public class FileChooser {
         if(chooser.showOpenDialog(chooser) == JFileChooser.APPROVE_OPTION){
             andThen.accept(chooser.getSelectedFile().getAbsolutePath());
         }
+    }
+    public static final void createFile(String msgText, Consumer<File> andThen){
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle(msgText);
+        chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        if(chooser.showSaveDialog(chooser) == JFileChooser.APPROVE_OPTION){
+            andThen.accept(chooser.getSelectedFile());
+        }
+    }
+    
+    public static void main(String[] args){
+        createFile("Test", (f)->{
+            try {
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f))).write("Testing");
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println(f.getAbsolutePath());
+        });
     }
 }
