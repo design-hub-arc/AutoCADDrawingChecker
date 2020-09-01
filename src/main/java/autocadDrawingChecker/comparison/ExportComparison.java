@@ -13,11 +13,39 @@ public class ExportComparison {
     private final AutoCADExport src;
     private final AutoCADExport compareTo;
     private final List<AttributeToCompare> attrs;
+    private final HashMap<AttributeToCompare, Double> scores;
+    private final double finalGrade;
     
     public ExportComparison(AutoCADExport xp1, AutoCADExport xp2, List<AttributeToCompare> criteria){
         src = xp1;
         compareTo = xp2;
         attrs = criteria;
+        scores = new HashMap<>();
+        finalGrade = runComparison();
+    }
+    
+    // I don't like this
+    private double runComparison(){
+        double similarityScore = 0.0;
+        double newScore = 0.0;
+        for(AttributeToCompare attr : attrs){
+            switch(attr){
+                case LINE_COUNT:
+                    newScore = lineCountCompare();
+                    scores.put(attr, newScore);
+                    similarityScore += newScore;
+                    break;
+                case LINES_PER_LAYER:
+                    newScore = linesPerLayerCompare();
+                    scores.put(attr, newScore);
+                    similarityScore += newScore;
+                    break;
+                default:
+                    System.err.println("Uncaught attribute to compare in ExportComparison.runComparison: " + attr);
+                    break;
+            }
+        }
+        return similarityScore / attrs.size(); // average similarity score
     }
     
     public final AutoCADExport getCmpFile(){
@@ -40,31 +68,16 @@ public class ExportComparison {
         return 1.0 - (score / srcLines.size());
     }
     
-    public final double runComparison(){
-        double similarityScore = 0.0;
-        for(AttributeToCompare attr : attrs){
-            switch(attr){
-                case LINE_COUNT:
-                    similarityScore += lineCountCompare();
-                    break;
-                case LINES_PER_LAYER:
-                    similarityScore += linesPerLayerCompare();
-                    break;
-                default:
-                    System.err.println("Uncaught attribute to compare in ExportComparison.runComparison: " + attr);
-                    break;
-            }
-        }
-        return similarityScore / attrs.size(); // average similarity score
-    }
+    
     
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Comparing the following exports:");
-        sb.append("\n").append(src.toString());
-        sb.append("\n").append(compareTo.toString());
-        sb.append("\nGrading based on: ").append(attrs.stream().map((attr)->attr.getDisplayText()).collect(Collectors.joining(", ", "", "")));
+        sb.append(String.format("Comparing %s to %s:", src.getFileName(), compareTo.getFileName()));
+        scores.forEach((attr, score)->{
+            sb.append(String.format("\n* %s: %d%%", attr.getDisplayText(), (int)(score * 100)));
+        });
+        sb.append(String.format("\nFinal Grade: %d%%", (int)(finalGrade * 100)));
         return sb.toString();
     }
 }

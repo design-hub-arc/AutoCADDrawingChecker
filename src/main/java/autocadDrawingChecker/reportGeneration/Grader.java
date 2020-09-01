@@ -5,10 +5,7 @@ import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.comparison.AttributeToCompare;
 import autocadDrawingChecker.comparison.ExportComparison;
 import autocadDrawingChecker.files.ExcelFileLocator;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +40,9 @@ public class Grader {
         }).filter((e)->e != null).collect(Collectors.toList());
     }
     
-    public final void grade(){
+    public final GradingReport grade(){
+        GradingReport report = new GradingReport();
+        
         AutoCADExport trySrc = null;
         List<AutoCADExport> cmp = null;
         
@@ -58,24 +57,10 @@ public class Grader {
         
         cmp = getCmpFiles();
         
-        List<ExportComparison> grades = cmp.stream().map((exp)->{
-            return new ExportComparison(src, exp, criteria);
-        }).collect(Collectors.toList());
-        
-        grades.forEach((expComp)->{
-            System.out.printf("Compare to %s: %f\n", expComp.getCmpFile().getFileName(), expComp.runComparison());
+        cmp.stream().forEach((exp)->{
+            report.add(new ExportComparison(src, exp, criteria));
         });
-    }
-    
-    public static void writeReportTo(AutoCADExport src, List<AutoCADExport> cmp, OutputStream out){
-        StringBuilder sb = new StringBuilder();
-        sb.append("Autograding report:");
-        sb.append("\nSource file to compare to is ").append(src.getFileName());
         
-        try (BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(out))) {
-            buff.write(sb.toString());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        return report;
     }
 }

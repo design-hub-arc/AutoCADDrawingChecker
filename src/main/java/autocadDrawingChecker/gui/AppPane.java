@@ -3,6 +3,7 @@ package autocadDrawingChecker.gui;
 import autocadDrawingChecker.comparison.AttributeToCompare;
 import autocadDrawingChecker.files.FileChooser;
 import autocadDrawingChecker.reportGeneration.Grader;
+import autocadDrawingChecker.reportGeneration.GradingReport;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class AppPane extends JPanel {
         add(end, BorderLayout.PAGE_END);
     }
     
-    private final boolean canCompare(){
+    private boolean canCompare(){
         return masterFilePath != null && compareFilePath != null;
     }
     
@@ -68,6 +69,7 @@ public class AppPane extends JPanel {
         }
         Grader autoGrader = new Grader(masterFilePath, compareFilePath, attrs);
         
-        autoGrader.grade();
+        GradingReport report = autoGrader.grade();
+        System.out.println(report.toString());
     }
 }
