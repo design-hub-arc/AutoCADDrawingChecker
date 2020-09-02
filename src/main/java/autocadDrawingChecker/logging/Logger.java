@@ -8,21 +8,37 @@ import java.util.LinkedList;
  */
 public class Logger {
     private static final LinkedList<String> LOGGED_MSGS = new LinkedList<>();
+    private static final LinkedList<MessageListener> MSG_LISTENS = new LinkedList<>();
+    private static final LinkedList<ErrorListener> ERR_LISTENS = new LinkedList<>();
     private static boolean ERROR_FLAG = false;
+    
+    public static final void addMessageListener(MessageListener listener){
+        MSG_LISTENS.add(listener);
+    }
+    public static final void addErrorListener(ErrorListener listener){
+        ERR_LISTENS.add(listener);
+    }
     
     public static final void log(String msg){
         LOGGED_MSGS.add(msg);
         System.out.println(msg);
+        MSG_LISTENS.forEach((ml)->ml.messageLogged(msg));
     }
     
     public static final void log(double d){
         log(Double.toString(d));
     }
     
-    public static final void logError(String errMsg){
+    // moving this code out of logError prevents listeners from being alerted twice when logging stack traces
+    private static void saveErrMsg(String errMsg){
         LOGGED_MSGS.add(errMsg);
-        System.err.println(errMsg);
         ERROR_FLAG = true;
+        System.err.println(errMsg);
+    }
+    
+    public static final void logError(String errMsg){
+        saveErrMsg(errMsg);
+        ERR_LISTENS.forEach((el)->el.errorLogged(errMsg));
     }
     
     public static final void logError(Exception ex){
@@ -32,7 +48,8 @@ public class Logger {
         for(StackTraceElement frame : ex.getStackTrace()){
             stackTrace.append("\n- ").append(frame.toString());
         }
-        logError(stackTrace.toString());
+        saveErrMsg(stackTrace.toString());
+        ERR_LISTENS.forEach((el)->el.errorLogged(ex));
     }
     
     public static final boolean hasLoggedError(){

@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -41,6 +40,8 @@ public class AppPane extends JPanel {
         JPanel center = new JPanel();
         center.setLayout(new GridLayout(1, 1));
         output = new TextScrollPane();
+        Logger.addMessageListener(output);
+        Logger.addErrorListener(output);
         center.add(output);
         center.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         add(center, BorderLayout.CENTER);
@@ -49,7 +50,12 @@ public class AppPane extends JPanel {
         JButton run = new JButton("Run Comparison");
         run.addActionListener((e)->{
             if(canCompare()){
-                runComparison();
+                new Thread(){
+                    @Override
+                    public void run(){
+                        runComparison();
+                    }
+                }.start();
             } else {
                 JOptionPane.showMessageDialog(run, "Please choose both a master and grade file");
             }

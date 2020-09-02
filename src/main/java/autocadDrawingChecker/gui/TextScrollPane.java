@@ -1,5 +1,7 @@
 package autocadDrawingChecker.gui;
 
+import autocadDrawingChecker.logging.ErrorListener;
+import autocadDrawingChecker.logging.MessageListener;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -14,7 +16,7 @@ import javax.swing.SwingUtilities;
  *
  * @author Matt
  */
-public class TextScrollPane extends JComponent {
+public class TextScrollPane extends JComponent implements MessageListener, ErrorListener {
     private final JScrollPane scroll;
     private final JTextArea textArea;
     
@@ -59,5 +61,20 @@ public class TextScrollPane extends JComponent {
     
     public final String getText(){
         return textArea.getText();
+    }
+
+    @Override
+    public void messageLogged(String msg) {
+        appendText(msg + "\n");
+    }
+
+    @Override
+    public void errorLogged(String errMsg) {
+        messageLogged("Error: " + errMsg);
+    }
+
+    @Override
+    public void errorLogged(Exception ex) {
+        errorLogged(ex.getLocalizedMessage());
     }
 }
