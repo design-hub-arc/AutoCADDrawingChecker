@@ -1,16 +1,29 @@
-package autocadDrawingChecker.files;
+package autocadDrawingChecker.reportGeneration;
 
-import autocadDrawingChecker.logging.Logger;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- *
- * @author Matt
+ * The ExcelFileLocator is a static helper class used to get all Excel files
+ * within a given directory.
+ * 
+ * @author Matt Crow
  */
 public class ExcelFileLocator {
-    public static ArrayList<String> locateExcelFilesInDir(String rootPath){
+    /**
+     * Returns every Excel file under the given file or directory.
+     * Not sure if I want this to return files instead of Strings, same with it's parameter
+     * <ul>
+     * <li>If the given path is an Excel file, returns that file</li>
+     * <li>If it is a path to a non-excel file, returns an empty list</li>
+     * <li>If it is the path to a folder, returns each Excel file in that folder
+     * or any folder contained within it recursively.</li>
+     * </ul>
+     * @param rootPath the path to the file or directory to scour for Excel files
+     * @return a list of the complete path to each Excel file this locates
+     */
+    public static final ArrayList<String> locateExcelFilesInDir(String rootPath){
         ArrayList<String> xlFiles = new ArrayList<>();
         File root = Paths.get(rootPath).toFile();
         if(root.isDirectory()){

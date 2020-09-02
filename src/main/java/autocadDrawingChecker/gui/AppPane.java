@@ -1,14 +1,13 @@
 package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.comparison.GradingCriteriaLoader;
+import autocadDrawingChecker.files.FileChooserUtil;
 import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.reportGeneration.Grader;
 import autocadDrawingChecker.reportGeneration.GradingReport;
-import autocadDrawingChecker.reportGeneration.ReportWriter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -78,10 +77,6 @@ public class AppPane extends JPanel {
         GradingReport report = autoGrader.grade();
         Logger.log(report.toString());
         
-        try {
-            ReportWriter.showSavePopup(report);
-        } catch (IOException ex) {
-            Logger.logError(ex);
-        }
+        FileChooserUtil.askCreateTextFile("Where would you like to save this report to?", report.toString());
     }
 }

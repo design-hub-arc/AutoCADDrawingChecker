@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -16,7 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class AutoCADExcelParser {
     
-    private static HashMap<AutoCADAttribute, Integer> locateColumns(XSSFRow headerRow){
+    private static HashMap<AutoCADAttribute, Integer> locateColumns(Row headerRow){
         HashMap<AutoCADAttribute, Integer> attributes = new HashMap<>();
         ArrayList<String> headers = new ArrayList<>();
         headerRow.cellIterator().forEachRemaining((Cell c)->{
@@ -31,12 +33,13 @@ public class AutoCADExcelParser {
     
     public static AutoCADExport parse(String fileName) throws IOException{
         InputStream in = new FileInputStream(fileName);
-        XSSFWorkbook workbook = new XSSFWorkbook(in);
-        XSSFSheet sheet = workbook.getSheetAt(0);
+        //                                                new Excel format       old Excel format
+        Workbook workbook = (fileName.endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        Sheet sheet = workbook.getSheetAt(0);
         AutoCADExport containedTherein = new AutoCADExport(fileName);
         HashMap<AutoCADAttribute, Integer> headerToCol = locateColumns(sheet.getRow(0));
         int max = sheet.getLastRowNum();
-        XSSFRow currRow = null;
+        Row currRow = null;
         //               skip headers
         for(int rowNum = 1; rowNum < max; rowNum++){
             currRow = sheet.getRow(rowNum);
