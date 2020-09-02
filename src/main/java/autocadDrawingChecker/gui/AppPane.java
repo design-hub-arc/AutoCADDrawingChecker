@@ -1,6 +1,7 @@
 package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.comparison.GradingCriteriaLoader;
+import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.reportGeneration.Grader;
 import autocadDrawingChecker.reportGeneration.GradingReport;
 import autocadDrawingChecker.reportGeneration.ReportWriter;
@@ -69,12 +70,12 @@ public class AppPane extends JPanel {
         );
         
         GradingReport report = autoGrader.grade();
-        System.out.println(report.toString());
+        Logger.log(report.toString());
         
         try {
             ReportWriter.showSavePopup(report);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.logError(ex);
         }
     }
 }

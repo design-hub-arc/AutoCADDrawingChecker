@@ -1,5 +1,6 @@
 package autocadDrawingChecker.files;
 
+import autocadDrawingChecker.logging.Logger;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class ExcelFileLocator {
             if(rootPath.endsWith("xlsx") || rootPath.endsWith("xls")){
                 xlFiles.add(rootPath);
             } else {
-                System.out.println("Not an excel file: " + rootPath);
+                //Logger.log("Not an excel file: " + rootPath);
             }
         }
         return xlFiles;

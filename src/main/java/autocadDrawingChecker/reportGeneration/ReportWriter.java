@@ -1,5 +1,6 @@
 package autocadDrawingChecker.reportGeneration;
 
+import autocadDrawingChecker.logging.Logger;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +28,7 @@ public class ReportWriter {
         try (BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(to)))) {
             buff.write(report.toString());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Logger.logError(ex);
         }
     }
 }

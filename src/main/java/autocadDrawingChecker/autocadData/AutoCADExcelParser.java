@@ -58,7 +58,7 @@ public class AutoCADExcelParser {
                 thus the returned value 
                 might be higher than expected!"
                 */
-                //System.err.println(ex.getMessage());
+                //Logger.logError(ex);
             }
         }
         

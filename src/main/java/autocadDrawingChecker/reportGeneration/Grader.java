@@ -5,6 +5,7 @@ import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.comparison.AbstractGradingCriteria;
 import autocadDrawingChecker.comparison.ExportComparison;
 import autocadDrawingChecker.files.ExcelFileLocator;
+import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class Grader {
             try {
                 r = AutoCADExcelParser.parse(fileName);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Logger.logError(ex);
             }
             return r;
         }).filter((e)->e != null).collect(Collectors.toList());
@@ -49,8 +50,8 @@ public class Grader {
         try {
             trySrc = getSrcFile();
         } catch (IOException ex) {
-            ex.printStackTrace();
-            System.err.printf("Failed to locate source file %s\n", srcPath);
+            Logger.logError(String.format("Failed to locate source file %s", srcPath));
+            Logger.logError(ex);
         }
         
         AutoCADExport src = trySrc; // need this to be effectively final for lambda

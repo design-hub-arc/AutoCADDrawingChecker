@@ -1,5 +1,7 @@
 package autocadDrawingChecker.comparison;
 
+import autocadDrawingChecker.logging.Logger;
+
 /**
  *
  * @author Matt
@@ -16,8 +18,8 @@ public class MathUtil {
     }
     
     public static void main(String[] args){
-        System.out.println(percentError(1, 1));
-        System.out.println(percentError(1, 2));
-        System.out.println(percentError(2, 1));
+        Logger.log(percentError(1, 1));
+        Logger.log(percentError(1, 2));
+        Logger.log(percentError(2, 1));
     }
 }
