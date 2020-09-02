@@ -9,15 +9,18 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 /**
  *
  * @author Matt
  */
 public class AppPane extends JPanel {
+    private final TextScrollPane output;
     private final ExcelFileChooser srcChooser;
     private final ExcelFileChooser cmpChooser;
     
@@ -27,12 +30,19 @@ public class AppPane extends JPanel {
         setLayout(new BorderLayout());
         
         JPanel choosers = new JPanel();
-        choosers.setLayout(new GridLayout(1, 2));
+        choosers.setLayout(new GridLayout(1, 2, 20, 20));
         srcChooser = new ExcelFileChooser("Master Comparison File", "choose the master comparison Excel file", false);
         choosers.add(srcChooser);
         cmpChooser = new ExcelFileChooser("Student Files", "choose a single student file, or a whole folder of them", true);
         choosers.add(cmpChooser);
         add(choosers, BorderLayout.PAGE_START);
+        
+        JPanel center = new JPanel();
+        center.setLayout(new GridLayout(1, 1));
+        output = new TextScrollPane();
+        center.add(output);
+        center.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        add(center, BorderLayout.CENTER);
         
         JPanel end = new JPanel();
         JButton run = new JButton("Run Comparison");
