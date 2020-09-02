@@ -7,7 +7,7 @@ import java.util.LinkedList;
  * @author Matt
  */
 public class Logger {
-    private static final LinkedList<String> LOGGED_MSGS = new LinkedList<>();
+    private static final StringBuilder LOGGED_MSGS = new StringBuilder();
     private static final LinkedList<MessageListener> MSG_LISTENS = new LinkedList<>();
     private static final LinkedList<ErrorListener> ERR_LISTENS = new LinkedList<>();
     private static boolean ERROR_FLAG = false;
@@ -20,7 +20,7 @@ public class Logger {
     }
     
     public static final void log(String msg){
-        LOGGED_MSGS.add(msg);
+        LOGGED_MSGS.append(msg);
         System.out.println(msg);
         MSG_LISTENS.forEach((ml)->ml.messageLogged(msg));
     }
@@ -31,7 +31,7 @@ public class Logger {
     
     // moving this code out of logError prevents listeners from being alerted twice when logging stack traces
     private static void saveErrMsg(String errMsg){
-        LOGGED_MSGS.add(errMsg);
+        LOGGED_MSGS.append(errMsg);
         ERROR_FLAG = true;
         System.err.println(errMsg);
     }
