@@ -51,6 +51,7 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(srcChooser.isFileSelected() && cmpChooser.isFileSelected()){
             // next page
+            getPaneParent().switchToPage(AppPane.CHOOSE_CRITERIA);
         } else {
             JOptionPane.showMessageDialog(this, "Please choose both a master and grade file");
         }

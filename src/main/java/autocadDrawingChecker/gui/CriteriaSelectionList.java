@@ -31,19 +31,18 @@ public class CriteriaSelectionList extends JComponent {
         content.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
         gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
+        gbc.weighty = 0.0; // this make things "stick" together
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.anchor = GridBagConstraints.PAGE_START;
         GradingCriteriaLoader.getAllCriteria().stream().map((AbstractGradingCriteria criteria)->{
             return new CriteriaToggle(criteria);
         }).forEach((CriteriaToggle component)->{
             criteriaList.add(component);
             content.add(component, gbc.clone());
-            gbc.gridy = gbc.gridy + 1;
         });
         
         JScrollPane scroll = new JScrollPane(content);
