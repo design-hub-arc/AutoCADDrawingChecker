@@ -6,9 +6,11 @@ import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.reportGeneration.Grader;
 import autocadDrawingChecker.reportGeneration.GradingReport;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.Arrays;
+import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -21,24 +23,26 @@ import javax.swing.border.BevelBorder;
  */
 public class AppPane extends JPanel {
     private final TextScrollPane output;
-    private final SourceExcelFileChooser srcChooser;
-    private final CompareExcelFileChooser cmpChooser;
     private final CriteriaSelectionList critList;
+    
+    private final HashMap<String, AbstractPage> pages;
+    public static final String CHOOSE_FILES = "choose files";
+    public static final String CHOOSE_CRITERIA = "choose criteria";
+    public static final String OUTPUT = "output";
     
     public AppPane(){
         super();
-        setBackground(Color.GREEN);
-        setLayout(new BorderLayout());
+        pages = new HashMap<>(); // populated by addPage
         
-        JPanel choosers = new JPanel();
-        choosers.setLayout(new GridLayout(1, 2, 20, 20));
-        srcChooser = new SourceExcelFileChooser("Master Comparison File", "choose the master comparison Excel file");
-        choosers.add(srcChooser);
-        cmpChooser = new CompareExcelFileChooser("Student Files", "choose one or more student files, or a whole folder of them");
-        choosers.add(cmpChooser);
-        add(choosers, BorderLayout.PAGE_START);
+        CardLayout layout = new CardLayout();
+        setLayout(layout);
+        addPage(CHOOSE_FILES, new ChooseFilesPage(this));
+        addPage(CHOOSE_CRITERIA, new ChooseCriteriaPage(this));
+        addPage(OUTPUT, new OutputPage(this));
+        layout.show(this, CHOOSE_FILES);
         
-        JPanel center = new JPanel();
+        
+        //JPanel center = new JPanel();
         
         
         //center.setLayout(new GridLayout(1, 1));
@@ -48,11 +52,11 @@ public class AppPane extends JPanel {
         //center.add(output);
         //center.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         
-        add(center, BorderLayout.CENTER);
+        //add(center, BorderLayout.CENTER);
         
         critList = new CriteriaSelectionList();
-        center.add(critList);
-        
+        //center.add(critList);
+        /*
         JPanel end = new JPanel();
         JButton run = new JButton("Run Comparison");
         run.addActionListener((e)->{
@@ -68,17 +72,18 @@ public class AppPane extends JPanel {
             }
         });
         end.add(run);
-        add(end, BorderLayout.PAGE_END);
+        add(end, BorderLayout.PAGE_END);*/
     }
     
-    private boolean canCompare(){
-        return srcChooser.isFileSelected() && cmpChooser.isFileSelected();
+    private void addPage(String title, AbstractPage ap){
+        pages.put(title, ap);
+        add(ap, title); // for the card layout
     }
     
     private void runComparison(){
         Grader autoGrader = new Grader(
-            srcChooser.getSelected().getAbsolutePath(), 
-            Arrays.stream(cmpChooser.getSelected()).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]), 
+            ((ChooseFilesPage)pages.get(CHOOSE_FILES)).getSrcFile().getAbsolutePath(), 
+            Arrays.stream(((ChooseFilesPage)pages.get(CHOOSE_FILES)).getCmpFiles()).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]), 
             critList.getSelectedCriteria()
         );
         
