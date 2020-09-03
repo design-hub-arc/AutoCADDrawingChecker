@@ -27,4 +27,9 @@ public class LinesPerLayer extends AbstractGradingCriteria {
         return 1.0 - (score / srcLines.size());
     }
 
+    @Override
+    public String getDescription() {
+        return "Grades the student on how close the number of lines in each of their layers matches up with the comparison file's equivalent layer.";
+    }
+
 }

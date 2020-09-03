@@ -23,6 +23,7 @@ public class AppPane extends JPanel {
     private final TextScrollPane output;
     private final SourceExcelFileChooser srcChooser;
     private final CompareExcelFileChooser cmpChooser;
+    private final CriteriaSelectionList critList;
     
     public AppPane(){
         super();
@@ -38,13 +39,19 @@ public class AppPane extends JPanel {
         add(choosers, BorderLayout.PAGE_START);
         
         JPanel center = new JPanel();
-        center.setLayout(new GridLayout(1, 1));
+        
+        
+        //center.setLayout(new GridLayout(1, 1));
         output = new TextScrollPane();
         Logger.addMessageListener(output);
         Logger.addErrorListener(output);
-        center.add(output);
-        center.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        //center.add(output);
+        //center.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        
         add(center, BorderLayout.CENTER);
+        
+        critList = new CriteriaSelectionList();
+        center.add(critList);
         
         JPanel end = new JPanel();
         JButton run = new JButton("Run Comparison");
@@ -72,7 +79,7 @@ public class AppPane extends JPanel {
         Grader autoGrader = new Grader(
             srcChooser.getSelected().getAbsolutePath(), 
             Arrays.stream(cmpChooser.getSelected()).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]), 
-            GradingCriteriaLoader.getAllCriteria()
+            critList.getSelectedCriteria()
         );
         
         GradingReport report = autoGrader.grade();

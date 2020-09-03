@@ -18,4 +18,5 @@ public abstract class AbstractGradingCriteria {
     }
     
     public abstract double computeScore(AutoCADExport exp1, AutoCADExport exp2);
+    public abstract String getDescription();
 }

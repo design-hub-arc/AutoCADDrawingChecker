@@ -6,7 +6,6 @@ import autocadDrawingChecker.comparison.AbstractGradingCriteria;
 import autocadDrawingChecker.comparison.ExportComparison;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +17,9 @@ import java.util.stream.Collectors;
 public class Grader {
     private final String srcPath;
     private final String[] cmpPaths;
-    private final ArrayList<AbstractGradingCriteria> criteria;
+    private final List<AbstractGradingCriteria> criteria;
     
-    public Grader(String src, String[] cmp, ArrayList<AbstractGradingCriteria> gradeThese){
+    public Grader(String src, String[] cmp, List<AbstractGradingCriteria> gradeThese){
         srcPath = src;
         cmpPaths = cmp;
         criteria = gradeThese;

@@ -1,10 +1,8 @@
 package autocadDrawingChecker.comparison;
 
 import autocadDrawingChecker.autocadData.AutoCADExport;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -17,7 +15,7 @@ public class ExportComparison {
     private final HashMap<AbstractGradingCriteria, Double> scores;
     private final double finalGrade;
     
-    public ExportComparison(AutoCADExport xp1, AutoCADExport xp2, ArrayList<AbstractGradingCriteria> criteria){
+    public ExportComparison(AutoCADExport xp1, AutoCADExport xp2, List<AbstractGradingCriteria> criteria){
         src = xp1;
         compareTo = xp2;
         attrs = criteria;
