@@ -8,6 +8,7 @@ import autocadDrawingChecker.reportGeneration.GradingReport;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -20,8 +21,8 @@ import javax.swing.border.BevelBorder;
  */
 public class AppPane extends JPanel {
     private final TextScrollPane output;
-    private final ExcelFileChooser srcChooser;
-    private final ExcelFileChooser cmpChooser;
+    private final SourceExcelFileChooser srcChooser;
+    private final CompareExcelFileChooser cmpChooser;
     
     public AppPane(){
         super();
@@ -30,9 +31,9 @@ public class AppPane extends JPanel {
         
         JPanel choosers = new JPanel();
         choosers.setLayout(new GridLayout(1, 2, 20, 20));
-        srcChooser = new ExcelFileChooser("Master Comparison File", "choose the master comparison Excel file", false);
+        srcChooser = new SourceExcelFileChooser("Master Comparison File", "choose the master comparison Excel file");
         choosers.add(srcChooser);
-        cmpChooser = new ExcelFileChooser("Student Files", "choose a single student file, or a whole folder of them", true);
+        cmpChooser = new CompareExcelFileChooser("Student Files", "choose one or more student files, or a whole folder of them");
         choosers.add(cmpChooser);
         add(choosers, BorderLayout.PAGE_START);
         
@@ -69,8 +70,8 @@ public class AppPane extends JPanel {
     
     private void runComparison(){
         Grader autoGrader = new Grader(
-            srcChooser.getSelectedFile().getAbsolutePath(), 
-            cmpChooser.getSelectedFile().getAbsolutePath(), 
+            srcChooser.getSelected().getAbsolutePath(), 
+            Arrays.stream(cmpChooser.getSelected()).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]), 
             GradingCriteriaLoader.getAllCriteria()
         );
         

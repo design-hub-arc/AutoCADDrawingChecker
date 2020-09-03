@@ -7,6 +7,7 @@ import autocadDrawingChecker.comparison.ExportComparison;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,20 +17,25 @@ import java.util.stream.Collectors;
  */
 public class Grader {
     private final String srcPath;
-    private final String cmpPath;
+    private final String[] cmpPaths;
     private final ArrayList<AbstractGradingCriteria> criteria;
     
-    public Grader(String src, String cmp, ArrayList<AbstractGradingCriteria> gradeThese){
+    public Grader(String src, String[] cmp, ArrayList<AbstractGradingCriteria> gradeThese){
         srcPath = src;
-        cmpPath = cmp;
+        cmpPaths = cmp;
         criteria = gradeThese;
     }
     
     private AutoCADExport getSrcFile() throws IOException{
         return AutoCADExcelParser.parse(srcPath);
     }
+    
     private List<AutoCADExport> getCmpFiles(){
-        return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream().map((fileName) -> {
+        return Arrays.stream(cmpPaths).flatMap((cmpPath)->{
+            // locate all Excel files in all given paths...
+            return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream();
+        }).map((fileName)->{
+            // try to convert them to AutoCADExports...
             AutoCADExport r = null;
             try {
                 r = AutoCADExcelParser.parse(fileName);
@@ -37,7 +43,10 @@ public class Grader {
                 Logger.logError(ex);
             }
             return r;
-        }).filter((e)->e != null).collect(Collectors.toList());
+        }).filter((e)->{
+            // ignore any conversions that fail...
+            return e != null;
+        }).collect(Collectors.toList()); // and return those successful conversions as a list
     }
     
     public final GradingReport grade(){

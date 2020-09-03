@@ -1,11 +1,8 @@
 package autocadDrawingChecker.gui;
 
-import autocadDrawingChecker.files.FileChooserUtil;
-import autocadDrawingChecker.files.FileType;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -13,18 +10,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
- * TODO: split into 2 classes
  * @author Matt
+ * @param <T> the type returned by AbstractExcelFileChooser::getSelected()
  */
-public class ExcelFileChooser extends JComponent implements ActionListener {
-    private File selectedFile;
+public abstract class AbstractExcelFileChooser<T> extends JComponent implements ActionListener {
+    private T selected;
     private final JTextArea text;
     private final String popupTitle;
-    private final boolean allowMultiple;
     
-    public ExcelFileChooser(String title, String popupText, boolean allowDir){
+    public AbstractExcelFileChooser(String title, String popupText){
         super();
-        selectedFile = null;
         
         setLayout(new BorderLayout());
         
@@ -44,29 +39,31 @@ public class ExcelFileChooser extends JComponent implements ActionListener {
         bottom.add(button);
         add(bottom, BorderLayout.PAGE_END);
         popupTitle = popupText;
-        allowMultiple = allowDir;
+        
+        selected = null;
     }
     
-    public final boolean isFileSelected(){
-        return selectedFile != null;
+    protected final String getPopupTitle(){
+        return popupTitle;
     }
     
-    public final File getSelectedFile(){
-        return selectedFile;
+    protected final void setText(String newText){
+        text.setText(newText);
     }
     
     @Override
     public void actionPerformed(ActionEvent e){
-        if(allowMultiple){
-            FileChooserUtil.askChooseFiles(popupTitle, FileType.EXCEL, (File[] fs)->{
-                selectedFile = fs[0];
-                text.setText("Selected the file " + selectedFile.getAbsolutePath());
-            });
-        } else {
-            FileChooserUtil.askChooseFile(popupTitle, FileType.EXCEL, (File f)->{
-                selectedFile = f;
-                text.setText("Selected the file " + selectedFile.getAbsolutePath());
-            });
-        }
+        selectButtonPressed();
     }
+    
+    protected final void setSelected(T sel){
+        selected = sel;
+    }
+    
+    public final T getSelected(){
+        return selected;
+    }
+    
+    public abstract boolean isFileSelected();
+    protected abstract void selectButtonPressed(); 
 }
