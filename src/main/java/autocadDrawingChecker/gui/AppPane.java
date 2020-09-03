@@ -4,9 +4,11 @@ import autocadDrawingChecker.files.FileChooserUtil;
 import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.reportGeneration.Grader;
 import autocadDrawingChecker.reportGeneration.GradingReport;
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.util.Arrays;
 import java.util.HashMap;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -14,31 +16,53 @@ import javax.swing.JPanel;
  * @author Matt
  */
 public class AppPane extends JPanel {
+    private final JLabel pageTitle;
+    private final JPanel content;
+    private final CardLayout cards;
+    private final JPanel buttons;
     private final HashMap<String, AbstractPage> pages;
+    private AbstractPage currentPage;
     public static final String CHOOSE_FILES = "choose files";
     public static final String CHOOSE_CRITERIA = "choose criteria";
     public static final String OUTPUT = "output";
     
     public AppPane(){
         super();
-        pages = new HashMap<>(); // populated by addPage
+        setLayout(new BorderLayout());
         
-        CardLayout layout = new CardLayout();
-        setLayout(layout);
+        pageTitle = new JLabel("Page title goes here");
+        add(pageTitle, BorderLayout.PAGE_START);
+        
+        content = new JPanel();
+        cards = new CardLayout();
+        content.setLayout(cards);
+        add(content, BorderLayout.CENTER);
+        
+        buttons = new JPanel();
+        add(buttons, BorderLayout.PAGE_END);
+        
+        pages = new HashMap<>(); // populated by addPage
         addPage(CHOOSE_FILES, new ChooseFilesPage(this));
         addPage(CHOOSE_CRITERIA, new ChooseCriteriaPage(this));
         addPage(OUTPUT, new OutputPage(this));
-        layout.show(this, CHOOSE_FILES);
+        
+        switchToPage(CHOOSE_FILES);
     }
     
     private void addPage(String title, AbstractPage ap){
         pages.put(title, ap);
-        add(ap, title); // for the card layout
+        content.add(ap, title); // for the card layout
     }
     
     public void switchToPage(String pageName){
         if(pages.containsKey(pageName)){
-            ((CardLayout)getLayout()).show(this, pageName);
+            cards.show(content, pageName);
+            currentPage = pages.get(pageName);
+            pageTitle.setText(currentPage.getTitle());
+            buttons.removeAll();
+            currentPage.getButtons().forEach(buttons::add);
+            revalidate();
+            repaint();
         } else {
             Logger.logError("Cannot switchToPage with name " + pageName);
         }

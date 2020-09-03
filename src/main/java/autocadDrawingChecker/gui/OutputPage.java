@@ -2,6 +2,7 @@ package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.logging.Logger;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,29 +16,26 @@ public class OutputPage extends AbstractPage {
     private final JButton run;
     
     public OutputPage(AppPane ap) {
-        super(ap);
+        super(ap, "Step 3: Click 'run' to run the autograder");
         
-        setLayout(new BorderLayout());
-        
-        add(new JLabel("Step 3: Click 'run' to run the autograder"), BorderLayout.PAGE_START);
+        setLayout(new GridLayout(1, 1));
         
         output = new TextScrollPane();
         Logger.addMessageListener(output);
         Logger.addErrorListener(output);
-        add(output, BorderLayout.CENTER);
+        add(output);
         
-        JPanel end = new JPanel();
         JButton back = new JButton("Go Back");
         back.addActionListener((e)->{
             getPaneParent().switchToPage(AppPane.CHOOSE_CRITERIA);
         });
-        end.add(back);
+        addButton(back);
+        
         run = new JButton("run");
         run.addActionListener((e)->{
             runAsync();
         });
-        end.add(run);
-        add(end, BorderLayout.PAGE_END);
+        addButton(run);
     }
     
     private void runAsync(){

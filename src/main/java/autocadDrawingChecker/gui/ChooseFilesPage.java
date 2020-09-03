@@ -1,12 +1,10 @@
 package autocadDrawingChecker.gui;
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -19,10 +17,8 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
     private final CompareExcelFileChooser cmpChooser;
     
     public ChooseFilesPage(AppPane ap) {
-        super(ap);
-        setLayout(new BorderLayout());
-        
-        add(new JLabel("Step 1: Choose files to compare"), BorderLayout.PAGE_START);
+        super(ap, "Step 1: Choose files to compare");
+        setLayout(new GridLayout(1, 1));
         
         JPanel choosers = new JPanel();
         choosers.setLayout(new GridLayout(1, 2, 20, 20));
@@ -30,13 +26,11 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
         choosers.add(srcChooser);
         cmpChooser = new CompareExcelFileChooser("Student Files", "choose one or more student files, or a whole folder of them");
         choosers.add(cmpChooser);
-        add(choosers, BorderLayout.CENTER);
+        add(choosers);
         
-        JPanel end = new JPanel();
         JButton next = new JButton("Next");
         next.addActionListener(this);
-        end.add(next);
-        add(end, BorderLayout.PAGE_END);
+        addButton(next);
     }
     
     public final File getSrcFile(){
