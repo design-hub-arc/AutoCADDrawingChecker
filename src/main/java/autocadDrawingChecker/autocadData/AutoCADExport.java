@@ -4,8 +4,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- *
- * @author Matt
+ * An AutoCADExport is used to store the data extracted by
+ * AutoCADExcelParser. One should use LinkedList methods,
+ * such as LinkedList::forEach and LinkedList::stream, to
+ * operate on the contents of the Export
+ * 
+ * @author Matt Crow
  */
 public class AutoCADExport extends LinkedList<AutoCADRow> {
     private final String fileName;
@@ -19,6 +23,16 @@ public class AutoCADExport extends LinkedList<AutoCADRow> {
         return fileName;
     }
     
+    /**
+     * Computes how many lines are contained in each AutoCAD layer
+     * in the export.
+     * 
+     * @return a HashMap, where the key is the name of an AutoCAD
+     * layer, and the value is the number of lines contained in this
+     * export that reside within that layer. <b>Note: The value 
+     * will always be greater than 0, so you needn't worry about
+     * checking for that</b>
+     */
     public final HashMap<String, Integer> getLayerLineCounts(){
         HashMap<String, Integer> lineCounts = new HashMap<>();
         forEach((AutoCADRow row)->{

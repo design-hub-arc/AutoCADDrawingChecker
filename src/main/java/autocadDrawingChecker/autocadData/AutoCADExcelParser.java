@@ -13,24 +13,24 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- *
- * @author Matt
+ * The AutoCADExcelParser is a static
+ * class used to read an Excel spreadsheet,
+ * extracting the AutoCAD date within as an
+ * AutoCADExport object.
+ * 
+ * @author Matt Crow
  */
 public class AutoCADExcelParser {
-    
-    private static HashMap<AutoCADAttribute, Integer> locateColumns(Row headerRow){
-        HashMap<AutoCADAttribute, Integer> attributes = new HashMap<>();
-        ArrayList<String> headers = new ArrayList<>();
-        headerRow.cellIterator().forEachRemaining((Cell c)->{
-            headers.add(c.getStringCellValue().toUpperCase());
-        });
-        for(AutoCADAttribute reqAttr : AutoCADAttribute.values()){
-            attributes.put(reqAttr, headers.indexOf(reqAttr.getHeader().toUpperCase()));
-            // may be -1. Not sure how we should handle missing headers
-        }
-        return attributes;
-    }
-    
+    /**
+     * Reads the Excel file with the
+     * given complete file path, and
+     * returns its contents as an AutoCADExport.
+     * 
+     * @param fileName the complete path to an Excel file.
+     * @return the contents of the first sheet of the given Excel file , as 
+     * an AutoCADExport.
+     * @throws IOException if the fileName given does not point to an Excel file
+     */
     public static AutoCADExport parse(String fileName) throws IOException{
         InputStream in = new FileInputStream(fileName);
         //                                                new Excel format       old Excel format
@@ -67,4 +67,17 @@ public class AutoCADExcelParser {
         
         return containedTherein;
     }
+    
+    private static HashMap<AutoCADAttribute, Integer> locateColumns(Row headerRow){
+        HashMap<AutoCADAttribute, Integer> attributes = new HashMap<>();
+        ArrayList<String> headers = new ArrayList<>();
+        headerRow.cellIterator().forEachRemaining((Cell c)->{
+            headers.add(c.getStringCellValue().toUpperCase());
+        });
+        for(AutoCADAttribute reqAttr : AutoCADAttribute.values()){
+            attributes.put(reqAttr, headers.indexOf(reqAttr.getHeader().toUpperCase()));
+            // may be -1. Not sure how we should handle missing headers
+        }
+        return attributes;
+    }    
 }

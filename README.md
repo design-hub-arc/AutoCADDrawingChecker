@@ -8,6 +8,7 @@
 * Can I use the ARC stylesheet in the application?
 * Change AppPane to GUIController type of thing
 * Also, application class so I can store values so I don't have to manually select files every time.
+* Separate front end from back end
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)
