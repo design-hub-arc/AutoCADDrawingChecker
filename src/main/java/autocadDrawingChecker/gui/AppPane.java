@@ -2,8 +2,8 @@ package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.files.FileChooserUtil;
 import autocadDrawingChecker.logging.Logger;
-import autocadDrawingChecker.reportGeneration.Grader;
-import autocadDrawingChecker.reportGeneration.GradingReport;
+import autocadDrawingChecker.grading.Grader;
+import autocadDrawingChecker.grading.GradingReport;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.util.Arrays;

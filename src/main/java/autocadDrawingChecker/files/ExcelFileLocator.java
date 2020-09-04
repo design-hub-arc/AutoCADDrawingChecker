@@ -1,4 +1,4 @@
-package autocadDrawingChecker.reportGeneration;
+package autocadDrawingChecker.files;
 
 import java.io.File;
 import java.nio.file.Paths;
