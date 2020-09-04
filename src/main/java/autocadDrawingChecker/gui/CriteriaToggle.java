@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui;
 
-import autocadDrawingChecker.comparison.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import java.awt.BorderLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -23,7 +23,7 @@ public class CriteriaToggle extends JComponent {
         criteria = forCriteria;
         
         setLayout(new BorderLayout());
-        add(new JLabel(criteria.getDisplayText()), BorderLayout.PAGE_START);
+        add(new JLabel(criteria.getName()), BorderLayout.PAGE_START);
         selectBox = new JCheckBox("Grade this");
         selectBox.setSelected(true);
         add(selectBox, BorderLayout.LINE_START);

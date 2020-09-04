@@ -1,7 +1,7 @@
 package autocadDrawingChecker.gui;
 
-import autocadDrawingChecker.comparison.AbstractGradingCriteria;
-import autocadDrawingChecker.comparison.GradingCriteriaLoader;
+import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

@@ -1,6 +1,6 @@
 package autocadDrawingChecker.reportGeneration;
 
-import autocadDrawingChecker.comparison.ExportComparison;
+import autocadDrawingChecker.grading.ExportComparison;
 import java.util.LinkedList;
 
 /**

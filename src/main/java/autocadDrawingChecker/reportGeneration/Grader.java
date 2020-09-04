@@ -2,8 +2,8 @@ package autocadDrawingChecker.reportGeneration;
 
 import autocadDrawingChecker.autocadData.AutoCADExcelParser;
 import autocadDrawingChecker.autocadData.AutoCADExport;
-import autocadDrawingChecker.comparison.AbstractGradingCriteria;
-import autocadDrawingChecker.comparison.ExportComparison;
+import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.ExportComparison;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 import java.util.Arrays;
