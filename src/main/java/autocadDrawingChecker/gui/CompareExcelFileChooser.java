@@ -22,7 +22,7 @@ public class CompareExcelFileChooser extends AbstractExcelFileChooser<File[]> {
 
     @Override
     protected void selectButtonPressed() {
-        FileChooserUtil.askChooseFiles(getPopupTitle(), FileType.EXCEL, (File[] fs)->{
+        FileChooserUtil.askChooseFiles(getPopupTitle(), FileType.EXCEL_OR_FOLDER, (File[] fs)->{
             setSelected(fs);
             String[] absPaths = Arrays.stream(fs).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]);
             setText("Selected the files " + String.join(", ", absPaths));
