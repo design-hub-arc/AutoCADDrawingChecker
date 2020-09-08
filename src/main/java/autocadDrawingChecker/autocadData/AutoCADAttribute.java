@@ -7,8 +7,14 @@ package autocadDrawingChecker.autocadData;
  * @author Matt Crow
  */
 public enum AutoCADAttribute {
+    NAME("Name"),
     LAYER("Layer"),
-    LENGTH("Length");
+    START_X("Start X"),
+    START_Y("Start Y"),
+    START_Z("Start Z"),
+    END_X("End X"),
+    END_Y("End Y"),
+    END_Z("End Z");
     
     private final String header;
     

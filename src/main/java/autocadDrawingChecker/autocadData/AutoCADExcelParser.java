@@ -45,10 +45,26 @@ public class AutoCADExcelParser {
         for(int rowNum = 1; rowNum < max; rowNum++){
             currRow = sheet.getRow(rowNum);
             try {
-                containedTherein.add(new AutoCADRow(
-                    currRow.getCell(headerToCol.get(AutoCADAttribute.LAYER)).getStringCellValue(),
-                    Double.parseDouble(currRow.getCell(headerToCol.get(AutoCADAttribute.LENGTH)).getStringCellValue())
-                ));
+                // yeah, better way to do this
+                if(currRow.getCell((headerToCol.get(AutoCADAttribute.NAME))).getStringCellValue().equals("Line")){
+                    containedTherein.add(new AutoCADLine(
+                        currRow.getCell(headerToCol.get(AutoCADAttribute.LAYER)).getStringCellValue(),
+                        new double[]{
+                            currRow.getCell(headerToCol.get(AutoCADAttribute.START_X)).getNumericCellValue(),
+                            currRow.getCell(headerToCol.get(AutoCADAttribute.START_Y)).getNumericCellValue(),
+                            currRow.getCell(headerToCol.get(AutoCADAttribute.START_Z)).getNumericCellValue()
+                        },
+                        new double[]{
+                            currRow.getCell(headerToCol.get(AutoCADAttribute.END_X)).getNumericCellValue(),
+                            currRow.getCell(headerToCol.get(AutoCADAttribute.END_Y)).getNumericCellValue(),
+                            currRow.getCell(headerToCol.get(AutoCADAttribute.END_Z)).getNumericCellValue()
+                        }
+                    ));
+                } else {
+                    containedTherein.add(new AutoCADRow(
+                        currRow.getCell(headerToCol.get(AutoCADAttribute.LAYER)).getStringCellValue()
+                    ));
+                }
             } catch(NullPointerException ex){
                 // there is no way to find the last row with data as far as I know
                 /*

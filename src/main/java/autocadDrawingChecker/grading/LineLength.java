@@ -1,6 +1,9 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.autocadData.AutoCADExport;
+import autocadDrawingChecker.autocadData.AutoCADLine;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -14,7 +17,15 @@ public class LineLength extends AbstractGradingCriteria {
     
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
-        return 0.0;
+        List<AutoCADLine> srcLines = exp1.stream().filter((row)->row instanceof AutoCADLine).map((row)->(AutoCADLine)row).collect(Collectors.toList());
+        List<AutoCADLine> cmpLines = exp2.stream().filter((row)->row instanceof AutoCADLine).map((row)->(AutoCADLine)row).collect(Collectors.toList());
+        
+        double srcTotalLength = srcLines.stream().map((line)->line.getLength()).reduce(0.0, Double::sum);
+        double cmpTotalLength = cmpLines.stream().map((line)->line.getLength()).reduce(0.0, Double::sum);
+        // how do I want to sort the lines? Do I want to sort them outside of this function?
+        
+        
+        return MathUtil.percentError(srcTotalLength, cmpTotalLength); // currently just total length
     }
 
     @Override
