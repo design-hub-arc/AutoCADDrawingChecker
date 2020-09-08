@@ -1,7 +1,6 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.grading.GradingReport;
-import autocadDrawingChecker.grading.LineLength;
 import autocadDrawingChecker.gui.AppWindow;
 import autocadDrawingChecker.logging.Logger;
 
