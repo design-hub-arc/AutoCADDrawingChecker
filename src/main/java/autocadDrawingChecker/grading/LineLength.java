@@ -25,7 +25,7 @@ public class LineLength extends AbstractGradingCriteria {
         // how do I want to sort the lines? Do I want to sort them outside of this function?
         
         
-        return MathUtil.percentError(srcTotalLength, cmpTotalLength); // currently just total length
+        return 1.0 - MathUtil.percentError(srcTotalLength, cmpTotalLength); // currently just total length
     }
 
     @Override

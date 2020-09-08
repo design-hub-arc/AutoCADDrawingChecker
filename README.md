@@ -24,6 +24,9 @@ Make sure you give it a ```.txt``` extension when you save it.
 * Can I use the ARC stylesheet in the application?
 * Change AppPane to GUIController type of thing
 * Separate front end from back end
+* Make AutoCADExcelParser no longer completely static so I don't have to keep passing columns around
+* Add Line Sorter to match most similar lines in two exports
+* Finish line length
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)
