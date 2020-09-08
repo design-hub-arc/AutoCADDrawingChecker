@@ -1,6 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.autocadData.AutoCADExport;
+import java.util.Objects;
 
 /**
  * The AbstractGradingCriteria class is used to
@@ -19,6 +20,23 @@ public abstract class AbstractGradingCriteria {
      */
     public AbstractGradingCriteria(String criteriaName){
         name = criteriaName;
+    }
+    
+    /**
+     * Note that AbstractGradingCriteria are considered equal if they share the same name.
+     * @param obj
+     * @return 
+     */
+    @Override
+    public boolean equals(Object obj){
+        return obj != null && obj instanceof AbstractGradingCriteria && ((AbstractGradingCriteria)obj).hashCode() == this.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.name);
+        return hash;
     }
     
     /**
