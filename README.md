@@ -26,6 +26,7 @@ Make sure you give it a ```.txt``` extension when you save it.
 * Separate front end from back end
 * Add Line Sorter to match most similar lines in two exports
 * Finish line length
+* finish DrawingCheckerProperties
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)
