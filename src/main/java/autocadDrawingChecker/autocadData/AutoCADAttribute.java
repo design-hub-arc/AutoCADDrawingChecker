@@ -7,7 +7,8 @@ package autocadDrawingChecker.autocadData;
  * @author Matt Crow
  */
 public enum AutoCADAttribute {
-    LAYER("Layer");
+    LAYER("Layer"),
+    LENGTH("Length");
     
     private final String header;
     

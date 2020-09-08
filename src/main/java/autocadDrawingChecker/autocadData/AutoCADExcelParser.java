@@ -1,5 +1,6 @@
 package autocadDrawingChecker.autocadData;
 
+import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,8 @@ public class AutoCADExcelParser {
             currRow = sheet.getRow(rowNum);
             try {
                 containedTherein.add(new AutoCADRow(
-                    currRow.getCell(headerToCol.get(AutoCADAttribute.LAYER)).getStringCellValue()
+                    currRow.getCell(headerToCol.get(AutoCADAttribute.LAYER)).getStringCellValue(),
+                    Double.parseDouble(currRow.getCell(headerToCol.get(AutoCADAttribute.LENGTH)).getStringCellValue())
                 ));
             } catch(NullPointerException ex){
                 // there is no way to find the last row with data as far as I know
@@ -64,7 +66,7 @@ public class AutoCADExcelParser {
                 //Logger.logError(ex);
             }
         }
-        
+        System.out.println(containedTherein);
         return containedTherein;
     }
     

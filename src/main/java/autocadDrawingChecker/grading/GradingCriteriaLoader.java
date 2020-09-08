@@ -14,6 +14,7 @@ public class GradingCriteriaLoader {
         ArrayList<AbstractGradingCriteria> ret = new ArrayList<>();
         ret.add(new LineCount());
         ret.add(new LinesPerLayer());
+        ret.add(new LineLength());
         return ret;
     }
 }
