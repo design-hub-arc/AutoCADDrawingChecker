@@ -2,8 +2,12 @@ package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.Grader;
+import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import autocadDrawingChecker.grading.GradingReport;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -12,12 +16,27 @@ import java.util.ArrayList;
 public class Application {
     private String srcPath;
     private String[] cmpPaths;
-    private final ArrayList<AbstractGradingCriteria> criteria;
+    private final HashMap<AbstractGradingCriteria, Boolean> criteriaIsSelected;
     
-    public Application(){
+    private static Application instance;
+    
+    private Application(){
+        if(instance != null){
+            throw new ExceptionInInitializerError("Application is supposed to be a singleton: No more than one instance!");
+        }
         srcPath = null;
         cmpPaths = new String[0];
-        criteria = new ArrayList<>();
+        criteriaIsSelected = new HashMap<>();
+        GradingCriteriaLoader.getAllCriteria().forEach((c) -> {
+            criteriaIsSelected.put(c, Boolean.TRUE);
+        });
+    }
+    
+    public static final Application getInstance(){
+        if(instance == null){
+            instance = new Application();
+        }
+        return instance;
     }
     
     public final Application setSrcPath(String path){
@@ -30,11 +49,8 @@ public class Application {
         return this;
     }
     
-    public final Application setCriteria(AbstractGradingCriteria... newCriteria){
-        criteria.clear();
-        for(AbstractGradingCriteria c : newCriteria){
-            criteria.add(c);
-        }
+    public final Application setCriteria(AbstractGradingCriteria crit, boolean isSelected){
+        criteriaIsSelected.put(crit, isSelected);
         return this;
     }
     
@@ -46,8 +62,12 @@ public class Application {
         return cmpPaths != null && cmpPaths.length > 0;
     }
     
-    public final boolean isCriteriaSet(){
-        return !criteria.isEmpty();
+    public final boolean isCriteriaSelected(AbstractGradingCriteria crit){
+        return criteriaIsSelected.containsKey(crit) && criteriaIsSelected.get(crit);
+    }
+    
+    public final boolean isAnyCriteriaSet(){
+        return criteriaIsSelected.values().contains(Boolean.TRUE); // at least one criteria selected
     }
     
     public final String getSrcPath(){
@@ -58,19 +78,19 @@ public class Application {
         return cmpPaths;
     }
     
-    public final AbstractGradingCriteria[] getCriteria(){
-        return criteria.toArray(new AbstractGradingCriteria[criteria.size()]);
+    public final List<AbstractGradingCriteria> getCriteria(){
+        return criteriaIsSelected.entrySet().stream().filter((e)->e.getValue()).map((e)->e.getKey()).collect(Collectors.toList());
     }
     
     public final boolean isReadyToGrade(){
-        return isSrcPathSet() && isCmpPathsSet() && isCriteriaSet();
+        return isSrcPathSet() && isCmpPathsSet() && isAnyCriteriaSet();
     }
     
     public final GradingReport grade(){
         Grader g = new Grader(
             srcPath,
             cmpPaths,
-            criteria
+            getCriteria()
         );
         
         return g.grade();

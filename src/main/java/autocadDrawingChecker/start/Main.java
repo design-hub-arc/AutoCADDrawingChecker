@@ -18,11 +18,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Application app = new Application();
+        Application app = Application.getInstance();
         GradingReport report = app
             .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with")
             .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with")
-            .setCriteria(new LineLength())
             .grade();
         Logger.log(report.toString());
         

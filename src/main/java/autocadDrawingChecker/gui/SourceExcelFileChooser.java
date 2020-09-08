@@ -2,6 +2,7 @@ package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.files.FileChooserUtil;
 import autocadDrawingChecker.files.FileType;
+import autocadDrawingChecker.start.Application;
 import java.io.File;
 
 /**
@@ -22,6 +23,7 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File> {
     protected void selectButtonPressed() {
         FileChooserUtil.askChooseFile(getPopupTitle(), FileType.EXCEL, (File f)->{
             setSelected(f);
+            Application.getInstance().setSrcPath(f.getAbsolutePath());
             setText("Selected the file " + f.getAbsolutePath());
         });
     }
