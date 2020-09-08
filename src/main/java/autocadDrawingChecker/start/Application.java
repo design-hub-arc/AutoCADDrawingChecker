@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Application {
     private String srcPath;
     private String[] cmpPaths;
-    private ArrayList<AbstractGradingCriteria> criteria;
+    private final ArrayList<AbstractGradingCriteria> criteria;
     
     public Application(){
         srcPath = null;
@@ -38,13 +38,32 @@ public class Application {
         return this;
     }
     
+    public final boolean isSrcPathSet(){
+        return srcPath != null;
+    }
+    
+    public final boolean isCmpPathsSet(){
+        return cmpPaths != null && cmpPaths.length > 0;
+    }
+    
+    public final boolean isCriteriaSet(){
+        return !criteria.isEmpty();
+    }
+    
+    public final String getSrcPath(){
+        return srcPath;
+    }
+    
+    public final String[] getCmpPaths(){
+        return cmpPaths;
+    }
+    
+    public final AbstractGradingCriteria[] getCriteria(){
+        return criteria.toArray(new AbstractGradingCriteria[criteria.size()]);
+    }
+    
     public final boolean isReadyToGrade(){
-        return 
-            srcPath != null 
-            && cmpPaths != null 
-            && cmpPaths.length > 0 
-            && !criteria.isEmpty()
-            ;
+        return isSrcPathSet() && isCmpPathsSet() && isCriteriaSet();
     }
     
     public final GradingReport grade(){
