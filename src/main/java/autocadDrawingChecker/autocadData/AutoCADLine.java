@@ -68,12 +68,14 @@ public class AutoCADLine extends AutoCADRow {
     /**
      * 
      * @param other
-     * @return the inverse cosine of the angle between 
-     * this and the other line when interpreted as 
-     * 6-dimensional vectors.
+     * @return the absolute value of the inverse 
+     * cosine of the angle between this and the other 
+     * line when interpreted as 6-dimensional vectors.
+     * <b>Note that this value ranges from 0.0 to 1.0,
+     * so it can serve as a similarity score</b>
      */
     public final double normDot(AutoCADLine other){
-        return dot(other) / (getNorm() * other.getNorm());
+        return Math.abs(dot(other) / (getNorm() * other.getNorm()));
     }
     
     @Override
