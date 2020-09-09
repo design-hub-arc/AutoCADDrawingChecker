@@ -20,7 +20,7 @@ public class Main {
         Application app = Application.getInstance();
         GradingReport report = app
             .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
-            .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with")
+            .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample Student File 2 - translated.xls.xlsx")
             .grade();
         Logger.log(report.toString());
         

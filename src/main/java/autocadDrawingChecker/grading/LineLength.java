@@ -21,7 +21,11 @@ public class LineLength extends AbstractGradingCriteria {
     private double getMatchScore(AutoCADRow r1, AutoCADRow r2){
         double score = 0.0;
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
-            score = ((AutoCADLine)r1).normDot((AutoCADLine)r2);
+            //score = ((AutoCADLine)r1).normDot((AutoCADLine)r2);
+            score = 1.0 - MathUtil.percentError(
+                ((AutoCADLine)r1).getLength(),
+                ((AutoCADLine)r2).getLength()
+            );
         }
         return score;
     }

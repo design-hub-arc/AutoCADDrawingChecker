@@ -68,7 +68,7 @@ public class ExportMatcher {
             // some rows may not match at all
             if(bestRow != null){
                 Match<AutoCADRow> m = new Match<>(srcRow, bestRow);
-                System.out.println(m);
+                System.out.println("In ExportMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);
             }
