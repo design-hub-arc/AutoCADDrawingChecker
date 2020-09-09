@@ -1,5 +1,9 @@
 package autocadDrawingChecker.autocadData;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.BiFunction;
+
 /**
  * The ExportMatcher class is
  * used to pair elements in one
@@ -25,5 +29,49 @@ package autocadDrawingChecker.autocadData;
  * @author Matt Crow
  */
 public class ExportMatcher {
-
+    private final AutoCADExport exp1;
+    private final AutoCADExport exp2;
+    private final BiFunction<AutoCADRow, AutoCADRow, Double> score;
+    
+    public ExportMatcher(AutoCADExport src, AutoCADExport cmp, BiFunction<AutoCADRow, AutoCADRow, Double> scoringFunction){
+        exp1 = src;
+        exp2 = cmp;
+        score = scoringFunction;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public List<Match<AutoCADRow>> findMatches(){
+        List<Match<AutoCADRow>> matches = new LinkedList<>();
+        
+        // pool of unmatched elements
+        LinkedList<AutoCADRow> pool = new LinkedList<>();
+        exp2.forEach(pool::add);
+        
+        exp1.forEach((AutoCADRow srcRow)->{
+            // find the closest match to srcRow
+            double bestScore = 0.0;
+            double currScore = 0.0;
+            AutoCADRow bestRow = null;
+            
+            // find the highest score
+            for(AutoCADRow cmpRow : pool){
+                currScore = score.apply(srcRow, cmpRow);
+                if(currScore > bestScore){
+                    bestScore = currScore;
+                    bestRow = cmpRow;
+                }
+            }
+            
+            // some rows may not match at all
+            if(bestRow != null){
+                matches.add(new Match<>(srcRow, bestRow));
+                pool.remove(bestRow);
+            }
+        });
+        
+        return matches;
+    }
 }
