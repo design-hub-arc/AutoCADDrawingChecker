@@ -106,7 +106,7 @@ public class AutoCADExcelParser {
      * @return the string value of the cell.
      */
     private String getCell(AutoCADAttribute col){
-        return currRow.getCell(headerToCol.get(col)).getStringCellValue();
+        return currRow.getCell(headerToCol.get(col)).toString(); // returns the contents of the cell as text 
     }
     
     public final AutoCADExport parse() throws IOException {
@@ -122,7 +122,6 @@ public class AutoCADExcelParser {
         for(int rowNum = 1; rowNum < max; rowNum++){
             currRow = sheet.getRow(rowNum);
             try {
-                // yeah, better way to do this
                 if(getCell(AutoCADAttribute.NAME).equals("Line")){
                     data = extractLine();
                 } else {

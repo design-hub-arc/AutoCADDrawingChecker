@@ -19,8 +19,8 @@ public class Main {
     public static void main(String[] args) {
         Application app = Application.getInstance();
         GradingReport report = app
-            .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
-            .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample Student File 2 - translated.xls.xlsx")
+            .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\simple1.xlsx")
+            .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\simple2.xlsx")
             .grade();
         Logger.log(report.toString());
         
