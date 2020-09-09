@@ -24,6 +24,12 @@ public class Main {
             .grade();
         Logger.log(report.toString());
         
+        report = app
+            .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\simple1.xlsx")
+            .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\simple2.xlsx")
+            .grade();
+        Logger.log(report.toString());
+        
         //new AppWindow();
     }
 }

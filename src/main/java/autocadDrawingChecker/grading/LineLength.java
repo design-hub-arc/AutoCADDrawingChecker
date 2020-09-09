@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Looks like this works!
+ * 
  * @author Matt Crow
  */
 public class LineLength extends AbstractGradingCriteria {
