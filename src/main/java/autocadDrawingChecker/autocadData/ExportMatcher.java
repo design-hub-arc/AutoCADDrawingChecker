@@ -40,8 +40,10 @@ public class ExportMatcher {
     }
     
     /**
+     * This is currently not an ideal algorithm.
      * 
-     * @return 
+     * @return the list of matches between the two
+     * given files.
      */
     public List<Match<AutoCADRow>> findMatches(){
         List<Match<AutoCADRow>> matches = new LinkedList<>();
