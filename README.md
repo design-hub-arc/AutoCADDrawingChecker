@@ -26,6 +26,7 @@ Make sure you give it a ```.txt``` extension when you save it.
 * Separate front end from back end
 * finish DrawingCheckerProperties
 * What is "angle" in autocad? Is it 2-d or 3-d?
+* Should we match rows for each comparison, or for the export as a whole?
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)

@@ -8,23 +8,22 @@ import java.util.function.BiFunction;
  * The ExportMatcher class is
  * used to pair elements in one
  * AutoCADExport to elements in
- * another.
+ * another. Essentially, this class compares two exports, and asks "which elements from the second export are supposed to match which elements in the first?"
  * 
- * For a more rigorous definition,
- * this class takes two sets, A and B,
- * and returns a set C such that
- * each element c in C is the 
- * ordered pair (a from A, b from B)
- * where each key and value in C
- * are unique to at most one pair c.
- * The set C is generated such 
- * that given some similarity
- * score function f(c), there exists
- * no pair p (a from A, b from B)
- * such that f(p) > f(c from C).
- * So C contains the set of
- * matches which maximize this
- * similarity score function.
+ * <h2> A Rigorous Definition of what this Should do </h2>
+ * Given sets A and B, and function f(a from A, b from B) => real
+ * this class returns the set C such that each element c in C contains
+ * an ordered pair (a from A, b from B) such that 
+ * there exists no set c in C such that for any c2 in C, c2 shares an element with c and c2 is not c
+ * Furthermore, C must be generated in a way such that for any combination of a set C1 containing ordered pairs (a from A, b from B)
+ * the sum of f(c) for c in C is greater than or equal to the sum of f(c1) for c1 in C1
+ * 
+ * <h2> Requirements </h2>
+ * <ul>
+ * <li>each set c returned must contain one element from a, and one from b</li>
+ * <li>each key and value in c must be unique in C</li>
+ * <li>C must contain the maximum average value of f(c) possible <b>This is the hard one</b></li>
+ * </ul>
  * 
  * @author Matt Crow
  */
