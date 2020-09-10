@@ -25,6 +25,7 @@ Make sure you give it a ```.txt``` extension when you save it.
 * Change AppPane to GUIController type of thing
 * Separate front end from back end
 * finish DrawingCheckerProperties
+* What is "angle" in autocad? Is it 2-d or 3-d?
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)

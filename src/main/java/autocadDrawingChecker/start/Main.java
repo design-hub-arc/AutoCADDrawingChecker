@@ -1,8 +1,11 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.autocadData.AutoCADExcelParser;
+import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.AppWindow;
 import autocadDrawingChecker.logging.Logger;
+import java.io.IOException;
 
 /**
  * Main servers as the starting point for the
@@ -18,6 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Application app = Application.getInstance();
+        
         GradingReport report = app
             .setSrcPath("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx")
             .setCmpPaths("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate2.xlsx")
@@ -30,6 +34,12 @@ public class Main {
             .grade();
         Logger.log(report.toString());
         
-        //new AppWindow();
+        try {
+            AutoCADExport exp = AutoCADExcelParser.parse("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx");
+            System.out.println(exp);
+            //new AppWindow();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

@@ -41,6 +41,13 @@ public class ExportMatcher {
     
     /**
      * This is currently not an ideal algorithm.
+     * For example, given two drawings, each with
+     * two lines, it could match a 100% match, then
+     * a 0% match, resulting in a score of 50%. But,
+     * suppose it were possible for it to find two
+     * 70% matches using a different algorithm, a
+     * score of 70%. Therefore, this greedy matching
+     * algorithm is not ideal.
      * 
      * @return the list of matches between the two
      * given files.
