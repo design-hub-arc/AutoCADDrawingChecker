@@ -4,6 +4,7 @@ import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import autocadDrawingChecker.grading.GradingReport;
+import autocadDrawingChecker.gui.ViewController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Application {
     private String srcPath;
     private String[] cmpPaths;
     private final HashMap<AbstractGradingCriteria, Boolean> criteriaIsSelected;
+    private ViewController window;
     
     private static Application instance;
     
@@ -37,6 +39,15 @@ public class Application {
             instance = new Application();
         }
         return instance;
+    }
+    
+    public final Application createGui(){
+        if(window != null){
+            window.dispose();
+        }
+        window = new ViewController();
+        // do stuff with window
+        return this;
     }
     
     public final Application setSrcPath(String path){

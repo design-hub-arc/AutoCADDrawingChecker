@@ -3,7 +3,7 @@ package autocadDrawingChecker.start;
 import autocadDrawingChecker.autocadData.AutoCADExcelParser;
 import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.grading.GradingReport;
-import autocadDrawingChecker.gui.AppWindow;
+import autocadDrawingChecker.gui.ViewController;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 
@@ -27,6 +27,6 @@ public class Main {
             .setCmpPaths("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate2.xlsx")
             .grade();
         Logger.log(report.toString());*/
-        new AppWindow();        
+        app.createGui();
     }
 }

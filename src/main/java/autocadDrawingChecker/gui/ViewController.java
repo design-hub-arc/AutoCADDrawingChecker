@@ -13,8 +13,8 @@ import javax.swing.UIManager;
  *
  * @author Matt
  */
-public class AppWindow extends JFrame {
-    public AppWindow(){
+public class ViewController extends JFrame {
+    public ViewController(){
         super();
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
