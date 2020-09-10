@@ -23,7 +23,7 @@ public class MathUtil {
     public static double percentError(double whatIExpected, double whatIGot){
         double ret = 0.0;
         if(whatIExpected == 0.0){
-            ret = (whatIGot == 0.0) ? 1.0 : 0.0;
+            ret = (whatIGot == 0.0) ? 0.0 : 1.0;
         } else {
             ret = Math.abs((whatIGot - whatIExpected) / whatIExpected);
         }

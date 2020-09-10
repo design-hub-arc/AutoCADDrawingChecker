@@ -26,12 +26,6 @@ public class Main {
             .setSrcPath("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx")
             .setCmpPaths("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate2.xlsx")
             .grade();
-        Logger.log(report.toString());
-        
-        report = app
-            .setCmpPaths("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx")
-            .setSrcPath("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate2.xlsx")
-            .grade();
         Logger.log(report.toString());*/
         new AppWindow();        
     }
