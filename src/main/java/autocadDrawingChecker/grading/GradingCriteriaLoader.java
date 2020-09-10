@@ -15,6 +15,9 @@ public class GradingCriteriaLoader {
         ret.add(new LineCount());
         ret.add(new LinesPerLayer());
         ret.add(new LineLength());
+        ret.add(new LineAngle());
+        ret.add(new LineStart());
+        ret.add(new LineEnd());
         return ret;
     }
 }

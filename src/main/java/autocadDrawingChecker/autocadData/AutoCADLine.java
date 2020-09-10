@@ -20,12 +20,20 @@ public class AutoCADLine extends AutoCADRow {
      * The unit vector for the x-axis
      */
     private static final AutoCADLine I_HAT = new AutoCADLine("", new double[]{0, 0, 0}, new double[]{1, 0, 0});
-    private static final int DIMENSION_COUNT = 3;
+    public static final int DIMENSION_COUNT = 3;
     
     public AutoCADLine(String layerName, double[] start, double[] end) {
         super(layerName);
         r0 = Arrays.copyOf(start, DIMENSION_COUNT);
         r = Arrays.copyOf(end, DIMENSION_COUNT);
+    }
+    
+    public final double getR0Sub(int dimension){
+        return r0[dimension];
+    }
+    
+    public final double getRSub(int dimension){
+        return r[dimension];
     }
 
     /**

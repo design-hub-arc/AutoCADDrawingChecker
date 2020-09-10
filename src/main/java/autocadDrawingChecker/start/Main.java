@@ -21,7 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Application app = Application.getInstance();
-        
+        /*
         GradingReport report = app
             .setSrcPath("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx")
             .setCmpPaths("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate2.xlsx")
@@ -32,14 +32,7 @@ public class Main {
             .setCmpPaths("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx")
             .setSrcPath("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate2.xlsx")
             .grade();
-        Logger.log(report.toString());
-        
-        try {
-            AutoCADExport exp = AutoCADExcelParser.parse("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx");
-            System.out.println(exp);
-            //new AppWindow();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        Logger.log(report.toString());*/
+        new AppWindow();        
     }
 }

@@ -8,48 +8,44 @@ import autocadDrawingChecker.autocadData.Match;
 import java.util.List;
 
 /**
- * Still needs to consider complimentary angles
- * @author Matt Crow
+ *
+ * @author Matt
  */
-public class LineAngle extends AbstractGradingCriteria {
-    
-    public LineAngle(){
-        super("Line Angle");
+public class LineEnd extends AbstractGradingCriteria {
+    public LineEnd(){
+        super("Line End");
     }
     
     private double getMatchScore(AutoCADRow r1, AutoCADRow r2){
         double score = 0.0;
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
-            score = 1.0 - MathUtil.percentError(
-                ((AutoCADLine)r1).getAngle(),
-                ((AutoCADLine)r2).getAngle()
-            );
+            for(int i = 0; i < AutoCADLine.DIMENSION_COUNT; i++){
+                score += 1.0 - MathUtil.percentError(
+                    ((AutoCADLine)r1).getRSub(i),
+                    ((AutoCADLine)r2).getRSub(i)
+                );
+            }
         }
-        return score;
+        return score / AutoCADLine.DIMENSION_COUNT;
     }
     
-    private double getAvgAngleScore(List<Match<AutoCADRow>> matches){
-        double ret = 0.0;
+    private double getAvgEndScore(List<Match<AutoCADRow>> matches){
+        double total = 0.0;
         for(Match<AutoCADRow> match : matches){
-            ret += 1.0 - MathUtil.percentError(
-                ((AutoCADLine)match.getObj1()).getAngle(),
-                ((AutoCADLine)match.getObj2()).getAngle()
-            );
+            total += getMatchScore(match.getObj1(), match.getObj2());
         }
-        ret /= matches.size();
-        return ret;
+        return total / matches.size();
     }
     
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
         List<Match<AutoCADRow>> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
-        
-        return getAvgAngleScore(closestMatches);
+        return getAvgEndScore(closestMatches);
     }
 
     @Override
     public String getDescription() {
-        return "Grades the students based on how their lines' angles match up with those of the instructor file";
+        return "Grades based on how closesly the student's line end points match up with those of the instructor's";
     }
 
 }
