@@ -14,6 +14,8 @@ import javax.swing.UIManager;
  * @author Matt
  */
 public class ViewController extends JFrame {
+    private final AppPane pane;
+    
     public ViewController(){
         super();
         try {
@@ -32,7 +34,8 @@ public class ViewController extends JFrame {
         menuBar.add(logMenu);
         setJMenuBar(menuBar);
         
-        setContentPane(new AppPane());
+        pane = new AppPane();
+        setContentPane(pane);
         // fullscreen
         setSize(
             (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), 
@@ -42,5 +45,9 @@ public class ViewController extends JFrame {
         setVisible(true);
         revalidate();
         repaint();
+    }
+    
+    public final AppPane getAppPane(){
+        return pane;
     }
 }

@@ -4,6 +4,7 @@ import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import autocadDrawingChecker.grading.GradingReport;
+import autocadDrawingChecker.gui.AppPane;
 import autocadDrawingChecker.gui.ViewController;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class Application {
             window.dispose();
         }
         window = new ViewController();
+        AppPane pane = window.getAppPane();
         // do stuff with window
         return this;
     }
