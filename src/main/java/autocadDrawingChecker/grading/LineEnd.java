@@ -4,7 +4,7 @@ import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.autocadData.AutoCADLine;
 import autocadDrawingChecker.autocadData.AutoCADRow;
 import autocadDrawingChecker.autocadData.ExportMatcher;
-import autocadDrawingChecker.autocadData.Match;
+import autocadDrawingChecker.autocadData.MatchingAutoCADElements;
 import java.util.List;
 
 /**
@@ -29,17 +29,17 @@ public class LineEnd extends AbstractGradingCriteria {
         return score / AutoCADLine.DIMENSION_COUNT;
     }
     
-    private double getAvgEndScore(List<Match<AutoCADRow>> matches){
+    private double getAvgEndScore(List<MatchingAutoCADElements> matches){
         double total = 0.0;
-        for(Match<AutoCADRow> match : matches){
-            total += getMatchScore(match.getObj1(), match.getObj2());
+        for(MatchingAutoCADElements match : matches){
+            total += getMatchScore(match.getElement1(), match.getElement2());
         }
         return total / matches.size();
     }
     
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
-        List<Match<AutoCADRow>> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
+        List<MatchingAutoCADElements> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
         return getAvgEndScore(closestMatches);
     }
 

@@ -4,7 +4,7 @@ import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.autocadData.AutoCADLine;
 import autocadDrawingChecker.autocadData.AutoCADRow;
 import autocadDrawingChecker.autocadData.ExportMatcher;
-import autocadDrawingChecker.autocadData.Match;
+import autocadDrawingChecker.autocadData.MatchingAutoCADElements;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,12 +31,12 @@ public class LineLength extends AbstractGradingCriteria {
         return score;
     }
     
-    private double getAvgLengthScore(List<Match<AutoCADRow>> matches){
+    private double getAvgLengthScore(List<MatchingAutoCADElements> matches){
         double ret = 0.0;
-        for(Match<AutoCADRow> match : matches){
+        for(MatchingAutoCADElements match : matches){
             ret += 1.0 - MathUtil.percentError(
-                ((AutoCADLine)match.getObj1()).getLength(),
-                ((AutoCADLine)match.getObj2()).getLength()
+                ((AutoCADLine)match.getElement1()).getLength(),
+                ((AutoCADLine)match.getElement2()).getLength()
             );
         }
         ret /= matches.size();
@@ -53,7 +53,7 @@ public class LineLength extends AbstractGradingCriteria {
         
         // how do I want to sort the lines? Do I want to sort them outside of this function?
         
-        List<Match<AutoCADRow>> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
+        List<MatchingAutoCADElements> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
         
         double avgLenScore = getAvgLengthScore(closestMatches);
         

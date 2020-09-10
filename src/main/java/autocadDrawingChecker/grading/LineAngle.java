@@ -4,7 +4,7 @@ import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.autocadData.AutoCADLine;
 import autocadDrawingChecker.autocadData.AutoCADRow;
 import autocadDrawingChecker.autocadData.ExportMatcher;
-import autocadDrawingChecker.autocadData.Match;
+import autocadDrawingChecker.autocadData.MatchingAutoCADElements;
 import java.util.List;
 
 /**
@@ -28,12 +28,12 @@ public class LineAngle extends AbstractGradingCriteria {
         return score;
     }
     
-    private double getAvgAngleScore(List<Match<AutoCADRow>> matches){
+    private double getAvgAngleScore(List<MatchingAutoCADElements> matches){
         double ret = 0.0;
-        for(Match<AutoCADRow> match : matches){
+        for(MatchingAutoCADElements match : matches){
             ret += 1.0 - MathUtil.percentError(
-                ((AutoCADLine)match.getObj1()).getAngle(),
-                ((AutoCADLine)match.getObj2()).getAngle()
+                ((AutoCADLine)match.getElement1()).getAngle(),
+                ((AutoCADLine)match.getElement2()).getAngle()
             );
         }
         ret /= matches.size();
@@ -42,7 +42,7 @@ public class LineAngle extends AbstractGradingCriteria {
     
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
-        List<Match<AutoCADRow>> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
+        List<MatchingAutoCADElements> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
         
         return getAvgAngleScore(closestMatches);
     }

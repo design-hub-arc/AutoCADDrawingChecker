@@ -52,8 +52,8 @@ public class ExportMatcher {
      * @return the list of matches between the two
      * given files.
      */
-    public List<Match<AutoCADRow>> findMatches(){
-        List<Match<AutoCADRow>> matches = new LinkedList<>();
+    public List<MatchingAutoCADElements> findMatches(){
+        List<MatchingAutoCADElements> matches = new LinkedList<>();
         
         // pool of unmatched elements
         LinkedList<AutoCADRow> pool = new LinkedList<>();
@@ -76,7 +76,7 @@ public class ExportMatcher {
             
             // some rows may not match at all
             if(bestRow != null){
-                Match<AutoCADRow> m = new Match<>(srcRow, bestRow);
+                MatchingAutoCADElements m = new MatchingAutoCADElements(srcRow, bestRow);
                 //System.out.println("In ExportMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);
