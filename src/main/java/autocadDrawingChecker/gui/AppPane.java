@@ -81,7 +81,7 @@ public class AppPane extends JPanel {
         );
         
         GradingReport report = autoGrader.grade();
-        //Logger.log(report.toString());
+        Logger.log(report.toString());
         
         FileChooserUtil.askChooseFile("Where would you like to save this report to?", FileType.EXCEL, (File f)->{
             try (FileOutputStream out = new FileOutputStream(f)) {

@@ -71,6 +71,7 @@ public class Grader {
      */
     public final GradingReport grade(){
         GradingReport report = new GradingReport();
+        criteria.forEach((crit)->report.addCriteria(crit));
         
         AutoCADExport trySrc = null;
         List<AutoCADExport> cmp = null;

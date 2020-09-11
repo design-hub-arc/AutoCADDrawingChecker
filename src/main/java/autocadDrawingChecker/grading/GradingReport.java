@@ -3,11 +3,13 @@ package autocadDrawingChecker.grading;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -49,18 +51,23 @@ public class GradingReport extends LinkedList<ExportComparison> {
     
     public final Workbook getAsWorkBook(){
         XSSFWorkbook workbook = new XSSFWorkbook();
-        Sheet reportSheet = workbook.createSheet("Grading Report");
+        XSSFSheet reportSheet = workbook.createSheet("Grading Report");
         
-        Row headerRow = reportSheet.createRow(0);
+        XSSFRow headerRow = reportSheet.createRow(0);
         for(int i = 0; i < headers.size(); i++){
             headerRow.createCell(i, CellType.STRING).setCellValue(headers.get(i));
         }
         
-        Row newRow = null;
-        Cell newCell = null;
+        XSSFRow newRow = null;
+        XSSFCell newCell = null;
         ExportComparison currExp = null;
         String currHeader = null;
         Object data = null;
+        
+        XSSFDataFormat format = workbook.createDataFormat();
+        CellStyle style = workbook.createCellStyle();
+        style.setDataFormat(format.getFormat("###%")); // format as 0-3 integer digits
+        
         for(int row = 0; row < size(); row++){
             currExp = get(row);
             newRow = reportSheet.createRow(row + 1);
@@ -71,6 +78,7 @@ public class GradingReport extends LinkedList<ExportComparison> {
                     case SRC_FILE_HEADER:
                         data = currExp.getInstructorFile().getFileName();
                         newCell.setCellValue((String)data);
+                        newCell.setCellStyle(null);
                         break;
                     case CMP_FILE_HEADER:
                         data = currExp.getCmpFile().getFileName();
@@ -79,10 +87,12 @@ public class GradingReport extends LinkedList<ExportComparison> {
                     case FINAL_GRADE_HEADER:
                         data = currExp.getFinalGrade();
                         newCell.setCellValue((double)data);
+                        newCell.setCellStyle(style);
                         break;
                     default:
                         data = currExp.getGradeFor(gradedCriteria.get(currHeader));
                         newCell.setCellValue((double)data);
+                        newCell.setCellStyle(style);
                         break;
                 }
             }
