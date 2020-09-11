@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * 
  * @author Matt Crow
  */
-public class AutoCADExport extends LinkedList<AutoCADRow> {
+public class AutoCADExport extends LinkedList<AutoCADElement> {
     private final String fileName;
     
     public AutoCADExport(String fileName){
@@ -35,7 +35,7 @@ public class AutoCADExport extends LinkedList<AutoCADRow> {
      */
     public final HashMap<String, Integer> getLayerLineCounts(){
         HashMap<String, Integer> lineCounts = new HashMap<>();
-        forEach((AutoCADRow row)->{
+        forEach((AutoCADElement row)->{
             String layer = row.getLayer();
             if(!lineCounts.containsKey(layer)){
                 lineCounts.put(layer, 0);
@@ -49,7 +49,7 @@ public class AutoCADExport extends LinkedList<AutoCADRow> {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("AutoCAD Data Export:");
-        forEach((AutoCADRow row)->sb.append("\n").append(row.toString()));
+        forEach((AutoCADElement row)->sb.append("\n").append(row.toString()));
         sb.append("\nEnd of AutoCAD Export Data");
         return sb.toString();
     }

@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 
  * @author Matt Crow
  */
-public class GradingReport extends LinkedList<ExportComparison> {
+public class GradingReport extends LinkedList<GradedExport> {
     private final HashMap<String, Integer> headerToCol;
     private final ArrayList<String> headers;
     private final HashMap<String, AbstractGradingCriteria> gradedCriteria;
@@ -60,7 +60,7 @@ public class GradingReport extends LinkedList<ExportComparison> {
         
         XSSFRow newRow = null;
         XSSFCell newCell = null;
-        ExportComparison currExp = null;
+        GradedExport currExp = null;
         String currHeader = null;
         Object data = null;
         

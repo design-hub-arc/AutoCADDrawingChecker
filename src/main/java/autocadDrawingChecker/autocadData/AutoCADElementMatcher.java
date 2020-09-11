@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 /**
- * The ExportMatcher class is
- * used to pair elements in one
- * AutoCADExport to elements in
- * another. Essentially, this class compares two exports, and asks "which elements from the second export are supposed to match which elements in the first?"
+ * The AutoCADElementMatcher class is
+ used to pair elements in one
+ AutoCADExport to elements in
+ another. Essentially, this class compares two exports, and asks "which elements from the second export are supposed to match which elements in the first?"
  * 
  * <h2> A Rigorous Definition of what this Should do </h2>
  * Given sets A and B, and function f(a from A, b from B) => real
@@ -27,12 +27,12 @@ import java.util.function.BiFunction;
  * 
  * @author Matt Crow
  */
-public class ExportMatcher {
+public class AutoCADElementMatcher {
     private final AutoCADExport exp1;
     private final AutoCADExport exp2;
-    private final BiFunction<AutoCADRow, AutoCADRow, Double> score;
+    private final BiFunction<AutoCADElement, AutoCADElement, Double> score;
     
-    public ExportMatcher(AutoCADExport src, AutoCADExport cmp, BiFunction<AutoCADRow, AutoCADRow, Double> scoringFunction){
+    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, BiFunction<AutoCADElement, AutoCADElement, Double> scoringFunction){
         exp1 = src;
         exp2 = cmp;
         score = scoringFunction;
@@ -55,17 +55,17 @@ public class ExportMatcher {
         List<MatchingAutoCADElements> matches = new LinkedList<>();
         
         // pool of unmatched elements
-        LinkedList<AutoCADRow> pool = new LinkedList<>();
+        LinkedList<AutoCADElement> pool = new LinkedList<>();
         exp2.forEach(pool::add);
         
-        exp1.forEach((AutoCADRow srcRow)->{
+        exp1.forEach((AutoCADElement srcRow)->{
             // find the closest match to srcRow
             double bestScore = 0.0;
             double currScore = 0.0;
-            AutoCADRow bestRow = null;
+            AutoCADElement bestRow = null;
             
             // find the highest score
-            for(AutoCADRow cmpRow : pool){
+            for(AutoCADElement cmpRow : pool){
                 currScore = score.apply(srcRow, cmpRow);
                 if(currScore > bestScore){
                     bestScore = currScore;
@@ -76,7 +76,7 @@ public class ExportMatcher {
             // some rows may not match at all
             if(bestRow != null){
                 MatchingAutoCADElements m = new MatchingAutoCADElements(srcRow, bestRow);
-                //System.out.println("In ExportMatcher.findMatches: " + m);
+                //System.out.println("In AutoCADElementMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);
             }

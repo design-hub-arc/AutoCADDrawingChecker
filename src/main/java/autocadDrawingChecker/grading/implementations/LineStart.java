@@ -1,10 +1,12 @@
-package autocadDrawingChecker.grading;
+package autocadDrawingChecker.grading.implementations;
 
 import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.autocadData.AutoCADLine;
-import autocadDrawingChecker.autocadData.AutoCADRow;
-import autocadDrawingChecker.autocadData.ExportMatcher;
+import autocadDrawingChecker.autocadData.AutoCADElement;
+import autocadDrawingChecker.autocadData.AutoCADElementMatcher;
 import autocadDrawingChecker.autocadData.MatchingAutoCADElements;
+import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.MathUtil;
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ public class LineStart extends AbstractGradingCriteria {
         super("Line Start");
     }
     
-    private double getMatchScore(AutoCADRow r1, AutoCADRow r2){
+    private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
             for(int i = 0; i < AutoCADLine.DIMENSION_COUNT; i++){
@@ -40,7 +42,7 @@ public class LineStart extends AbstractGradingCriteria {
     
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
-        List<MatchingAutoCADElements> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
+        List<MatchingAutoCADElements> closestMatches = new AutoCADElementMatcher(exp1, exp2, this::getMatchScore).findMatches();
         return getAvgStartScore(closestMatches);
     }
 

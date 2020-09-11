@@ -16,7 +16,7 @@ The more similar their file is to the instructor file, the higher their grade wi
     * A combination of the above.
 * Step 2: Choosing Grading Criteria. You can choose what the program grades students on by toggling these check boxes on or off.
 * Step 3: Running the Autograder. Once the program is done grading, it will ask you where you want to save the grading report. 
-Make sure you give it a ```.txt``` extension when you save it. 
+Make sure you give it a ```.xlsx``` extension when you save it. 
 
 ## To Do
 * Do we have a set of icons we can use? Like warning and "you're good" icons?
@@ -27,6 +27,7 @@ Make sure you give it a ```.txt``` extension when you save it.
 * finish DrawingCheckerProperties
 * What is "angle" in autocad? Is it 2-d or 3-d?
 * Should we match rows for each comparison, or for the export as a whole?
+* finish LineAngle
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)

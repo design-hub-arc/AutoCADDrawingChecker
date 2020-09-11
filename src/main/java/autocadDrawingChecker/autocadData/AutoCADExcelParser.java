@@ -65,12 +65,12 @@ public class AutoCADExcelParser {
     
     /**
      * Interprets the current row as
-     * an AutoCADRow, and returns it.
+ an AutoCADElement, and returns it.
      * 
-     * @return the current row, as an AutoCADRow. 
+     * @return the current row, as an AutoCADElement. 
      */
-    private AutoCADRow extractRow(){
-        return new AutoCADRow(
+    private AutoCADElement extractRow(){
+        return new AutoCADElement(
             getCell(AutoCADAttribute.LAYER)
         );
     }
@@ -117,7 +117,7 @@ public class AutoCADExcelParser {
         AutoCADExport containedTherein = new AutoCADExport(fileName);
         locateColumns(sheet.getRow(0));
         int max = sheet.getLastRowNum();
-        AutoCADRow data = null;
+        AutoCADElement data = null;
         //               skip headers
         for(int rowNum = 1; rowNum < max; rowNum++){
             currRow = sheet.getRow(rowNum);

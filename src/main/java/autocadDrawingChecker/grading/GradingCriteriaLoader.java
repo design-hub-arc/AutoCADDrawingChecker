@@ -1,5 +1,11 @@
 package autocadDrawingChecker.grading;
 
+import autocadDrawingChecker.grading.implementations.LinesPerLayer;
+import autocadDrawingChecker.grading.implementations.LineStart;
+import autocadDrawingChecker.grading.implementations.LineLength;
+import autocadDrawingChecker.grading.implementations.LineEnd;
+import autocadDrawingChecker.grading.implementations.LineCount;
+import autocadDrawingChecker.grading.implementations.LineAngle;
 import java.util.ArrayList;
 
 /**

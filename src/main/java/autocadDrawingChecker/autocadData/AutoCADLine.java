@@ -12,7 +12,7 @@ import java.util.Arrays;
  * 
  * @author Matt Crow
  */
-public class AutoCADLine extends AutoCADRow {
+public class AutoCADLine extends AutoCADElement {
     private final double[] r0; // r naught
     private final double[] r; // r final
     

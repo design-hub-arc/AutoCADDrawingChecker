@@ -5,24 +5,24 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * The ExportComparison class
- * handles grading a single student
- * file to the instructor file.
+ * The GradedExport class
+ handles grading a single student
+ file to the instructor file.
  * <b>Note that this comparison may 
  * not be commutative: 
- * <pre>ExportComparison(x, y) != ExportComparison(y, x)</pre>
+ * <pre>GradedExport(x, y) != GradedExport(y, x)</pre>
  * </b>
  * 
  * @author Matt Crow.
  */
-public class ExportComparison {
+public class GradedExport {
     private final AutoCADExport src;
     private final AutoCADExport compareTo;
     private final List<AbstractGradingCriteria> attrs;
     private final HashMap<AbstractGradingCriteria, Double> scores;
     private final double finalGrade;
     
-    public ExportComparison(AutoCADExport xp1, AutoCADExport xp2, List<AbstractGradingCriteria> criteria){
+    public GradedExport(AutoCADExport xp1, AutoCADExport xp2, List<AbstractGradingCriteria> criteria){
         src = xp1;
         compareTo = xp2;
         attrs = criteria;

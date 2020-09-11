@@ -1,12 +1,12 @@
 package autocadDrawingChecker.autocadData;
 
 /**
- * An AutoCADRow represents
- * a single record in an AutoCADExport.
+ * An AutoCADElement represents
+ a single record in an AutoCADExport.
  * 
  * @author Matt Crow
  */
-public class AutoCADRow {
+public class AutoCADElement {
     private final String inLayer;
     /**
      * 
@@ -14,7 +14,7 @@ public class AutoCADRow {
      * 'Layer' column of the Excel workbook
      * from whence this came.
      */
-    public AutoCADRow(String layerName){
+    public AutoCADElement(String layerName){
         inLayer = layerName;
     }
     

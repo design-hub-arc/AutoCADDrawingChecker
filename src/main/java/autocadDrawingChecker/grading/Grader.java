@@ -88,7 +88,7 @@ public class Grader {
         cmp = getCmpFiles();
         
         cmp.stream().forEach((exp)->{
-            report.add(new ExportComparison(src, exp, criteria));
+            report.add(new GradedExport(src, exp, criteria));
         });
         
         return report;

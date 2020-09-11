@@ -1,10 +1,12 @@
-package autocadDrawingChecker.grading;
+package autocadDrawingChecker.grading.implementations;
 
 import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.autocadData.AutoCADLine;
-import autocadDrawingChecker.autocadData.AutoCADRow;
-import autocadDrawingChecker.autocadData.ExportMatcher;
+import autocadDrawingChecker.autocadData.AutoCADElement;
+import autocadDrawingChecker.autocadData.AutoCADElementMatcher;
 import autocadDrawingChecker.autocadData.MatchingAutoCADElements;
+import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.MathUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +21,7 @@ public class LineLength extends AbstractGradingCriteria {
         super("Line Length");
     }
     
-    private double getMatchScore(AutoCADRow r1, AutoCADRow r2){
+    private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
             //score = ((AutoCADLine)r1).normDot((AutoCADLine)r2);
@@ -53,7 +55,7 @@ public class LineLength extends AbstractGradingCriteria {
         
         // how do I want to sort the lines? Do I want to sort them outside of this function?
         
-        List<MatchingAutoCADElements> closestMatches = new ExportMatcher(exp1, exp2, this::getMatchScore).findMatches();
+        List<MatchingAutoCADElements> closestMatches = new AutoCADElementMatcher(exp1, exp2, this::getMatchScore).findMatches();
         
         double avgLenScore = getAvgLengthScore(closestMatches);
         

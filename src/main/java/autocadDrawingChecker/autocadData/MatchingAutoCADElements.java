@@ -14,19 +14,19 @@ package autocadDrawingChecker.autocadData;
  * @author Matt Crow
  */
 public class MatchingAutoCADElements {
-    private final AutoCADRow element1;
-    private final AutoCADRow element2;
+    private final AutoCADElement element1;
+    private final AutoCADElement element2;
     
-    public MatchingAutoCADElements(AutoCADRow a, AutoCADRow b){
+    public MatchingAutoCADElements(AutoCADElement a, AutoCADElement b){
         element1 = a;
         element2 = b;
     }
     
-    public final AutoCADRow getElement1(){
+    public final AutoCADElement getElement1(){
         return element1;
     }
     
-    public final AutoCADRow getElement2(){
+    public final AutoCADElement getElement2(){
         return element2;
     }
     
