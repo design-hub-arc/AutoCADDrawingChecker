@@ -41,9 +41,21 @@ public class ExportComparison {
         return similarityScore / attrs.size(); // average similarity score
     }
     
+    public final AutoCADExport getInstructorFile(){
+        return src;
+    }
+    
     public final AutoCADExport getCmpFile(){
         return compareTo;
-    }   
+    }
+    
+    public final double getFinalGrade(){
+        return finalGrade;
+    }
+    
+    public final double getGradeFor(AbstractGradingCriteria criteria){
+        return scores.get(criteria);
+    }
     
     @Override
     public String toString(){
