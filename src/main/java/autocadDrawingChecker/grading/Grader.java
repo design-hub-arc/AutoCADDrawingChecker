@@ -19,28 +19,28 @@ import java.util.stream.Collectors;
  * @author Matt Crow
  */
 public class Grader {
-    private final String srcPath;
-    private final String[] cmpPaths;
+    private final String instrFilePath;
+    private final String[] studentFilePaths;
     private final List<AbstractGradingCriteria> criteria;
     
     /**
      * 
-     * @param src the complete path to the instructor file to compare to.
-     * @param cmp a series of complete paths to student files, or folders containing them.
+     * @param pathToInstructorFile the complete path to the instructor file to compare to.
+     * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(String src, String[] cmp, List<AbstractGradingCriteria> gradeThese){
-        srcPath = src;
-        cmpPaths = cmp;
+    public Grader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria> gradeThese){
+        instrFilePath = pathToInstructorFile;
+        studentFilePaths = pathsToStudentFiles;
         criteria = gradeThese;
     }
     
-    private AutoCADExport getSrcFile() throws IOException{
-        return AutoCADExcelParser.parse(srcPath);
+    private AutoCADExport getInstructorFile() throws IOException{
+        return AutoCADExcelParser.parse(instrFilePath);
     }
     
-    private List<AutoCADExport> getCmpFiles(){
-        return Arrays.stream(cmpPaths).flatMap((cmpPath)->{
+    private List<AutoCADExport> getStudentFiles(){
+        return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{
             // locate all Excel files in all given paths...
             return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream();
         }).map((fileName)->{
@@ -77,15 +77,15 @@ public class Grader {
         List<AutoCADExport> cmp = null;
         
         try {
-            trySrc = getSrcFile();
+            trySrc = getInstructorFile();
         } catch (IOException ex) {
-            Logger.logError(String.format("Failed to locate source file %s", srcPath));
+            Logger.logError(String.format("Failed to locate source file %s", instrFilePath));
             Logger.logError(ex);
         }
         
         AutoCADExport src = trySrc; // need this to be effectively final for lambda
         
-        cmp = getCmpFiles();
+        cmp = getStudentFiles();
         
         cmp.stream().forEach((exp)->{
             report.add(new GradedExport(src, exp, criteria));

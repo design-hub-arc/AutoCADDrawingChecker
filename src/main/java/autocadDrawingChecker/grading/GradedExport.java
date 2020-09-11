@@ -16,37 +16,37 @@ import java.util.List;
  * @author Matt Crow.
  */
 public class GradedExport {
-    private final AutoCADExport src;
-    private final AutoCADExport compareTo;
-    private final List<AbstractGradingCriteria> attrs;
-    private final HashMap<AbstractGradingCriteria, Double> scores;
+    private final AutoCADExport instructorExport;
+    private final AutoCADExport studentExport;
+    private final List<AbstractGradingCriteria> gradedCriteria;
+    private final HashMap<AbstractGradingCriteria, Double> grades;
     private final double finalGrade;
     
-    public GradedExport(AutoCADExport xp1, AutoCADExport xp2, List<AbstractGradingCriteria> criteria){
-        src = xp1;
-        compareTo = xp2;
-        attrs = criteria;
-        scores = new HashMap<>();
+    public GradedExport(AutoCADExport instructorsExport, AutoCADExport studentsExport, List<AbstractGradingCriteria> gradeOnThese){
+        instructorExport = instructorsExport;
+        studentExport = studentsExport;
+        gradedCriteria = gradeOnThese;
+        grades = new HashMap<>();
         finalGrade = runComparison();
     }
     
     private double runComparison(){
         double similarityScore = 0.0;
         double newScore = 0.0;
-        for(AbstractGradingCriteria attr : attrs){
-            newScore = attr.computeScore(src, compareTo);
-            scores.put(attr, newScore);
+        for(AbstractGradingCriteria attr : gradedCriteria){
+            newScore = attr.computeScore(instructorExport, studentExport);
+            grades.put(attr, newScore);
             similarityScore += newScore;
         }
-        return similarityScore / attrs.size(); // average similarity score
+        return similarityScore / gradedCriteria.size(); // average similarity score
     }
     
     public final AutoCADExport getInstructorFile(){
-        return src;
+        return instructorExport;
     }
     
-    public final AutoCADExport getCmpFile(){
-        return compareTo;
+    public final AutoCADExport getStudentFile(){
+        return studentExport;
     }
     
     public final double getFinalGrade(){
@@ -54,14 +54,14 @@ public class GradedExport {
     }
     
     public final double getGradeFor(AbstractGradingCriteria criteria){
-        return scores.get(criteria);
+        return grades.get(criteria);
     }
     
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Comparing %s to %s:", src.getFileName(), compareTo.getFileName()));
-        scores.forEach((attr, score)->{
+        sb.append(String.format("Comparing %s to %s:", instructorExport.getFileName(), studentExport.getFileName()));
+        grades.forEach((attr, score)->{
             sb.append(String.format("\n* %s: %d%%", attr.getName(), (int)(score * 100)));
         });
         sb.append(String.format("\nFinal Grade: %d%%", (int)(finalGrade * 100)));

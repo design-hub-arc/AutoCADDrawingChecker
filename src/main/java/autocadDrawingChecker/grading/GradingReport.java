@@ -81,7 +81,7 @@ public class GradingReport extends LinkedList<GradedExport> {
                         newCell.setCellStyle(null);
                         break;
                     case CMP_FILE_HEADER:
-                        data = currExp.getCmpFile().getFileName();
+                        data = currExp.getStudentFile().getFileName();
                         newCell.setCellValue((String)data);
                         break;
                     case FINAL_GRADE_HEADER:
