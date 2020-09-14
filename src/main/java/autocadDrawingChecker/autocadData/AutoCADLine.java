@@ -13,19 +13,23 @@ import java.util.Arrays;
  * @author Matt Crow
  */
 public class AutoCADLine extends AutoCADElement {
+    private final int angle;
+    private final double[] deltas;
     private final double[] r0; // r naught
     private final double[] r; // r final
+    private final double length;
+    private final double thickness;
     
-    /**
-     * The unit vector for the x-axis
-     */
-    private static final AutoCADLine I_HAT = new AutoCADLine(new double[]{0, 0, 0}, new double[]{1, 0, 0});
     public static final int DIMENSION_COUNT = 3;
     
-    public AutoCADLine(double[] start, double[] end) {
+    public AutoCADLine(int theta, double[] start, double[] end, double[] ds, double len, double thick) {
         super();
+        angle = theta;
         r0 = Arrays.copyOf(start, DIMENSION_COUNT);
         r = Arrays.copyOf(end, DIMENSION_COUNT);
+        deltas = Arrays.copyOf(ds, DIMENSION_COUNT);
+        length = len;
+        thickness = thick;
     }
     
     public final double getR0Sub(int dimension){
@@ -38,72 +42,19 @@ public class AutoCADLine extends AutoCADElement {
 
     /**
      * 
-     * @return the physical length of this line. 
-     * <b>Not to be confused with its 6-dimensional length</b>
+     * @return the physical length of this line.
      */
     public final double getLength(){
-        double inRoot = 0.0;
-        for(int i = 0; i < DIMENSION_COUNT; i++){
-            inRoot += Math.pow(r[i] - r0[i], 2);
-        }
-        return Math.sqrt(inRoot);
+        return length;
     }
     
     /**
      * 
-     * @return then angle between this line
-     * and the x-axis, measured in degrees, 
-     * and ranging from 0-180
+     * @return the angle between this line
+     * and the x-axis, measured in degrees
      */
-    public final double getAngle(){
-        return Math.acos(dot3D(I_HAT) / getLength()) * 180 / Math.PI;
-    }
-    
-    public final double getNorm(){
-        double norm = 0.0;
-        for(int i = 0; i < DIMENSION_COUNT; i++){
-            norm += Math.pow(r[i], 2);
-            norm += Math.pow(r0[i], 2);
-        }
-        return Math.sqrt(norm);
-    }
-    
-    public final double dot3D(AutoCADLine other){
-        double dotProduct = 0.0;
-        for(int i = 0; i < DIMENSION_COUNT; i++){
-            dotProduct += (r[i] - r0[i]) * (other.r[i] - other.r0[i]);
-        }
-        return dotProduct;
-    }
-    
-    /**
-     * Computes the 6-dimensional dot product between two AutoCADLines.
-     * 
-     * Merely computing the regular dot6D product, where both vectors are centered at 0, is insufficient, as the coordinates matter here.
-     * 
-     * @param other the other AutoCADLine to dot-product with
-     * @return this dot other.
-     */
-    public final double dot6D(AutoCADLine other){
-        double dotProduct = 0.0;
-        for(int i = 0; i < DIMENSION_COUNT; i++){
-            dotProduct += r[i] * other.r[i]; // end point for this dimension...
-            dotProduct += r0[i] * other.r0[i]; // ... start point for this dimension
-        }
-        return dotProduct;
-    }
-    
-    /**
-     * 
-     * @param other
-     * @return the absolute value of the inverse 
-     * cosine of the angle between this and the other 
-     * line when interpreted as 6-dimensional vectors.
-     * <b>Note that this value ranges from 0.0 to 1.0,
-     * so it can serve as a similarity score</b>
-     */
-    public final double normDot(AutoCADLine other){
-        return Math.abs(dot6D(other) / (getNorm() * other.getNorm()));
+    public final int getAngle(){
+        return angle;
     }
     
     @Override
@@ -111,7 +62,12 @@ public class AutoCADLine extends AutoCADElement {
         StringBuilder sb = new StringBuilder();
         sb.append("AutoCAD Line:");
         sb.append("\n").append(super.toString());
-        sb.append(String.format("\n\t* Line from (%f, %f, %f) to (%f, %f, %f) (%f angle)", r0[0], r0[1], r0[2], r[0], r[1], r[2], getAngle()));
+        sb.append(String.format("\n\t* Angle: %d", angle));
+        sb.append(String.format("\n\t* Start: (%f, %f, %f)", r0[0], r0[1], r0[2]));
+        sb.append(String.format("\n\t* End: (%f, %f, %f)", r[0], r[1], r[2]));
+        sb.append(String.format("\n\t* Deltas: (%f, %f, %f)", deltas[0], deltas[1], deltas[2]));
+        sb.append(String.format("\n\t* Length: %f", length));
+        sb.append(String.format("\n\t* Thickness: %f", thickness));
         return sb.toString();
     }
 }

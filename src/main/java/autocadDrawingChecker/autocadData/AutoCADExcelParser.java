@@ -43,6 +43,7 @@ public class AutoCADExcelParser {
         AutoCADLine ret = null;
         try {
             ret = new AutoCADLine(
+                (int)Double.parseDouble(getCell(AutoCADAttribute.ANGLE)),
                 new double[]{
                     Double.parseDouble(getCell(AutoCADAttribute.START_X)),
                     Double.parseDouble(getCell(AutoCADAttribute.START_Y)),
@@ -52,7 +53,14 @@ public class AutoCADExcelParser {
                     Double.parseDouble(getCell(AutoCADAttribute.END_X)),
                     Double.parseDouble(getCell(AutoCADAttribute.END_Y)),
                     Double.parseDouble(getCell(AutoCADAttribute.END_Z))
-                }
+                },
+                new double[]{
+                    Double.parseDouble(getCell(AutoCADAttribute.DELTA_X)),
+                    Double.parseDouble(getCell(AutoCADAttribute.DELTA_Y)),
+                    Double.parseDouble(getCell(AutoCADAttribute.DELTA_Z))
+                },
+                Double.parseDouble(getCell(AutoCADAttribute.LENGTH)),
+                Double.parseDouble(getCell(AutoCADAttribute.THICKNESS))
             );
         } catch (Exception ex){
             Logger.logError(String.format("Error while parsing line %s", currRow.toString()));
@@ -101,9 +109,14 @@ public class AutoCADExcelParser {
      * 
      * @param col the column to get the cell value for
      * @return the string value of the cell.
+     * @throws RuntimeException if the given column is not found
      */
     private String getCell(AutoCADAttribute col){
-        return currRow.getCell(headerToCol.get(col)).toString(); // returns the contents of the cell as text 
+        int colIdx = headerToCol.get(col);
+        if(colIdx == -1){
+            throw new RuntimeException(String.format("Missing column: %s", col.getHeader()));
+        }
+        return currRow.getCell(colIdx).toString(); // returns the contents of the cell as text 
     }
     
     public final AutoCADExport parse() throws IOException {
