@@ -19,11 +19,11 @@ public class AutoCADLine extends AutoCADElement {
     /**
      * The unit vector for the x-axis
      */
-    private static final AutoCADLine I_HAT = new AutoCADLine("", new double[]{0, 0, 0}, new double[]{1, 0, 0});
+    private static final AutoCADLine I_HAT = new AutoCADLine(new double[]{0, 0, 0}, new double[]{1, 0, 0});
     public static final int DIMENSION_COUNT = 3;
     
-    public AutoCADLine(String layerName, double[] start, double[] end) {
-        super(layerName);
+    public AutoCADLine(double[] start, double[] end) {
+        super();
         r0 = Arrays.copyOf(start, DIMENSION_COUNT);
         r = Arrays.copyOf(end, DIMENSION_COUNT);
     }

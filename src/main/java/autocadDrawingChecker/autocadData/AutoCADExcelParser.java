@@ -43,7 +43,6 @@ public class AutoCADExcelParser {
         AutoCADLine ret = null;
         try {
             ret = new AutoCADLine(
-                getCell(AutoCADAttribute.LAYER),
                 new double[]{
                     Double.parseDouble(getCell(AutoCADAttribute.START_X)),
                     Double.parseDouble(getCell(AutoCADAttribute.START_Y)),
@@ -70,9 +69,7 @@ public class AutoCADExcelParser {
      * @return the current row, as an AutoCADElement. 
      */
     private AutoCADElement extractRow(){
-        return new AutoCADElement(
-            getCell(AutoCADAttribute.LAYER)
-        );
+        return new AutoCADElement();
     }
     
     /**
@@ -144,11 +141,21 @@ public class AutoCADExcelParser {
                 //Logger.logError(ex);
             }
             if(data != null){
+                // sets these attributes for every element
+                // which do we need?
+                //data.setCount((int)(Double.parseDouble(getCell(AutoCADAttribute.COUNT)))); // for some reason getCell returns 1.0 instead of 1
+                //data.setName(getCell(AutoCADAttribute.NAME));
+                //data.setColor(getCell(AutoCADAttribute.COLOR));
+                data.setLayer(getCell(AutoCADAttribute.LAYER));
+                //data.setLineType(getCell(AutoCADAttribute.LINE_TYPE));
+                //data.setLineTypeScale(Double.parseDouble(getCell(AutoCADAttribute.LINE_TYPE_SCALE)));
+                //data.setLineWeight(getCell(AutoCADAttribute.LINE_WEIGTH));
+                //data.setPlot(getCell(AutoCADAttribute.PLOT_STYLE));
                 containedTherein.add(data);
                 data = null;
             }
         }
-        //System.out.println(containedTherein);
+        System.out.println(containedTherein);
         workbook.close();
         return containedTherein;
     }
