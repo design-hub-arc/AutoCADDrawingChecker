@@ -80,6 +80,29 @@ public class AutoCADExcelParser {
         );
     }
     
+    private AutoCADText extractText(){
+        return new AutoCADText(
+            getCell(AutoCADAttribute.CONTENTS),
+            getCell(AutoCADAttribute.CONTENTS_RTF),
+            new double[]{
+                Double.parseDouble(getCell(AutoCADAttribute.POSITION_X)),
+                Double.parseDouble(getCell(AutoCADAttribute.POSITION_Y)),
+                Double.parseDouble(getCell(AutoCADAttribute.POSITION_Z))
+            },
+            (int)Double.parseDouble(getCell(AutoCADAttribute.ANGLE)),
+            (int)Double.parseDouble(getCell(AutoCADAttribute.SHOW_BORDERS)),
+            Double.parseDouble(getCell(AutoCADAttribute.WIDTH))
+        );
+    }
+    
+    private AutoCADDimension extractDim(){
+        return new AutoCADDimension(
+            getCell(AutoCADAttribute.DIM_STYLE),
+            (int)Double.parseDouble(getCell(AutoCADAttribute.DYNAMIC_DIMENSION)),
+            getCell(AutoCADAttribute.TEXT_DEFINED_SIZE)
+        );
+    }
+    
     /**
      * Interprets the current row as
  an AutoCADElement, and returns it.
@@ -146,7 +169,11 @@ public class AutoCADExcelParser {
                     data = extractLine();
                 } else if(getCell(AutoCADAttribute.NAME).equals("Polyline")){
                     data = extractPolyline();
-                } else {
+                } else if(getCell(AutoCADAttribute.NAME).equals("MText")){
+                    data = extractText();
+                } else if(getCell(AutoCADAttribute.NAME).equals("Rotated Dimension")){
+                    data = extractDim();
+                }else {
                     data = extractRow();
                 }
             } catch(NullPointerException ex){
