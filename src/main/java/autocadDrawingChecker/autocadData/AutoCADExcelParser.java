@@ -70,6 +70,16 @@ public class AutoCADExcelParser {
         return ret;
     }
     
+    private AutoCADPolyline extractPolyline(){
+        return new AutoCADPolyline(
+            Double.parseDouble(getCell(AutoCADAttribute.LENGTH)),
+            Double.parseDouble(getCell(AutoCADAttribute.THICKNESS)),
+            Double.parseDouble(getCell(AutoCADAttribute.AREA)),
+            (int)Double.parseDouble(getCell(AutoCADAttribute.CLOSED)),
+            Double.parseDouble(getCell(AutoCADAttribute.GLOBAL_WIDTH))
+        );
+    }
+    
     /**
      * Interprets the current row as
  an AutoCADElement, and returns it.
@@ -134,6 +144,8 @@ public class AutoCADExcelParser {
             try {
                 if(getCell(AutoCADAttribute.NAME).equals("Line")){
                     data = extractLine();
+                } else if(getCell(AutoCADAttribute.NAME).equals("Polyline")){
+                    data = extractPolyline();
                 } else {
                     data = extractRow();
                 }
