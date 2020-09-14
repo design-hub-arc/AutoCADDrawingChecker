@@ -21,12 +21,12 @@ public class Main {
      */
     public static void main(String[] args) {
         Application app = Application.getInstance();
-        /*
+        
         GradingReport report = app
-            .setSrcPath("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate1.xlsx")
-            .setCmpPaths("C:\\Users\\Matt\\Documents\\GitHub\\AutoCADDrawingChecker\\src\\main\\resources\\exports\\simpleTranslate2.xlsx")
+            .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
+            .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with")
             .grade();
-        Logger.log(report.toString());*/
-        app.createGui();
+        Logger.log(report.toString());
+        //app.createGui();
     }
 }
