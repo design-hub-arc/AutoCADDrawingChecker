@@ -10,18 +10,24 @@ import autocadDrawingChecker.grading.MathUtil;
 import java.util.List;
 
 /**
- * Still needs to consider complimentary angles
  * @author Matt Crow
  */
 public class LineAngle implements AbstractGradingCriteria {
     
     private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
+        double percErr = 0.0;
+        double percErrRot = 0.0;
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
-            score = 1.0 - MathUtil.percentError(
+            percErr = MathUtil.percentError(
                 ((AutoCADLine)r1).getAngle(),
                 ((AutoCADLine)r2).getAngle()
             );
+            percErrRot = MathUtil.percentError(
+                ((AutoCADLine)r1).getAngle(),
+                MathUtil.rotate180(((AutoCADLine)r2).getAngle())
+            );
+            score = 1.0 - Math.min(percErr, percErrRot); // check if they just got the line reversed
         }
         return score;
     }
@@ -29,10 +35,7 @@ public class LineAngle implements AbstractGradingCriteria {
     private double getAvgAngleScore(List<MatchingAutoCADElements> matches){
         double ret = 0.0;
         for(MatchingAutoCADElements match : matches){
-            ret += 1.0 - MathUtil.percentError(
-                ((AutoCADLine)match.getElement1()).getAngle(),
-                ((AutoCADLine)match.getElement2()).getAngle()
-            );
+            ret += getMatchScore(match.getElement1(), match.getElement2());
         }
         ret /= matches.size();
         return ret;

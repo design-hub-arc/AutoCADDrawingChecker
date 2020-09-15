@@ -22,19 +22,12 @@ Make sure you give it a ```.xlsx``` extension when you save it.
 * Do we have a set of icons we can use? Like warning and "you're good" icons?
 * Can I use the ARC stylesheet in the application?
 * Should we match rows for each comparison, or for the export as a whole?
-
 * Command line mode for easier testing (see start.Main)
 * Change AppPane to GUIController type of thing
 * Separate front end from back end
 * finish DrawingCheckerProperties
-* finish LineAngle
 * see AutoCADElementMatcher
 * want tighter binding between GUI and Application
-* Do we want to do a strict correct-or-not approach to grading lines?
-* check text grading criteria
-* check "Dims" grading criteria
-
-* how do we want to grade text matching?
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)

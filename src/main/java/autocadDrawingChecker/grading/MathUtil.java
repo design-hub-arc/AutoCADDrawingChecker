@@ -33,6 +33,9 @@ public class MathUtil {
         return ret;
     }
     
+    public static int rotate180(int theta){
+        return (180 + theta) % 360;
+    }
     
     public static void main(String[] args){
         
