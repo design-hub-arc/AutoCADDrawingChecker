@@ -24,8 +24,8 @@ public class LineStart extends AbstractGradingCriteria {
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
             for(int i = 0; i < AutoCADLine.DIMENSION_COUNT; i++){
                 score += 1.0 - MathUtil.percentError(
-                    ((AutoCADLine)r1).getR0Sub(i),
-                    ((AutoCADLine)r2).getR0Sub(i)
+                    ((AutoCADLine)r1).getStart(i),
+                    ((AutoCADLine)r2).getStart(i)
                 );
             }
         }

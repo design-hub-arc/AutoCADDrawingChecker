@@ -1,11 +1,7 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.autocadData.AutoCADExcelParser;
-import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.grading.GradingReport;
-import autocadDrawingChecker.gui.ViewController;
 import autocadDrawingChecker.logging.Logger;
-import java.io.IOException;
 
 /**
  * Main servers as the starting point for the

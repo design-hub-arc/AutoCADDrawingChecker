@@ -20,6 +20,22 @@ public class AutoCADPolyline extends AutoCADElement {
         this.globalWidth = globalWidth;
     }
     
+    public final double getLength(){
+        return length;
+    }
+    public final double getThickness(){
+        return thickness;
+    }
+    public final double getArea(){
+        return area;
+    }
+    public final int getClosed(){
+        return closed;
+    }
+    public final double getGlobalWidth(){
+        return globalWidth;
+    }
+    
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();

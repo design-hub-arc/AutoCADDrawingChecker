@@ -32,12 +32,14 @@ public class AutoCADLine extends AutoCADElement {
         thickness = thick;
     }
     
-    public final double getR0Sub(int dimension){
+    public final double getStart(int dimension){
         return r0[dimension];
     }
-    
-    public final double getRSub(int dimension){
+    public final double getEnd(int dimension){
         return r[dimension];
+    }
+    public final double getDelta(int dimension){
+        return deltas[dimension];
     }
 
     /**
@@ -46,6 +48,10 @@ public class AutoCADLine extends AutoCADElement {
      */
     public final double getLength(){
         return length;
+    }
+    
+    public final double getThickness(){
+        return thickness;
     }
     
     /**

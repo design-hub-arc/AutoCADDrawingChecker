@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -43,24 +44,24 @@ public class AutoCADExcelParser {
         AutoCADLine ret = null;
         try {
             ret = new AutoCADLine(
-                (int)Double.parseDouble(getCell(AutoCADAttribute.ANGLE)),
+                getCellInt(AutoCADAttribute.ANGLE),
                 new double[]{
-                    Double.parseDouble(getCell(AutoCADAttribute.START_X)),
-                    Double.parseDouble(getCell(AutoCADAttribute.START_Y)),
-                    Double.parseDouble(getCell(AutoCADAttribute.START_Z))
+                    getCellDouble(AutoCADAttribute.START_X),
+                    getCellDouble(AutoCADAttribute.START_Y),
+                    getCellDouble(AutoCADAttribute.START_Z)
                 },
                 new double[]{
-                    Double.parseDouble(getCell(AutoCADAttribute.END_X)),
-                    Double.parseDouble(getCell(AutoCADAttribute.END_Y)),
-                    Double.parseDouble(getCell(AutoCADAttribute.END_Z))
+                    getCellDouble(AutoCADAttribute.END_X),
+                    getCellDouble(AutoCADAttribute.END_Y),
+                    getCellDouble(AutoCADAttribute.END_Z)
                 },
                 new double[]{
-                    Double.parseDouble(getCell(AutoCADAttribute.DELTA_X)),
-                    Double.parseDouble(getCell(AutoCADAttribute.DELTA_Y)),
-                    Double.parseDouble(getCell(AutoCADAttribute.DELTA_Z))
+                    getCellDouble(AutoCADAttribute.DELTA_X),
+                    getCellDouble(AutoCADAttribute.DELTA_Y),
+                    getCellDouble(AutoCADAttribute.DELTA_Z)
                 },
-                Double.parseDouble(getCell(AutoCADAttribute.LENGTH)),
-                Double.parseDouble(getCell(AutoCADAttribute.THICKNESS))
+                getCellDouble(AutoCADAttribute.LENGTH),
+                getCellDouble(AutoCADAttribute.THICKNESS)
             );
         } catch (Exception ex){
             Logger.logError(String.format("Error while parsing line %s", currRow.toString()));
@@ -72,34 +73,34 @@ public class AutoCADExcelParser {
     
     private AutoCADPolyline extractPolyline(){
         return new AutoCADPolyline(
-            Double.parseDouble(getCell(AutoCADAttribute.LENGTH)),
-            Double.parseDouble(getCell(AutoCADAttribute.THICKNESS)),
-            Double.parseDouble(getCell(AutoCADAttribute.AREA)),
-            (int)Double.parseDouble(getCell(AutoCADAttribute.CLOSED)),
-            Double.parseDouble(getCell(AutoCADAttribute.GLOBAL_WIDTH))
+            getCellDouble(AutoCADAttribute.LENGTH),
+            getCellDouble(AutoCADAttribute.THICKNESS),
+            getCellDouble(AutoCADAttribute.AREA),
+            getCellInt(AutoCADAttribute.CLOSED),
+            getCellDouble(AutoCADAttribute.GLOBAL_WIDTH)
         );
     }
     
     private AutoCADText extractText(){
         return new AutoCADText(
-            getCell(AutoCADAttribute.CONTENTS),
-            getCell(AutoCADAttribute.CONTENTS_RTF),
+            getCellString(AutoCADAttribute.CONTENTS),
+            getCellString(AutoCADAttribute.CONTENTS_RTF),
             new double[]{
-                Double.parseDouble(getCell(AutoCADAttribute.POSITION_X)),
-                Double.parseDouble(getCell(AutoCADAttribute.POSITION_Y)),
-                Double.parseDouble(getCell(AutoCADAttribute.POSITION_Z))
+                getCellDouble(AutoCADAttribute.POSITION_X),
+                getCellDouble(AutoCADAttribute.POSITION_Y),
+                getCellDouble(AutoCADAttribute.POSITION_Z)
             },
-            (int)Double.parseDouble(getCell(AutoCADAttribute.ANGLE)),
-            (int)Double.parseDouble(getCell(AutoCADAttribute.SHOW_BORDERS)),
-            Double.parseDouble(getCell(AutoCADAttribute.WIDTH))
+            getCellInt(AutoCADAttribute.ANGLE),
+            getCellInt(AutoCADAttribute.SHOW_BORDERS),
+            getCellDouble(AutoCADAttribute.WIDTH)
         );
     }
     
     private AutoCADDimension extractDim(){
         return new AutoCADDimension(
-            getCell(AutoCADAttribute.DIM_STYLE),
-            (int)Double.parseDouble(getCell(AutoCADAttribute.DYNAMIC_DIMENSION)),
-            getCell(AutoCADAttribute.TEXT_DEFINED_SIZE)
+            getCellString(AutoCADAttribute.DIM_STYLE),
+            getCellInt(AutoCADAttribute.DYNAMIC_DIMENSION),
+            getCellString(AutoCADAttribute.TEXT_DEFINED_SIZE)
         );
     }
     
@@ -144,12 +145,42 @@ public class AutoCADExcelParser {
      * @return the string value of the cell.
      * @throws RuntimeException if the given column is not found
      */
-    private String getCell(AutoCADAttribute col){
+    private String getCellString(AutoCADAttribute col){
         int colIdx = headerToCol.get(col);
         if(colIdx == -1){
             throw new RuntimeException(String.format("Missing column: %s", col.getHeader()));
         }
         return currRow.getCell(colIdx).toString(); // returns the contents of the cell as text 
+    }
+    
+    private double getCellDouble(AutoCADAttribute col){
+        String data = getCellString(col);
+        double ret = 0.0;
+        try {
+            ret = Double.parseDouble(data);
+        } catch(NumberFormatException ex){
+            Logger.logError(String.format("Cannot convert \"%s\" to a double", data));
+            throw ex;
+        } 
+        return ret;
+    }
+    
+    private int getCellInt(AutoCADAttribute col){
+        return (int)getCellDouble(col);
+    }
+    
+    private String currRowToString(){
+        StringBuilder b = new StringBuilder();
+        b.append("[");
+        Iterator<Cell> iter = currRow.cellIterator();
+        while(iter.hasNext()){
+            b.append(iter.next().toString());
+            if(iter.hasNext()){
+                b.append(", ");
+            }
+        }
+        b.append("]");
+        return b.toString();
     }
     
     public final AutoCADExport parse() throws IOException {
@@ -165,13 +196,13 @@ public class AutoCADExcelParser {
         for(int rowNum = 1; rowNum < max; rowNum++){
             currRow = sheet.getRow(rowNum);
             try {
-                if(getCell(AutoCADAttribute.NAME).equals("Line")){
+                if(getCellString(AutoCADAttribute.NAME).equals("Line")){
                     data = extractLine();
-                } else if(getCell(AutoCADAttribute.NAME).equals("Polyline")){
+                } else if(getCellString(AutoCADAttribute.NAME).equals("Polyline")){
                     data = extractPolyline();
-                } else if(getCell(AutoCADAttribute.NAME).equals("MText")){
+                } else if(getCellString(AutoCADAttribute.NAME).equals("MText")){
                     data = extractText();
-                } else if(getCell(AutoCADAttribute.NAME).equals("Rotated Dimension")){
+                } else if(getCellString(AutoCADAttribute.NAME).equals("Rotated Dimension")){
                     data = extractDim();
                 }else {
                     data = extractRow();
@@ -191,23 +222,31 @@ public class AutoCADExcelParser {
                 might be higher than expected!"
                 */
                 //Logger.logError(ex);
+            } catch(Exception ex){
+                Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
+                Logger.logError(ex);
             }
             if(data != null){
                 // sets these attributes for every element
                 // which do we need?
-                //data.setCount((int)(Double.parseDouble(getCell(AutoCADAttribute.COUNT)))); // for some reason getCell returns 1.0 instead of 1
-                //data.setName(getCell(AutoCADAttribute.NAME));
-                //data.setColor(getCell(AutoCADAttribute.COLOR));
-                data.setLayer(getCell(AutoCADAttribute.LAYER));
-                //data.setLineType(getCell(AutoCADAttribute.LINE_TYPE));
-                //data.setLineTypeScale(Double.parseDouble(getCell(AutoCADAttribute.LINE_TYPE_SCALE)));
-                //data.setLineWeight(getCell(AutoCADAttribute.LINE_WEIGTH));
-                //data.setPlot(getCell(AutoCADAttribute.PLOT_STYLE));
+                try {
+                    data.setLayer(getCellString(AutoCADAttribute.LAYER));
+                    data.setCount(getCellInt(AutoCADAttribute.COUNT)); 
+                    data.setName(getCellString(AutoCADAttribute.NAME));
+                    data.setColor(getCellString(AutoCADAttribute.COLOR));
+                    data.setLineType(getCellString(AutoCADAttribute.LINE_TYPE));
+                    data.setLineTypeScale(getCellDouble(AutoCADAttribute.LINE_TYPE_SCALE));
+                    data.setLineWeight(getCellString(AutoCADAttribute.LINE_WEIGTH));
+                    data.setPlot(getCellString(AutoCADAttribute.PLOT_STYLE));
+                } catch(Exception ex){
+                    Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
+                    Logger.logError(ex);
+                }
                 containedTherein.add(data);
                 data = null;
             }
         }
-        System.out.println(containedTherein);
+        //System.out.println(containedTherein);
         workbook.close();
         return containedTherein;
     }

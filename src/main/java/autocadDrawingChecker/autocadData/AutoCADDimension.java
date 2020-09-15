@@ -2,7 +2,7 @@ package autocadDrawingChecker.autocadData;
 
 /**
  *
- * @author Matt
+ * @author Matt Crow
  */
 public class AutoCADDimension extends AutoCADElement {
     private final String style;
@@ -14,6 +14,18 @@ public class AutoCADDimension extends AutoCADElement {
         this.style = style;
         dynamicDimension = dynamicDim;
         textDefSize = textSize;
+    }
+    
+    public final String getDimensionStyle(){
+        return style;
+    }
+    
+    public final int getDynamicDimension(){
+        return dynamicDimension;
+    }
+    
+    public final String getTextDefinedSize(){
+        return textDefSize;
     }
     
     @Override

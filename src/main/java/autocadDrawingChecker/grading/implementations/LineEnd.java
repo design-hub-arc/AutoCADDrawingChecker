@@ -23,8 +23,8 @@ public class LineEnd extends AbstractGradingCriteria {
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
             for(int i = 0; i < AutoCADLine.DIMENSION_COUNT; i++){
                 score += 1.0 - MathUtil.percentError(
-                    ((AutoCADLine)r1).getRSub(i),
-                    ((AutoCADLine)r2).getRSub(i)
+                    ((AutoCADLine)r1).getEnd(i),
+                    ((AutoCADLine)r2).getEnd(i)
                 );
             }
         }

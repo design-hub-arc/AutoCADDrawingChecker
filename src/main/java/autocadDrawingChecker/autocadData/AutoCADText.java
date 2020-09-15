@@ -24,6 +24,31 @@ public class AutoCADText extends AutoCADElement {
         this.width = width;
     }
     
+    public final String getTextContents(){
+        return contents;
+    }
+    public final String getRTFContents(){
+        return contentsRTF;
+    }
+    public final double getX(){
+        return position[0];
+    }
+    public final double getY(){
+        return position[1];
+    }
+    public final double getZ(){
+        return position[2];
+    }
+    public final int getRotation(){
+        return rotation;
+    }
+    public final int getShowBorders(){
+        return showBorders;
+    }
+    public final double getWidth(){
+        return width;
+    }
+    
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
