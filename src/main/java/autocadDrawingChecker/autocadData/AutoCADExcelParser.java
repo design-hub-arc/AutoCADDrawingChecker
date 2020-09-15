@@ -90,7 +90,7 @@ public class AutoCADExcelParser {
                 getCellDouble(AutoCADAttribute.POSITION_Y),
                 getCellDouble(AutoCADAttribute.POSITION_Z)
             },
-            getCellInt(AutoCADAttribute.ANGLE),
+            getCellInt(AutoCADAttribute.ROTATION),
             getCellInt(AutoCADAttribute.SHOW_BORDERS),
             getCellDouble(AutoCADAttribute.WIDTH)
         );
