@@ -138,6 +138,24 @@ public class AutoCADExcelParser {
     }
     
     /**
+     * 
+     * @param sheet
+     * @return the number of rows containing data in the given sheet 
+     */
+    private int getRowCount(Sheet sheet){
+        int ret = 0;
+        Iterator<Row> iter = sheet.rowIterator();
+        while(iter.hasNext()){
+            if(iter.next().getLastCellNum() == -1){
+                break;
+            } else {
+                ret++;
+            }
+        }
+        return ret;
+    }
+    
+    /**
      * Gets the string value of the cell in the current
      * row, in the given column.
      * 
@@ -190,7 +208,7 @@ public class AutoCADExcelParser {
         Sheet sheet = workbook.getSheetAt(0);
         AutoCADExport containedTherein = new AutoCADExport(fileName);
         locateColumns(sheet.getRow(0));
-        int max = sheet.getLastRowNum();
+        int max = getRowCount(sheet);
         AutoCADElement data = null;
         //               skip headers
         for(int rowNum = 1; rowNum < max; rowNum++){
@@ -207,21 +225,6 @@ public class AutoCADExcelParser {
                 }else {
                     data = extractRow();
                 }
-            } catch(NullPointerException ex){
-                // there is no way to find the last row with data as far as I know
-                /*
-                From the documentation:
-                "Gets the last row on the sheet 
-                Note: rows which had content before 
-                and were set to empty later 
-                might still be counted as rows 
-                by Excel and Apache POI, 
-                so the result of this method 
-                will include such rows and 
-                thus the returned value 
-                might be higher than expected!"
-                */
-                //Logger.logError(ex);
             } catch(Exception ex){
                 Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
                 Logger.logError(ex);
@@ -246,7 +249,7 @@ public class AutoCADExcelParser {
                 data = null;
             }
         }
-        //System.out.println(containedTherein);
+        //Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
         workbook.close();
         return containedTherein;
     }
