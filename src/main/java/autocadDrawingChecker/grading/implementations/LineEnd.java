@@ -13,10 +13,7 @@ import java.util.List;
  *
  * @author Matt
  */
-public class LineEnd extends AbstractGradingCriteria {
-    public LineEnd(){
-        super("Line End");
-    }
+public class LineEnd implements AbstractGradingCriteria {
     
     private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
@@ -48,6 +45,11 @@ public class LineEnd extends AbstractGradingCriteria {
     @Override
     public String getDescription() {
         return "Grades based on how closesly the student's line end points match up with those of the instructor's";
+    }
+
+    @Override
+    public String getName() {
+        return "Line End";
     }
 
 }

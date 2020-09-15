@@ -15,11 +15,7 @@ import java.util.stream.Collectors;
  * 
  * @author Matt Crow
  */
-public class LineLength extends AbstractGradingCriteria {
-    
-    public LineLength(){
-        super("Line Length");
-    }
+public class LineLength implements AbstractGradingCriteria {
     
     private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
@@ -65,6 +61,11 @@ public class LineLength extends AbstractGradingCriteria {
     @Override
     public String getDescription() {
         return "Grades the drawing based on how closely the length of lines match the original drawing";
+    }
+
+    @Override
+    public String getName() {
+        return "Line Length";
     }
 
 }

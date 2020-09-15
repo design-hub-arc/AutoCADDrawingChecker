@@ -13,11 +13,7 @@ import java.util.List;
  * Still needs to consider complimentary angles
  * @author Matt Crow
  */
-public class LineAngle extends AbstractGradingCriteria {
-    
-    public LineAngle(){
-        super("Line Angle");
-    }
+public class LineAngle implements AbstractGradingCriteria {
     
     private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
@@ -52,6 +48,11 @@ public class LineAngle extends AbstractGradingCriteria {
     @Override
     public String getDescription() {
         return "Grades the students based on how their lines' angles match up with those of the instructor file";
+    }
+
+    @Override
+    public String getName() {
+        return "Line Angle";
     }
 
 }

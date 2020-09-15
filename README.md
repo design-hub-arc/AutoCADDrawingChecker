@@ -34,5 +34,7 @@ Make sure you give it a ```.xlsx``` extension when you save it.
 * check text grading criteria
 * check "Dims" grading criteria
 
+* how do we want to grade text matching?
+
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)

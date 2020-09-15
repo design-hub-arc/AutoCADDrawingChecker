@@ -7,11 +7,7 @@ import autocadDrawingChecker.grading.MathUtil;
 /**
  * @author Matt Crow
  */
-public class LineCount extends AbstractGradingCriteria {
-
-    public LineCount() {
-        super("Line count");
-    }
+public class LineCount implements AbstractGradingCriteria {
 
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
@@ -21,6 +17,11 @@ public class LineCount extends AbstractGradingCriteria {
     @Override
     public String getDescription() {
         return "Grades the student on how close their number of lines match with that of the comparison file.";
+    }
+
+    @Override
+    public String getName() {
+        return "Line count";
     }
 
 }

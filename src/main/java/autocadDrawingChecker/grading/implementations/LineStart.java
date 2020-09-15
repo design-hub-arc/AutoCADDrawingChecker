@@ -13,12 +13,7 @@ import java.util.List;
  *
  * @author Matt Crow
  */
-public class LineStart extends AbstractGradingCriteria {
-    
-    public LineStart(){
-        super("Line Start");
-    }
-    
+public class LineStart implements AbstractGradingCriteria {
     private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
         if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
@@ -49,6 +44,11 @@ public class LineStart extends AbstractGradingCriteria {
     @Override
     public String getDescription() {
         return "Grades based on how closesly the student's line start points match up with those of the instructor's";
+    }
+
+    @Override
+    public String getName() {
+        return "Line Start";
     }
 
 }

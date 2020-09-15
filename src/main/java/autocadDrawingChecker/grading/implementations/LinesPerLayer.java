@@ -9,11 +9,7 @@ import java.util.HashMap;
  *
  * @author Matt Crow
  */
-public class LinesPerLayer extends AbstractGradingCriteria {
-
-    public LinesPerLayer() {
-        super("Lines per layer");
-    }
+public class LinesPerLayer implements AbstractGradingCriteria {
 
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
@@ -32,6 +28,11 @@ public class LinesPerLayer extends AbstractGradingCriteria {
     @Override
     public String getDescription() {
         return "Grades the student on how close the number of lines in each of their layers matches up with the comparison file's equivalent layer.";
+    }
+
+    @Override
+    public String getName() {
+        return "Lines per layer";
     }
 
 }

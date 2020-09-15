@@ -1,51 +1,22 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.autocadData.AutoCADExport;
-import java.util.Objects;
 
 /**
- * The AbstractGradingCriteria class is used to
+ * The AbstractGradingCriteria interface is used to
  * provided an interface for describing how students
  * should be graded on certain aspects of their AutoCAD
  * exports.
  * 
  * @author Matt Crow
  */
-public abstract class AbstractGradingCriteria {
-    private final String name;
-    
-    /**
-     * 
-     * @param criteriaName a short name for this criteria
-     */
-    public AbstractGradingCriteria(String criteriaName){
-        name = criteriaName;
-    }
-    
-    /**
-     * Note that AbstractGradingCriteria are considered equal if they share the same name.
-     * @param obj
-     * @return 
-     */
-    @Override
-    public boolean equals(Object obj){
-        return obj != null && obj instanceof AbstractGradingCriteria && ((AbstractGradingCriteria)obj).hashCode() == this.hashCode();
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.name);
-        return hash;
-    }
-    
+public interface AbstractGradingCriteria {
+       
     /**
      * 
      * @return the name of this criteria. 
      */
-    public final String getName(){
-        return name;
-    }
+    public abstract String getName();
     
     /**
      * This method should compare the given AutoCADExports to each other, and

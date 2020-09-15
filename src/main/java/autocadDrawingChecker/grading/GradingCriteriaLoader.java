@@ -1,11 +1,13 @@
 package autocadDrawingChecker.grading;
 
+import autocadDrawingChecker.grading.implementations.CheckDims;
 import autocadDrawingChecker.grading.implementations.LinesPerLayer;
 import autocadDrawingChecker.grading.implementations.LineStart;
 import autocadDrawingChecker.grading.implementations.LineLength;
 import autocadDrawingChecker.grading.implementations.LineEnd;
 import autocadDrawingChecker.grading.implementations.LineCount;
 import autocadDrawingChecker.grading.implementations.LineAngle;
+import autocadDrawingChecker.grading.implementations.TextMatches;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +26,8 @@ public class GradingCriteriaLoader {
         ret.add(new LineAngle());
         ret.add(new LineStart());
         ret.add(new LineEnd());
+        ret.add(new CheckDims());
+        ret.add(new TextMatches());
         return ret;
     }
 }
