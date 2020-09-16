@@ -11,17 +11,17 @@ import autocadDrawingChecker.grading.MathUtil;
  * 
  * @author Matt Crow
  */
-public class LineLength implements AbstractElementCriteria {
+public class LineLength implements AbstractElementCriteria<AutoCADLine> {
     
     @Override
-    public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
+    public double getMatchScore(AutoCADLine r1, AutoCADLine r2){
         double score = 0.0;
-        if(r1 instanceof AutoCADLine && r2 instanceof AutoCADLine){
-            score = 1.0 - MathUtil.percentError(
-                ((AutoCADLine)r1).getLength(),
-                ((AutoCADLine)r2).getLength()
-            );
-        }
+        
+        score = 1.0 - MathUtil.percentError(
+            r1.getLength(),
+            r2.getLength()
+        );
+        
         return score;
     }
     
@@ -52,6 +52,11 @@ public class LineLength implements AbstractElementCriteria {
     @Override
     public String getName() {
         return "Line Length";
+    }
+
+    @Override
+    public AutoCADLine cast(AutoCADElement e) {
+        return (e instanceof AutoCADLine) ? (AutoCADLine)e : null;
     }
 
 }

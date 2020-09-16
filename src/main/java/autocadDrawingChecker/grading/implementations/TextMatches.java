@@ -8,15 +8,14 @@ import autocadDrawingChecker.grading.AbstractElementCriteria;
  *
  * @author Matt
  */
-public class TextMatches implements AbstractElementCriteria {
+public class TextMatches implements AbstractElementCriteria<AutoCADText> {
     
     @Override
-    public double getMatchScore(AutoCADElement row1, AutoCADElement row2){
+    public double getMatchScore(AutoCADText row1, AutoCADText row2){
         double score = 0.0;
         // currently just a basic "if it matches exactly, you get 100%, else, 0.
-        if(row1 instanceof AutoCADText && row2 instanceof AutoCADText){
-            score = (((AutoCADText)row1).getTextContents().equals(((AutoCADText)row2).getTextContents())) ? 1.0 : 0.0;
-        }
+       score = (row1.getTextContents().equals(row2.getTextContents())) ? 1.0 : 0.0;
+        
         return score;
     }
 
@@ -28,6 +27,11 @@ public class TextMatches implements AbstractElementCriteria {
     @Override
     public String getName() {
         return "Text Matches";
+    }
+
+    @Override
+    public AutoCADText cast(AutoCADElement e) {
+        return (e instanceof AutoCADText) ? (AutoCADText)e : null;
     }
 
 }

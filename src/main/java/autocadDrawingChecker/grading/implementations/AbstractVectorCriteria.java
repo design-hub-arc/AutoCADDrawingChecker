@@ -10,10 +10,11 @@ import autocadDrawingChecker.grading.MathUtil;
  * but I may change to normalized dot product later.
  * 
  * @author Matt Crow
+ * @param <T>
  */
-public interface AbstractVectorCriteria extends AbstractElementCriteria {
+public interface AbstractVectorCriteria<T extends AutoCADElement> extends AbstractElementCriteria<T> {
     @Override
-    public default double getMatchScore(AutoCADElement e1, AutoCADElement e2){
+    public default double getMatchScore(T e1, T e2){
         double score = 0.0;
         double[] v1;
         double[] v2;

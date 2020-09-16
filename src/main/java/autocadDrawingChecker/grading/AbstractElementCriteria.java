@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.autocadData.AutoCADElement;
@@ -17,9 +12,12 @@ import java.util.List;
  * is graded based on how well its individual elements score.
  * 
  * @author Matt Crow
+ * @param <T> the type of elements to match
  */
-public interface AbstractElementCriteria extends AbstractGradingCriteria {
-    public abstract double getMatchScore(AutoCADElement e1, AutoCADElement e2);
+public interface AbstractElementCriteria<T extends AutoCADElement> extends AbstractGradingCriteria {
+    
+    public abstract T cast(AutoCADElement e);
+    public abstract double getMatchScore(T e1, T e2);
     
     /**
      * Computes the average match score of elements in the given exports.
@@ -29,8 +27,8 @@ public interface AbstractElementCriteria extends AbstractGradingCriteria {
      */
     @Override
     public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){
-        List<MatchingAutoCADElements> matches = new AutoCADElementMatcher(exp1, exp2, this::getMatchScore).findMatches();
-        double netScore = matches.stream().map((MatchingAutoCADElements match)->{
+        List<MatchingAutoCADElements<T>> matches = new AutoCADElementMatcher<>(exp1, exp2, this::cast, this::getMatchScore).findMatches();
+        double netScore = matches.stream().map((MatchingAutoCADElements<T> match)->{
             return getMatchScore(match.getElement1(), match.getElement2());
         }).reduce(0.0, Double::sum);
         

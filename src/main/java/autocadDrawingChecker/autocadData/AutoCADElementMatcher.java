@@ -3,6 +3,8 @@ package autocadDrawingChecker.autocadData;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * The AutoCADElementMatcher class is
@@ -26,15 +28,25 @@ import java.util.function.BiFunction;
  * </ul>
  * 
  * @author Matt Crow
+ * @param <T> the type of AutoCADElements to match
  */
-public class AutoCADElementMatcher {
+public class AutoCADElementMatcher<T extends AutoCADElement> {
     private final AutoCADExport exp1;
     private final AutoCADExport exp2;
-    private final BiFunction<AutoCADElement, AutoCADElement, Double> score;
+    private final Function<AutoCADElement, T> caster;
+    private final BiFunction<T, T, Double> score;
     
-    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, BiFunction<AutoCADElement, AutoCADElement, Double> scoringFunction){
+    /**
+     * 
+     * @param src
+     * @param cmp
+     * @param tryCast a function returning the given AutoCADElement as type T, or null if it cannot cast
+     * @param scoringFunction 
+     */
+    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, Function<AutoCADElement, T> tryCast, BiFunction<T, T, Double> scoringFunction){
         exp1 = src;
         exp2 = cmp;
+        caster = tryCast;
         score = scoringFunction;
     }
     
@@ -51,21 +63,27 @@ public class AutoCADElementMatcher {
      * @return the list of matches between the two
      * given files.
      */
-    public List<MatchingAutoCADElements> findMatches(){
-        List<MatchingAutoCADElements> matches = new LinkedList<>();
+    public List<MatchingAutoCADElements<T>> findMatches(){
+        List<MatchingAutoCADElements<T>> matches = new LinkedList<>();
         
         // pool of unmatched elements
-        LinkedList<AutoCADElement> pool = new LinkedList<>();
-        exp2.forEach(pool::add);
+        List<T> pool = exp2.stream().filter((AutoCADElement e)->{
+            //return e instanceof T; doesn't work because of how generics are implemented
+            return true;
+        }).map(caster).filter((T casted)->{
+            return casted != null;
+        }).collect(Collectors.toList());
         
-        exp1.forEach((AutoCADElement srcRow)->{
+        exp1.stream().map(caster).filter((T casted)->{
+            return casted != null;
+        }).forEach((T srcRow)->{
             // find the closest match to srcRow
             double bestScore = 0.0;
             double currScore = 0.0;
-            AutoCADElement bestRow = null;
+            T bestRow = null;
             
             // find the highest score
-            for(AutoCADElement cmpRow : pool){
+            for(T cmpRow : pool){
                 currScore = score.apply(srcRow, cmpRow);
                 if(currScore > bestScore){
                     bestScore = currScore;
@@ -75,7 +93,7 @@ public class AutoCADElementMatcher {
             
             // some rows may not match at all
             if(bestRow != null){
-                MatchingAutoCADElements m = new MatchingAutoCADElements(srcRow, bestRow);
+                MatchingAutoCADElements<T> m = new MatchingAutoCADElements<T>(srcRow, bestRow);
                 //System.out.println("In AutoCADElementMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);

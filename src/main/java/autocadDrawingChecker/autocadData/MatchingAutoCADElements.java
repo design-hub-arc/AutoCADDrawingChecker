@@ -12,21 +12,22 @@ package autocadDrawingChecker.autocadData;
  * other.
  * 
  * @author Matt Crow
+ * @param <T> the type of AutoCADElements this contains
  */
-public class MatchingAutoCADElements {
-    private final AutoCADElement element1;
-    private final AutoCADElement element2;
+public class MatchingAutoCADElements<T extends AutoCADElement> {
+    private final T element1;
+    private final T element2;
     
-    public MatchingAutoCADElements(AutoCADElement a, AutoCADElement b){
+    public MatchingAutoCADElements(T a, T b){
         element1 = a;
         element2 = b;
     }
     
-    public final AutoCADElement getElement1(){
+    public final T getElement1(){
         return element1;
     }
     
-    public final AutoCADElement getElement2(){
+    public final T getElement2(){
         return element2;
     }
     
