@@ -28,7 +28,9 @@ import java.util.stream.Collectors;
  * </ul>
  * 
  * @author Matt Crow
- * @param <T> the type of AutoCADElements to match
+ * @param <T> the type of AutoCADElements to match. Elements 
+ * which cannot be converted to this type will be ignored. Use 
+ * AutoCADElement to keep all elements. 
  */
 public class AutoCADElementMatcher<T extends AutoCADElement> {
     private final AutoCADExport exp1;
@@ -70,8 +72,8 @@ public class AutoCADElementMatcher<T extends AutoCADElement> {
         List<T> pool = exp2.stream().filter((AutoCADElement e)->{
             //return e instanceof T; doesn't work because of how generics are implemented
             return true;
-        }).map(caster).filter((T casted)->{
-            return casted != null;
+        }).map(caster).filter((T casted)->{ // use caster to cast ...
+            return casted != null;          // ... then ignore element which it couldn't casr
         }).collect(Collectors.toList());
         
         exp1.stream().map(caster).filter((T casted)->{
@@ -93,7 +95,7 @@ public class AutoCADElementMatcher<T extends AutoCADElement> {
             
             // some rows may not match at all
             if(bestRow != null){
-                MatchingAutoCADElements<T> m = new MatchingAutoCADElements<T>(srcRow, bestRow);
+                MatchingAutoCADElements<T> m = new MatchingAutoCADElements<>(srcRow, bestRow);
                 //System.out.println("In AutoCADElementMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);

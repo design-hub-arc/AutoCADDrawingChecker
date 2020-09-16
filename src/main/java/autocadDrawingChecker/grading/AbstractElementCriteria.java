@@ -12,11 +12,17 @@ import java.util.List;
  * is graded based on how well its individual elements score.
  * 
  * @author Matt Crow
- * @param <T> the type of elements to match
+ * @param <T> the type of elements to grade
  */
 public interface AbstractElementCriteria<T extends AutoCADElement> extends AbstractGradingCriteria {
-    
+    /**
+     * Converts e to the given type T. If that
+     * is not possible, return null instead.
+     * @param e
+     * @return e as T, if possible
+     */
     public abstract T cast(AutoCADElement e);
+    
     public abstract double getMatchScore(T e1, T e2);
     
     /**

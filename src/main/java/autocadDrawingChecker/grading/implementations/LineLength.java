@@ -15,14 +15,7 @@ public class LineLength implements AbstractElementCriteria<AutoCADLine> {
     
     @Override
     public double getMatchScore(AutoCADLine r1, AutoCADLine r2){
-        double score = 0.0;
-        
-        score = 1.0 - MathUtil.percentError(
-            r1.getLength(),
-            r2.getLength()
-        );
-        
-        return score;
+        return  1.0 - MathUtil.percentError(r1.getLength(), r2.getLength());
     }
     
     private double getTotalLineLength(AutoCADExport exp){

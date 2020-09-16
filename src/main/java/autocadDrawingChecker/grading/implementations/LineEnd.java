@@ -19,17 +19,10 @@ public class LineEnd implements AbstractVectorCriteria<AutoCADLine> {
     }
 
     @Override
-    public boolean canGrade(AutoCADElement e) {
-        return e instanceof AutoCADLine;
-    }
-
-    @Override
-    public double[] extractVector(AutoCADElement e) {
+    public double[] extractVector(AutoCADLine e) {
         double[] v = new double[AutoCADLine.DIMENSION_COUNT];
-        if(e instanceof AutoCADLine){
-            for(int i = 0; i < v.length; i++){
-                v[i] = ((AutoCADLine)e).getEnd(i);
-            }
+        for(int i = 0; i < v.length; i++){
+            v[i] = e.getEnd(i);
         }
         return v;
     }
