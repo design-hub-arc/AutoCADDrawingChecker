@@ -1,12 +1,8 @@
 package autocadDrawingChecker.grading.implementations;
 
 import autocadDrawingChecker.autocadData.AutoCADElement;
-import autocadDrawingChecker.autocadData.AutoCADElementMatcher;
-import autocadDrawingChecker.autocadData.AutoCADExport;
-import autocadDrawingChecker.autocadData.MatchingAutoCADElements;
-import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.AbstractElementCriteria;
 import autocadDrawingChecker.grading.MathUtil;
-import java.util.List;
 
 /**
  * AbstractVectorCriteria is used grading based on some multi-element grading
@@ -15,7 +11,8 @@ import java.util.List;
  * 
  * @author Matt Crow
  */
-public interface AbstractVectorCriteria extends AbstractGradingCriteria {
+public interface AbstractVectorCriteria extends AbstractElementCriteria {
+    @Override
     public default double getMatchScore(AutoCADElement e1, AutoCADElement e2){
         double score = 0.0;
         double[] v1;
@@ -32,22 +29,7 @@ public interface AbstractVectorCriteria extends AbstractGradingCriteria {
         }
         return score;
     }
-    public default double getAvgScore(List<MatchingAutoCADElements> matches){
-        double total = matches.stream().map((MatchingAutoCADElements match)->{
-            return getMatchScore(match.getElement1(), match.getElement2());
-        }).reduce(0.0, Double::sum);
-        if(!matches.isEmpty()){
-            total /= matches.size();
-        }
-        return total;
-    }
     
-    @Override
-    public default double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
-        List<MatchingAutoCADElements> closestMatches = new AutoCADElementMatcher(exp1, exp2, this::getMatchScore).findMatches();
-        return getAvgScore(closestMatches);
-    }
-
     /**
      * 
      * @param e
@@ -64,10 +46,4 @@ public interface AbstractVectorCriteria extends AbstractGradingCriteria {
      * which this will grade on
      */
     public abstract double[] extractVector(AutoCADElement e);
-    
-    @Override
-    public abstract String getDescription();
-
-    @Override
-    public abstract String getName();
 }

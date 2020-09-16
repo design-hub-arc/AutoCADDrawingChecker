@@ -11,13 +11,6 @@ import autocadDrawingChecker.autocadData.AutoCADExport;
  * @author Matt Crow
  */
 public interface AbstractGradingCriteria {
-       
-    /**
-     * 
-     * @return the name of this criteria. 
-     */
-    public abstract String getName();
-    
     /**
      * This method should compare the given AutoCADExports to each other, and
      * return a double between 0.0 and 1.0. A value of 1.0 denotes the student's
@@ -27,6 +20,12 @@ public interface AbstractGradingCriteria {
      * @return a double from 0.0 to 1.0.
      */
     public abstract double computeScore(AutoCADExport exp1, AutoCADExport exp2);
+    
+    /**
+     * 
+     * @return the name of this criteria. 
+     */
+    public abstract String getName();
     
     /**
      * This method should return a helpful

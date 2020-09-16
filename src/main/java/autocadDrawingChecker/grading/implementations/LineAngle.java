@@ -1,20 +1,17 @@
 package autocadDrawingChecker.grading.implementations;
 
-import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.autocadData.AutoCADLine;
 import autocadDrawingChecker.autocadData.AutoCADElement;
-import autocadDrawingChecker.autocadData.AutoCADElementMatcher;
-import autocadDrawingChecker.autocadData.MatchingAutoCADElements;
-import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.AbstractElementCriteria;
 import autocadDrawingChecker.grading.MathUtil;
-import java.util.List;
 
 /**
  * @author Matt Crow
  */
-public class LineAngle implements AbstractGradingCriteria {
+public class LineAngle implements AbstractElementCriteria {
     
-    private double getMatchScore(AutoCADElement r1, AutoCADElement r2){
+    @Override
+    public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
         double score = 0.0;
         double percErr = 0.0;
         double percErrRot = 0.0;
@@ -32,22 +29,6 @@ public class LineAngle implements AbstractGradingCriteria {
         return score;
     }
     
-    private double getAvgAngleScore(List<MatchingAutoCADElements> matches){
-        double ret = 0.0;
-        for(MatchingAutoCADElements match : matches){
-            ret += getMatchScore(match.getElement1(), match.getElement2());
-        }
-        ret /= matches.size();
-        return ret;
-    }
-    
-    @Override
-    public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
-        List<MatchingAutoCADElements> closestMatches = new AutoCADElementMatcher(exp1, exp2, this::getMatchScore).findMatches();
-        
-        return getAvgAngleScore(closestMatches);
-    }
-
     @Override
     public String getDescription() {
         return "Grades the students based on how their lines' angles match up with those of the instructor file";
