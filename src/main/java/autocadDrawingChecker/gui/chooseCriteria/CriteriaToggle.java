@@ -39,6 +39,9 @@ public class CriteriaToggle extends JComponent {
         add(desc, BorderLayout.CENTER);
     }
     
+    public final void setSelected(boolean isSelected){
+        selectBox.setSelected(isSelected);
+    }
     public final boolean isSelected(){
         return selectBox.isSelected();
     }

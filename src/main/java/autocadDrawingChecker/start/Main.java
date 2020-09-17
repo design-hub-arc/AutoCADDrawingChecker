@@ -1,6 +1,7 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.grading.GradingReport;
+import autocadDrawingChecker.grading.implementations.CheckDims;
 import autocadDrawingChecker.logging.Logger;
 
 /**
@@ -18,13 +19,15 @@ public class Main {
     public static void main(String[] args) {
         Application app = Application.getInstance();
         
-        GradingReport report = app
+        //GradingReport report = 
+        app
             .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
             .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with")
+            .setCriteria(new CheckDims(), false);
             //.setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
             //.setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Master File.xls - angle180.xlsx")
-            .grade();
-        Logger.log(report.toString());
+            //.grade();
+        //Logger.log(report.toString());
         app.createGui();
     }
 }

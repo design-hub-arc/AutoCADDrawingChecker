@@ -5,7 +5,7 @@ import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.JComponent;
@@ -19,11 +19,11 @@ import javax.swing.ScrollPaneConstants;
  * @author Matt
  */
 public class CriteriaSelectionList extends JComponent {
-    private final ArrayList<CriteriaToggle> criteriaList;
+    private final HashMap<String, CriteriaToggle> criteriaList; // name to criteria toggle
     
     public CriteriaSelectionList(){
         super();
-        criteriaList = new ArrayList<>();
+        criteriaList = new HashMap<>();
         setLayout(new BorderLayout());
         add(new JLabel("Select which criteria to grade on"), BorderLayout.PAGE_START);
         
@@ -41,7 +41,7 @@ public class CriteriaSelectionList extends JComponent {
         GradingCriteriaLoader.getAllCriteria().stream().map((AbstractGradingCriteria criteria)->{
             return new CriteriaToggle(criteria);
         }).forEach((CriteriaToggle component)->{
-            criteriaList.add(component);
+            criteriaList.put(component.getCriteria().getName(), component);
             content.add(component, gbc.clone());
         });
         
@@ -51,7 +51,10 @@ public class CriteriaSelectionList extends JComponent {
         add(scroll, BorderLayout.CENTER);
     }
     
+    public final void setCriteriaSelected(AbstractGradingCriteria crit, boolean isSelected){
+        criteriaList.get(crit.getName()).setSelected(isSelected);
+    }
     public final List<AbstractGradingCriteria> getSelectedCriteria(){
-        return criteriaList.stream().filter((ct)->ct.isSelected()).map((ct)->ct.getCriteria()).collect(Collectors.toList());
+        return criteriaList.values().stream().filter((ct)->ct.isSelected()).map((ct)->ct.getCriteria()).collect(Collectors.toList());
     }
 }

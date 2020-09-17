@@ -6,9 +6,9 @@ import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
+import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
 import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +51,7 @@ public class Application {
         }
         window = new ViewController();
         PageRenderer pane = window.getAppPane();
+        
         ChooseFilesPage chooseFiles = (ChooseFilesPage)pane.getPage(PageRenderer.CHOOSE_FILES);
         if(isSrcPathSet()){
             chooseFiles.setSrcFile(new File(srcPath));
@@ -60,7 +61,12 @@ public class Application {
                 return new File(path);
             }).toArray((size)->new File[size]));
         }
-        // do stuff with window
+        
+        ChooseCriteriaPage chooseCriteria = (ChooseCriteriaPage)pane.getPage(PageRenderer.CHOOSE_CRITERIA);
+        criteriaIsSelected.forEach((criteria, isSel)->{
+            chooseCriteria.setCriteriaSelected(criteria, isSel);
+        });
+        
         return this;
     }
     

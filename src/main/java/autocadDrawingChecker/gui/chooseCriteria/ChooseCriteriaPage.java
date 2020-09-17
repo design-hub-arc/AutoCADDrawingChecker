@@ -39,6 +39,10 @@ public class ChooseCriteriaPage extends AbstractPage {
         addButton(next);
     }
     
+    public final void setCriteriaSelected(AbstractGradingCriteria crit, boolean isSelected){
+        critList.setCriteriaSelected(crit, isSelected);
+    }
+    
     public final List<AbstractGradingCriteria> getSelectedCriteria(){
         return critList.getSelectedCriteria();
     }
