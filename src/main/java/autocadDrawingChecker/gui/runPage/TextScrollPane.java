@@ -1,4 +1,4 @@
-package autocadDrawingChecker.gui;
+package autocadDrawingChecker.gui.runPage;
 
 import autocadDrawingChecker.logging.ErrorListener;
 import autocadDrawingChecker.logging.MessageListener;

@@ -1,4 +1,4 @@
-package autocadDrawingChecker.gui;
+package autocadDrawingChecker.gui.chooseCriteria;
 
 import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.start.Application;

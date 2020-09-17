@@ -1,11 +1,10 @@
-package autocadDrawingChecker.gui;
+package autocadDrawingChecker.gui.runPage;
 
+import autocadDrawingChecker.gui.AbstractPage;
+import autocadDrawingChecker.gui.AppPane;
 import autocadDrawingChecker.logging.Logger;
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  *

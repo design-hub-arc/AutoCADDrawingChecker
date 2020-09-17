@@ -25,6 +25,6 @@ public class Main {
             //.setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Master File.xls - angle180.xlsx")
             .grade();
         Logger.log(report.toString());
-        //app.createGui();
+        app.createGui();
     }
 }

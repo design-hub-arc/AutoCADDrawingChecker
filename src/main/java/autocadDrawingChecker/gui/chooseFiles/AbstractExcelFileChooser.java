@@ -1,4 +1,4 @@
-package autocadDrawingChecker.gui;
+package autocadDrawingChecker.gui.chooseFiles;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

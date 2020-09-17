@@ -1,5 +1,8 @@
 package autocadDrawingChecker.gui;
 
+import autocadDrawingChecker.gui.runPage.OutputPage;
+import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
+import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import autocadDrawingChecker.files.FileChooserUtil;
 import autocadDrawingChecker.files.FileType;
 import autocadDrawingChecker.logging.Logger;

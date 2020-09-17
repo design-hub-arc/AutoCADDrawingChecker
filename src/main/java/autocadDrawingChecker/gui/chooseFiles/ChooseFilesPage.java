@@ -1,5 +1,7 @@
-package autocadDrawingChecker.gui;
+package autocadDrawingChecker.gui.chooseFiles;
 
+import autocadDrawingChecker.gui.AbstractPage;
+import autocadDrawingChecker.gui.AppPane;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
- * @author Matt
+ * The ChooseFilesPage is where the user selects which files they want to grade.
+ * 
+ * @author Matt Crow
  */
 public class ChooseFilesPage extends AbstractPage implements ActionListener {
     private final SourceExcelFileChooser srcChooser;
