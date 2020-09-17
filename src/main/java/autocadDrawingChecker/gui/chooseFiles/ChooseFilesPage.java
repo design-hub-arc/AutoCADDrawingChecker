@@ -1,12 +1,8 @@
 package autocadDrawingChecker.gui.chooseFiles;
 
 import autocadDrawingChecker.gui.AbstractPage;
-import autocadDrawingChecker.gui.PageRenderer;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -15,12 +11,12 @@ import javax.swing.JPanel;
  * 
  * @author Matt Crow
  */
-public class ChooseFilesPage extends AbstractPage implements ActionListener {
+public class ChooseFilesPage extends AbstractPage {
     private final SourceExcelFileChooser srcChooser;
     private final CompareExcelFileChooser cmpChooser;
     
-    public ChooseFilesPage(PageRenderer ap) {
-        super(ap, "Step 1: Choose files to compare");
+    public ChooseFilesPage() {
+        super("Choose files to compare");
         setLayout(new GridLayout(1, 1));
         
         JPanel choosers = new JPanel();
@@ -30,10 +26,6 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
         cmpChooser = new CompareExcelFileChooser("Student Files", "choose one or more student files, or a whole folder of them");
         choosers.add(cmpChooser);
         add(choosers);
-        
-        JButton next = new JButton("Next");
-        next.addActionListener(this);
-        addButton(next);
     }
     
     public final void setSrcFile(File f){
@@ -50,14 +42,13 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
     public final File[] getCmpFiles(){
         return cmpChooser.getSelected();
     }
-    
+
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(srcChooser.isFileSelected() && cmpChooser.isFileSelected()){
-            // next page
-            getPaneParent().switchToPage(PageRenderer.CHOOSE_CRITERIA);
-        } else {
+    protected boolean checkIfReadyForNextPage() {
+        boolean ready = srcChooser.isFileSelected() && cmpChooser.isFileSelected();
+        if(!ready){
             JOptionPane.showMessageDialog(this, "Please choose both a master and grade file");
         }
+        return ready;
     }
 }

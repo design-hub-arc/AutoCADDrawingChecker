@@ -16,11 +16,9 @@ The more similar their file is to the instructor file, the higher their grade wi
     * A combination of the above.
 * Step 2: Choosing Grading Criteria. You can choose what the program grades students on by toggling these check boxes on or off.
 * Step 3: Running the Autograder. Once the program is done grading, it will ask you where you want to save the grading report. 
-Make sure you give it a ```.xlsx``` extension when you save it. 
+The program automatically adds an xlsx extension if you don't provide one, so no need to worry about that.
 
 ## To Do
-* Do we have a set of icons we can use? Like warning and "you're good" icons?
-* Can I use the ARC stylesheet in the application?
 * Command line mode for easier testing (see start.Main)
 * Change AppPane to GUIController type of thing
 * Separate front end from back end
