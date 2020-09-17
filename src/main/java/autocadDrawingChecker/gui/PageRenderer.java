@@ -3,18 +3,9 @@ package autocadDrawingChecker.gui;
 import autocadDrawingChecker.gui.runPage.OutputPage;
 import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
 import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
-import autocadDrawingChecker.files.FileChooserUtil;
-import autocadDrawingChecker.files.FileType;
 import autocadDrawingChecker.logging.Logger;
-import autocadDrawingChecker.grading.Grader;
-import autocadDrawingChecker.grading.GradingReport;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -79,27 +70,5 @@ public class PageRenderer extends JPanel {
         } else {
             Logger.logError("Cannot switchToPage with name " + pageName);
         }
-    }
-    
-    public void runComparison(){
-        Grader autoGrader = new Grader(
-            ((ChooseFilesPage)pages.get(CHOOSE_FILES)).getSrcFile().getAbsolutePath(), 
-            Arrays.stream(((ChooseFilesPage)pages.get(CHOOSE_FILES)).getCmpFiles()).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]), 
-            ((ChooseCriteriaPage)pages.get(CHOOSE_CRITERIA)).getSelectedCriteria()
-        );
-        
-        GradingReport report = autoGrader.grade();
-        Logger.log(report.toString());
-        
-        FileChooserUtil.askChooseFile("Where would you like to save this report to?", FileType.EXCEL, (File f)->{
-            try (FileOutputStream out = new FileOutputStream(f)) {
-                report.getAsWorkBook().write(out);
-            } catch (FileNotFoundException ex) {
-                Logger.logError(ex);
-            } catch (IOException ex) {
-                Logger.logError(ex);
-            }
-        });
-        //FileChooserUtil.askCreateTextFile("Where would you like to save this report to?", report.toString());
     }
 }
