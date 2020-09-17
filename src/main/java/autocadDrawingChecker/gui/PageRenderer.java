@@ -23,7 +23,7 @@ import javax.swing.JPanel;
  *
  * @author Matt
  */
-public class AppPane extends JPanel {
+public class PageRenderer extends JPanel {
     private final JLabel pageTitle;
     private final JPanel content;
     private final CardLayout cards;
@@ -34,7 +34,7 @@ public class AppPane extends JPanel {
     public static final String CHOOSE_CRITERIA = "choose criteria";
     public static final String OUTPUT = "output";
     
-    public AppPane(){
+    public PageRenderer(){
         super();
         setLayout(new BorderLayout());
         
@@ -61,6 +61,11 @@ public class AppPane extends JPanel {
         pages.put(title, ap);
         content.add(ap, title); // for the card layout
     }
+    
+    public final AbstractPage getPage(String name){
+        return pages.get(name);
+    }
+    
     
     public void switchToPage(String pageName){
         if(pages.containsKey(pageName)){

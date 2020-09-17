@@ -2,7 +2,7 @@ package autocadDrawingChecker.gui.chooseCriteria;
 
 import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.gui.AbstractPage;
-import autocadDrawingChecker.gui.AppPane;
+import autocadDrawingChecker.gui.PageRenderer;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JButton;
@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class ChooseCriteriaPage extends AbstractPage {
     private final CriteriaSelectionList critList;
     
-    public ChooseCriteriaPage(AppPane ap) {
+    public ChooseCriteriaPage(PageRenderer ap) {
         super(ap, "Step 2: Choose criteria to grade on");
         setLayout(new GridLayout(1, 1));
         
@@ -24,7 +24,7 @@ public class ChooseCriteriaPage extends AbstractPage {
         
         JButton prev = new JButton("Go back");
         prev.addActionListener((e)->{
-            getPaneParent().switchToPage(AppPane.CHOOSE_FILES);
+            getPaneParent().switchToPage(PageRenderer.CHOOSE_FILES);
         });
         addButton(prev);
         
@@ -33,7 +33,7 @@ public class ChooseCriteriaPage extends AbstractPage {
             if(critList.getSelectedCriteria().isEmpty()){
                 JOptionPane.showMessageDialog(next, "Please select at least 1 criteria to grade on");
             } else {
-                getPaneParent().switchToPage(AppPane.OUTPUT);
+                getPaneParent().switchToPage(PageRenderer.OUTPUT);
             }
         });
         addButton(next);

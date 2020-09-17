@@ -9,11 +9,11 @@ import javax.swing.JPanel;
  * @author Matt
  */
 public abstract class AbstractPage extends JPanel {
-    private final AppPane parent;
+    private final PageRenderer parent;
     private final String pageTitle;
     private final ArrayList<JButton> buttons;
     
-    public AbstractPage(AppPane ap, String title){
+    public AbstractPage(PageRenderer ap, String title){
         super();
         parent = ap;
         pageTitle = title;
@@ -24,7 +24,7 @@ public abstract class AbstractPage extends JPanel {
         return pageTitle;
     }
     
-    protected final AppPane getPaneParent(){
+    protected final PageRenderer getPaneParent(){
         return parent;
     }
     

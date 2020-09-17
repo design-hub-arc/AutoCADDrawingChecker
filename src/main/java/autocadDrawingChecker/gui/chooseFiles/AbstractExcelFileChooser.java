@@ -56,7 +56,7 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
         selectButtonPressed();
     }
     
-    protected final void setSelected(T sel){
+    protected void setSelected(T sel){
         selected = sel;
     }
     

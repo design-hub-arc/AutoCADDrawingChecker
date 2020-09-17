@@ -1,7 +1,7 @@
 package autocadDrawingChecker.gui.chooseFiles;
 
 import autocadDrawingChecker.gui.AbstractPage;
-import autocadDrawingChecker.gui.AppPane;
+import autocadDrawingChecker.gui.PageRenderer;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +19,7 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
     private final SourceExcelFileChooser srcChooser;
     private final CompareExcelFileChooser cmpChooser;
     
-    public ChooseFilesPage(AppPane ap) {
+    public ChooseFilesPage(PageRenderer ap) {
         super(ap, "Step 1: Choose files to compare");
         setLayout(new GridLayout(1, 1));
         
@@ -36,6 +36,13 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
         addButton(next);
     }
     
+    public final void setSrcFile(File f){
+        srcChooser.setSelected(f);
+    }
+    public final void setCmpFiles(File[] f){
+        cmpChooser.setSelected(f);
+    }
+    
     public final File getSrcFile(){
         return srcChooser.getSelected();
     }
@@ -48,7 +55,7 @@ public class ChooseFilesPage extends AbstractPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(srcChooser.isFileSelected() && cmpChooser.isFileSelected()){
             // next page
-            getPaneParent().switchToPage(AppPane.CHOOSE_CRITERIA);
+            getPaneParent().switchToPage(PageRenderer.CHOOSE_CRITERIA);
         } else {
             JOptionPane.showMessageDialog(this, "Please choose both a master and grade file");
         }

@@ -4,9 +4,12 @@ import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import autocadDrawingChecker.grading.GradingReport;
-import autocadDrawingChecker.gui.AppPane;
+import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
+import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +50,16 @@ public class Application {
             window.dispose();
         }
         window = new ViewController();
-        AppPane pane = window.getAppPane();
+        PageRenderer pane = window.getAppPane();
+        ChooseFilesPage chooseFiles = (ChooseFilesPage)pane.getPage(PageRenderer.CHOOSE_FILES);
+        if(isSrcPathSet()){
+            chooseFiles.setSrcFile(new File(srcPath));
+        }
+        if(isCmpPathsSet()){
+            chooseFiles.setCmpFiles(Arrays.stream(cmpPaths).map((path)->{
+                return new File(path);
+            }).toArray((size)->new File[size]));
+        }
         // do stuff with window
         return this;
     }

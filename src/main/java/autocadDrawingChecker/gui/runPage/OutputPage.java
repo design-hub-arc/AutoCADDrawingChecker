@@ -1,7 +1,7 @@
 package autocadDrawingChecker.gui.runPage;
 
 import autocadDrawingChecker.gui.AbstractPage;
-import autocadDrawingChecker.gui.AppPane;
+import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.logging.Logger;
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -14,7 +14,7 @@ public class OutputPage extends AbstractPage {
     private final TextScrollPane output;
     private final JButton run;
     
-    public OutputPage(AppPane ap) {
+    public OutputPage(PageRenderer ap) {
         super(ap, "Step 3: Click 'run' to run the autograder");
         
         setLayout(new GridLayout(1, 1));
@@ -26,7 +26,7 @@ public class OutputPage extends AbstractPage {
         
         JButton back = new JButton("Go Back");
         back.addActionListener((e)->{
-            getPaneParent().switchToPage(AppPane.CHOOSE_CRITERIA);
+            getPaneParent().switchToPage(PageRenderer.CHOOSE_CRITERIA);
         });
         addButton(back);
         
