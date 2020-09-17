@@ -22,14 +22,15 @@ public class PageRenderer extends JPanel {
     private final JLabel pageTitle;
     private final JPanel content;
     private final CardLayout cards;
+    
     private final JPanel buttons;
     private final JButton prevButton;
     private final JButton nextButton;
+    
+    private final ArrayList<String> pageNames; // used to remember page insertion order
     private final HashMap<String, AbstractPage> pages; // need this to map names to pages
-    private final ArrayList<String> pageNames;
-    private final ArrayList<AbstractPage> pageList;
     private int currPageIdx;
-    private AbstractPage currentPage;
+    
     public static final String CHOOSE_FILES = "choose files";
     public static final String CHOOSE_CRITERIA = "choose criteria";
     public static final String OUTPUT = "output";
@@ -61,19 +62,16 @@ public class PageRenderer extends JPanel {
         
         pages = new HashMap<>(); // populated by addPage
         pageNames = new ArrayList<>();
-        pageList = new ArrayList<>();
-        currPageIdx = -1;
+        currPageIdx = 0;
         addPage(CHOOSE_FILES, new ChooseFilesPage());
         addPage(CHOOSE_CRITERIA, new ChooseCriteriaPage());
         addPage(OUTPUT, new OutputPage());
-        
-        switchToPage(CHOOSE_FILES);
+        updateRenderedPage();
     }
     
     private void addPage(String title, AbstractPage ap){
         pages.put(title, ap);
         pageNames.add(title);
-        pageList.add(ap);
         content.add(ap, title); // for the card layout
     }
     
@@ -81,31 +79,30 @@ public class PageRenderer extends JPanel {
         return pages.get(name);
     }
     
-    public void switchToPage(String pageName){
-        if(pages.containsKey(pageName)){
-            currPageIdx = pageNames.indexOf(pageName);
+    private void updateRenderedPage(){
+        if(currPageIdx < pageNames.size()){
+            String pageName = pageNames.get(currPageIdx);
             cards.show(content, pageName);
-            currentPage = pages.get(pageName);
-            pageTitle.setText(currentPage.getTitle());
+            pageTitle.setText(pages.get(pageName).getTitle());
             prevButton.setVisible(currPageIdx > 0);
             nextButton.setVisible(currPageIdx < pageNames.size() - 1);
             revalidate();
             repaint();
         } else {
-            Logger.logError("Cannot switchToPage with name " + pageName);
+            Logger.logError(String.format("Page index %d is out of the bounds 0 <= index < %d.", currPageIdx, pageNames.size()));
         }
     }
     
     private void tryPrevPage(){
         if(currPageIdx > 0){
             currPageIdx--;
-            switchToPage(pageNames.get(currPageIdx));
+            updateRenderedPage();//switchToPage(pageNames.get(currPageIdx));
         }
     }
     private void tryNextPage(){
         if(currPageIdx < pageNames.size()){
             currPageIdx = (currPageIdx + 1) % pageNames.size(); // loop around to first page if we click next on the last one
-            switchToPage(pageNames.get(currPageIdx));
+            updateRenderedPage();//switchToPage(pageNames.get(currPageIdx));
         }
     }
 }
