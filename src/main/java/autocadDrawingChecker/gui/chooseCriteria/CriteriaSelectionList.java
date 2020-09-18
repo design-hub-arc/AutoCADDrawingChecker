@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -25,7 +24,6 @@ public class CriteriaSelectionList extends JComponent {
         super();
         criteriaList = new HashMap<>();
         setLayout(new BorderLayout());
-        add(new JLabel("Select which criteria to grade on"), BorderLayout.PAGE_START);
         
         JPanel content = new JPanel();
         content.setLayout(new GridBagLayout());

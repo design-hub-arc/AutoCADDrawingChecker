@@ -21,7 +21,7 @@ public class ChooseFilesPage extends AbstractPage {
         
         JPanel choosers = new JPanel();
         choosers.setLayout(new GridLayout(1, 2, 20, 20));
-        srcChooser = new SourceExcelFileChooser("Master Comparison File", "choose the master comparison Excel file");
+        srcChooser = new SourceExcelFileChooser("Instructor File", "choose the instructor Excel file");
         choosers.add(srcChooser);
         cmpChooser = new CompareExcelFileChooser("Student Files", "choose one or more student files, or a whole folder of them");
         choosers.add(cmpChooser);
@@ -47,7 +47,7 @@ public class ChooseFilesPage extends AbstractPage {
     protected boolean checkIfReadyForNextPage() {
         boolean ready = srcChooser.isFileSelected() && cmpChooser.isFileSelected();
         if(!ready){
-            JOptionPane.showMessageDialog(this, "Please choose both a master and grade file");
+            JOptionPane.showMessageDialog(this, "Please choose both an instructor file and at least one student file");
         }
         return ready;
     }

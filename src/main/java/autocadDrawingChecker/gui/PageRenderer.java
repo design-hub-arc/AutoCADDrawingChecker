@@ -100,7 +100,7 @@ public class PageRenderer extends JPanel {
         }
     }
     private void tryNextPage(){
-        if(currPageIdx < pageNames.size()){
+        if(currPageIdx < pageNames.size() && pages.get(pageNames.get(currPageIdx)).checkIfReadyForNextPage()){
             currPageIdx = (currPageIdx + 1) % pageNames.size(); // loop around to first page if we click next on the last one
             updateRenderedPage();//switchToPage(pageNames.get(currPageIdx));
         }
