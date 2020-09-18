@@ -1,11 +1,13 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.grading.AbstractGradingCriteria;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
 /**
+ * Currently unused, as I'm not sure how close this
+ * project is to being done.
+ * 
  * DrawingCheckerProperties is used to store application data.
  * This will allow the program to load data in a variety of ways:
  * <ul>
@@ -27,19 +29,9 @@ public class DrawingCheckerProperties extends Properties {
     public static final String DEFAULT_CMP = "CMP_PATH_NOT_SET";
     public static final String DEFAULT_CRITERIA = "CRIT_NOT_SET";
     
-    private String instructorFilePath;
-    private String[] studentFilePaths;
-    private final HashMap<String, Boolean> selectedCriteria;
-    private final HashMap<String, AbstractGradingCriteria> nameToCriteria;
     
     public DrawingCheckerProperties(){
         super();
-        
-        instructorFilePath = DEFAULT_SRC;
-        studentFilePaths = new String[0];
-        selectedCriteria = new HashMap<>();
-        nameToCriteria = new HashMap<>();
-        
         setProperty(SRC_KEY, DEFAULT_SRC);
         setProperty(CMP_KEY, DEFAULT_CMP);
         setProperty(CRIT_KEY, DEFAULT_CRITERIA);

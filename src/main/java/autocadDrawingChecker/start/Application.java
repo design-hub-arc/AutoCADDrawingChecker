@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @author Matt
  */
 public class Application {
-    private final DrawingCheckerProperties properties;
+    private final DrawingCheckerData data;
     private String srcPath;
     private String[] cmpPaths;
     private final HashMap<AbstractGradingCriteria, Boolean> criteriaIsSelected;
@@ -31,7 +31,7 @@ public class Application {
         if(instance != null){
             throw new ExceptionInInitializerError("Application is supposed to be a singleton: No more than one instance!");
         }
-        properties = new DrawingCheckerProperties();
+        data = new DrawingCheckerData();
         srcPath = null;
         cmpPaths = new String[0];
         criteriaIsSelected = new HashMap<>();
@@ -72,8 +72,8 @@ public class Application {
         return this;
     }
     
-    public final DrawingCheckerProperties getProperties(){
-        return properties;
+    public final DrawingCheckerData getData(){
+        return data;
     }
     
     public final Application setSrcPath(String path){
