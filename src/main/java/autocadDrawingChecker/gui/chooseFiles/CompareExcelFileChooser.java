@@ -33,7 +33,7 @@ public class CompareExcelFileChooser extends AbstractExcelFileChooser<File[]> {
         FileChooserUtil.askChooseFiles(getPopupTitle(), FileType.EXCEL_OR_FOLDER, (File[] fs)->{
             setSelected(fs);
             String[] absPaths = Arrays.stream(fs).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]);
-            Application.getInstance().setCmpPaths(absPaths);
+            Application.getInstance().getData().setStudentFilePaths(absPaths);
         });
     }
 }

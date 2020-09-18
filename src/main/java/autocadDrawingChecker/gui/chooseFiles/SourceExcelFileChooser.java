@@ -29,7 +29,7 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File> {
     protected void selectButtonPressed() {
         FileChooserUtil.askChooseFile(getPopupTitle(), FileType.EXCEL, (File f)->{
             setSelected(f);
-            Application.getInstance().setSrcPath(f.getAbsolutePath());
+            Application.getInstance().getData().setInstructorFilePath(f.getAbsolutePath());
         });
     }
 }
