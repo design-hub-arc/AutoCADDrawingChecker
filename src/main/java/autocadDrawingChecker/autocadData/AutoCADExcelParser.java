@@ -76,7 +76,7 @@ public class AutoCADExcelParser {
             getCellDouble(AutoCADAttribute.LENGTH),
             getCellDouble(AutoCADAttribute.THICKNESS),
             getCellDouble(AutoCADAttribute.AREA),
-            getCellInt(AutoCADAttribute.CLOSED),
+            getCellString(AutoCADAttribute.CLOSED),
             getCellDouble(AutoCADAttribute.GLOBAL_WIDTH)
         );
     }

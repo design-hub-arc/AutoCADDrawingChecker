@@ -8,10 +8,10 @@ public class AutoCADPolyline extends AutoCADElement {
     private final double length;
     private final double thickness;
     private final double area;
-    private final int closed;
+    private final String closed;
     private final double globalWidth;
     
-    public AutoCADPolyline(double len, double thick, double area, int closed, double globalWidth){
+    public AutoCADPolyline(double len, double thick, double area, String closed, double globalWidth){
         super();
         length = len;
         thickness = thick;
@@ -29,7 +29,7 @@ public class AutoCADPolyline extends AutoCADElement {
     public final double getArea(){
         return area;
     }
-    public final int getClosed(){
+    public final String getClosed(){
         return closed;
     }
     public final double getGlobalWidth(){
@@ -44,7 +44,7 @@ public class AutoCADPolyline extends AutoCADElement {
         sb.append(String.format("\n\t* Length: %f", length));
         sb.append(String.format("\n\t* Thickness: %f", thickness));
         sb.append(String.format("\n\t* Area: %f", area));
-        sb.append(String.format("\n\t* Closed: %d", closed));
+        sb.append(String.format("\n\t* Closed: %s", closed));
         sb.append(String.format("\n\t* Global Width: %f", globalWidth));
         return sb.toString();
     }
