@@ -28,7 +28,7 @@ public class CriteriaToggle extends JComponent {
         selectBox = new JCheckBox("Grade this");
         selectBox.setSelected(true);
         selectBox.addActionListener((e)->{
-            Application.getInstance().setCriteria(criteria, selectBox.isSelected());
+            Application.getInstance().getData().setCriteriaSelected(criteria, selectBox.isSelected());
         });
         add(selectBox, BorderLayout.LINE_START);
         

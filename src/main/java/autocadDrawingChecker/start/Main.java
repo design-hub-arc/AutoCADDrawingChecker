@@ -23,7 +23,7 @@ public class Main {
         app
             .setSrcPath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
             .setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with")
-            .setCriteria(new CheckDims(), false);
+            .getData().setCriteriaSelected(new CheckDims(), false);
             //.setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
             //.setCmpPaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Master File.xls - angle180.xlsx")
             //.grade();

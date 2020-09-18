@@ -1,8 +1,6 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.Grader;
-import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
@@ -10,9 +8,6 @@ import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
 import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -22,7 +17,6 @@ public class Application {
     private final DrawingCheckerData data;
     private String srcPath;
     private String[] cmpPaths;
-    private final HashMap<AbstractGradingCriteria, Boolean> criteriaIsSelected;
     private ViewController window;
     
     private static Application instance;
@@ -34,10 +28,7 @@ public class Application {
         data = new DrawingCheckerData();
         srcPath = null;
         cmpPaths = new String[0];
-        criteriaIsSelected = new HashMap<>();
-        GradingCriteriaLoader.getAllCriteria().forEach((c) -> {
-            criteriaIsSelected.put(c, Boolean.TRUE);
-        });
+        
     }
     
     public static final Application getInstance(){
@@ -65,7 +56,7 @@ public class Application {
         }
         
         ChooseCriteriaPage chooseCriteria = (ChooseCriteriaPage)pane.getPage(PageRenderer.CHOOSE_CRITERIA);
-        criteriaIsSelected.forEach((criteria, isSel)->{
+        data.getGradingCriteria().forEach((criteria, isSel)->{
             chooseCriteria.setCriteriaSelected(criteria, isSel);
         });
         
@@ -86,11 +77,6 @@ public class Application {
         return this;
     }
     
-    public final Application setCriteria(AbstractGradingCriteria crit, boolean isSelected){
-        criteriaIsSelected.put(crit, isSelected);
-        return this;
-    }
-    
     public final boolean isSrcPathSet(){
         return srcPath != null;
     }
@@ -99,13 +85,7 @@ public class Application {
         return cmpPaths != null && cmpPaths.length > 0;
     }
     
-    public final boolean isCriteriaSelected(AbstractGradingCriteria crit){
-        return criteriaIsSelected.containsKey(crit) && criteriaIsSelected.get(crit);
-    }
     
-    public final boolean isAnyCriteriaSet(){
-        return criteriaIsSelected.values().contains(Boolean.TRUE); // at least one criteria selected
-    }
     
     public final String getSrcPath(){
         return srcPath;
@@ -115,19 +95,17 @@ public class Application {
         return cmpPaths;
     }
     
-    public final List<AbstractGradingCriteria> getCriteria(){
-        return criteriaIsSelected.entrySet().stream().filter((e)->e.getValue()).map((e)->e.getKey()).collect(Collectors.toList());
-    }
+    
     
     public final boolean isReadyToGrade(){
-        return isSrcPathSet() && isCmpPathsSet() && isAnyCriteriaSet();
+        return isSrcPathSet() && isCmpPathsSet() && data.isAnyCriteriaSelected();
     }
     
     public final GradingReport grade(){
         Grader g = new Grader(
             srcPath,
             cmpPaths,
-            getCriteria()
+            data.getSelectedCriteria()
         );
         
         return g.grade();

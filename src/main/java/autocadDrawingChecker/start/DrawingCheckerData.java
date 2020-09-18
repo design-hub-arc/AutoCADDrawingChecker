@@ -1,6 +1,7 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.GradingCriteriaLoader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -21,6 +22,10 @@ public class DrawingCheckerData {
         studentFilePaths = new String[0];
         selectedCriteria = new HashMap<>();
         nameToCriteria = new HashMap<>();
+        GradingCriteriaLoader.getAllCriteria().forEach((c) -> {
+            selectedCriteria.put(c.getName(), Boolean.TRUE);
+            nameToCriteria.put(c.getName(), c);
+        });
     }
     
     public final boolean isInstructorFilePathSet(){
@@ -51,6 +56,13 @@ public class DrawingCheckerData {
         }).filter((AbstractGradingCriteria criteria)->{
             return criteria != null;
         }).collect(Collectors.toList());
+    }
+    public final HashMap<AbstractGradingCriteria, Boolean> getGradingCriteria(){
+        HashMap<AbstractGradingCriteria, Boolean> critToIsSel = new HashMap<>();
+        selectedCriteria.entrySet().forEach((entry)->{
+            critToIsSel.put(nameToCriteria.get(entry.getKey()), entry.getValue());
+        });
+        return critToIsSel;
     }
     
     public final DrawingCheckerData setInstructorFilePath(String path){
