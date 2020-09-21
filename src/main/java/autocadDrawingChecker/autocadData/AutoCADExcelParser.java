@@ -1,5 +1,8 @@
 package autocadDrawingChecker.autocadData;
 
+import autocadDrawingChecker.autocadData.elements.AutoCADElement;
+import autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor;
+import autocadDrawingChecker.autocadData.extractors.DimensionExtractor;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,11 +28,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class AutoCADExcelParser {
     private final String fileName;
     private final HashMap<AutoCADAttribute, Integer> headerToCol;
+    private final HashMap<String, AbstractAutoCADElementExtractor<?>> extractors;
     private Row currRow;
     
-    public AutoCADExcelParser(String fileToParse){
+    public AutoCADExcelParser(String fileToParse, AbstractAutoCADElementExtractor<?>... extractors){
         fileName = fileToParse;
         headerToCol = new HashMap<>();
+        this.extractors = new HashMap<>();
+        for(AbstractAutoCADElementExtractor<?> extractor : extractors){
+            this.extractors.put(extractor.getName(), extractor);
+        }
         currRow = null;
     }
     
@@ -265,11 +273,12 @@ public class AutoCADExcelParser {
      * </code></pre>
      * 
      * @param fileName the complete path to an Excel file.
+     * @param extractors the extractors to use
      * @return the contents of the first sheet of the given Excel file , as 
      * an AutoCADExport.
      * @throws IOException if the fileName given does not point to an Excel file
      */
-    public static AutoCADExport parse(String fileName) throws IOException{
-        return new AutoCADExcelParser(fileName).parse();
+    public static AutoCADExport parse(String fileName, AbstractAutoCADElementExtractor<?>... extractors) throws IOException{
+        return new AutoCADExcelParser(fileName, new DimensionExtractor()).parse();
     }
 }

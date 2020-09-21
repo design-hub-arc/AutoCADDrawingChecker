@@ -1,5 +1,7 @@
 package autocadDrawingChecker.autocadData;
 
+import autocadDrawingChecker.autocadData.elements.AutoCADElement;
+
 /**
  *
  * @author Matt Crow

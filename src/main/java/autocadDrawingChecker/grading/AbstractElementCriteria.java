@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.autocadData.AutoCADElement;
+import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import autocadDrawingChecker.autocadData.AutoCADElementMatcher;
 import autocadDrawingChecker.autocadData.AutoCADExport;
 import autocadDrawingChecker.autocadData.MatchingAutoCADElements;

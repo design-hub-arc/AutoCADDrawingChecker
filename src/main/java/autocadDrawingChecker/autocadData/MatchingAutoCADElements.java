@@ -1,5 +1,7 @@
 package autocadDrawingChecker.autocadData;
 
+import autocadDrawingChecker.autocadData.elements.AutoCADElement;
+
 /**
  * The MatchingAutoCADElements class is 
  * used to connect AutoCADRows from one

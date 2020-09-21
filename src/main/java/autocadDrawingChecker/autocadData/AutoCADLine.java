@@ -1,5 +1,6 @@
 package autocadDrawingChecker.autocadData;
 
+import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import java.util.Arrays;
 
 /**

@@ -1,4 +1,4 @@
-package autocadDrawingChecker.autocadData;
+package autocadDrawingChecker.autocadData.elements;
 
 /**
  * An AutoCADElement represents

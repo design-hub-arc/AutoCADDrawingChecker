@@ -1,6 +1,6 @@
 package autocadDrawingChecker.autocadData.extractors;
 
-import autocadDrawingChecker.autocadData.AutoCADElement;
+import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
