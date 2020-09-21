@@ -23,6 +23,19 @@ The program automatically adds an xlsx extension if you don't provide one, so no
   Maybe have an ElementLoader which checks if it has an element type for each element name
 * see AutoCADElementMatcher
 * Should we match rows for each comparison, or for the export as a whole?
+* automatically save log as txt
+* next project phase: convert drawings to xlsx
+* await Randy for acceptance criteria
+* check for start and end points swapped
+* use VMWare to connect to Design Hub computers to use AutoCAD
+* he usually won't use start, end, or deltas
+* he will mostly use lengths, angles, text, dimensions, layers
+* Look into Federal Section 508
+* https://www.epa.gov/accessibility/what-section-508
+* https://www.section508.gov/
+* https://www.section508.gov/create
+* https://www.access-board.gov/guidelines-and-standards/communications-and-it/about-the-ict-refresh/final-rule/text-of-the-standards-and-guidelines
+
 
 ## Helpful Links
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)
