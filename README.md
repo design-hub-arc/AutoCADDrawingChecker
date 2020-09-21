@@ -22,7 +22,7 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 * Make AutoCADExcelParser easier to work with and extend. 
   Maybe have an ElementLoader which checks if it has an element type for each element name
 * see AutoCADElementMatcher
-* Should we match rows for each comparison, or for the export as a whole?
+* Should we match rows for each comparison, or for the export as a whole? (wait on this)
 * automatically save log as txt
 * next project phase: convert drawings to xlsx
 * await Randy for acceptance criteria
@@ -30,11 +30,13 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 * use VMWare to connect to Design Hub computers to use AutoCAD
 * he usually won't use start, end, or deltas
 * he will mostly use lengths, angles, text, dimensions, layers
+* student work must be exact, so "correct or not" grading
+* don't do classpath automatic loader: explicitly load, not implicitly
 * Look into Federal Section 508
-* https://www.epa.gov/accessibility/what-section-508
-* https://www.section508.gov/
-* https://www.section508.gov/create
-* https://www.access-board.gov/guidelines-and-standards/communications-and-it/about-the-ict-refresh/final-rule/text-of-the-standards-and-guidelines
+    * https://www.epa.gov/accessibility/what-section-508
+    * https://www.section508.gov/
+    * https://www.section508.gov/create
+    * https://www.access-board.gov/guidelines-and-standards/communications-and-it/about-the-ict-refresh/final-rule/text-of-the-standards-and-guidelines
 
 
 ## Helpful Links
