@@ -104,14 +104,6 @@ public class AutoCADExcelParser {
         );
     }
     
-    private AutoCADDimension extractDim(){
-        return new AutoCADDimension(
-            getCellString(AutoCADAttribute.DIM_STYLE),
-            getCellInt(AutoCADAttribute.DYNAMIC_DIMENSION),
-            getCellString(AutoCADAttribute.TEXT_DEFINED_SIZE)
-        );
-    }
-    
     /**
      * Interprets the current row as
  an AutoCADElement, and returns it.
@@ -216,21 +208,27 @@ public class AutoCADExcelParser {
         Sheet sheet = workbook.getSheetAt(0);
         AutoCADExport containedTherein = new AutoCADExport(fileName);
         locateColumns(sheet.getRow(0));
+        HashMap<String, Integer> newCols = new HashMap<>(); // change
+        this.headerToCol.forEach((attr, i)->{
+            newCols.put(attr.getHeader(), i);
+        });
         int max = getRowCount(sheet);
+        String currName = null;
         AutoCADElement data = null;
         //               skip headers
         for(int rowNum = 1; rowNum < max; rowNum++){
             currRow = sheet.getRow(rowNum);
             try {
-                if(getCellString(AutoCADAttribute.NAME).equals("Line")){
+                currName = getCellString(AutoCADAttribute.NAME);
+                if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase
+                    data = extractors.get(currName.toUpperCase()).extract(newCols, currRow);
+                } else if(getCellString(AutoCADAttribute.NAME).equals("Line")){
                     data = extractLine();
                 } else if(getCellString(AutoCADAttribute.NAME).equals("Polyline")){
                     data = extractPolyline();
                 } else if(getCellString(AutoCADAttribute.NAME).equals("MText")){
                     data = extractText();
-                } else if(getCellString(AutoCADAttribute.NAME).equals("Rotated Dimension")){
-                    data = extractDim();
-                }else {
+                } else {
                     data = extractRow();
                 }
             } catch(Exception ex){
