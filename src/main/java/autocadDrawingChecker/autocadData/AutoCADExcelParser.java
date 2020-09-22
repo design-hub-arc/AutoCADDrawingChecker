@@ -4,6 +4,7 @@ import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor;
 import autocadDrawingChecker.autocadData.extractors.DimensionExtractor;
 import autocadDrawingChecker.autocadData.extractors.LineExtractor;
+import autocadDrawingChecker.autocadData.extractors.PolylineExtractor;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,16 +41,6 @@ public class AutoCADExcelParser {
             this.extractors.put(extractor.getName(), extractor);
         }
         currRow = null;
-    }
-    
-    private AutoCADPolyline extractPolyline(){
-        return new AutoCADPolyline(
-            getCellDouble(AutoCADAttribute.LENGTH),
-            getCellDouble(AutoCADAttribute.THICKNESS),
-            getCellDouble(AutoCADAttribute.AREA),
-            getCellString(AutoCADAttribute.CLOSED),
-            getCellDouble(AutoCADAttribute.GLOBAL_WIDTH)
-        );
     }
     
     private AutoCADText extractText(){
@@ -181,8 +172,8 @@ public class AutoCADExcelParser {
                 currName = getCellString(AutoCADAttribute.NAME);
                 if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase
                     data = extractors.get(currName.toUpperCase()).extract(this.headerToCol, currRow);
-                } else if(getCellString(AutoCADAttribute.NAME).equals("Polyline")){
-                    data = extractPolyline();
+                //} else if(getCellString(AutoCADAttribute.NAME).equals("Polyline")){
+                //    data = extractPolyline();
                 } else if(getCellString(AutoCADAttribute.NAME).equals("MText")){
                     data = extractText();
                 } else {
@@ -237,7 +228,8 @@ public class AutoCADExcelParser {
         return new AutoCADExcelParser(
             fileName, 
             new DimensionExtractor(),
-            new LineExtractor()
+            new LineExtractor(),
+            new PolylineExtractor()
         ).parse();
     }
 }
