@@ -5,6 +5,7 @@ import autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtrac
 import autocadDrawingChecker.autocadData.extractors.DimensionExtractor;
 import autocadDrawingChecker.autocadData.extractors.LineExtractor;
 import autocadDrawingChecker.autocadData.extractors.PolylineExtractor;
+import autocadDrawingChecker.autocadData.extractors.TextExtractor;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -41,31 +42,6 @@ public class AutoCADExcelParser {
             this.extractors.put(extractor.getName(), extractor);
         }
         currRow = null;
-    }
-    
-    private AutoCADText extractText(){
-        return new AutoCADText(
-            getCellString(AutoCADAttribute.CONTENTS),
-            getCellString(AutoCADAttribute.CONTENTS_RTF),
-            new double[]{
-                getCellDouble(AutoCADAttribute.POSITION_X),
-                getCellDouble(AutoCADAttribute.POSITION_Y),
-                getCellDouble(AutoCADAttribute.POSITION_Z)
-            },
-            getCellInt(AutoCADAttribute.ROTATION),
-            getCellInt(AutoCADAttribute.SHOW_BORDERS),
-            getCellDouble(AutoCADAttribute.WIDTH)
-        );
-    }
-    
-    /**
-     * Interprets the current row as
- an AutoCADElement, and returns it.
-     * 
-     * @return the current row, as an AutoCADElement. 
-     */
-    private AutoCADElement extractRow(){
-        return new AutoCADElement();
     }
     
     /**
@@ -171,13 +147,10 @@ public class AutoCADExcelParser {
             try {
                 currName = getCellString(AutoCADAttribute.NAME);
                 if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase
-                    data = extractors.get(currName.toUpperCase()).extract(this.headerToCol, currRow);
-                //} else if(getCellString(AutoCADAttribute.NAME).equals("Polyline")){
-                //    data = extractPolyline();
-                } else if(getCellString(AutoCADAttribute.NAME).equals("MText")){
-                    data = extractText();
+                    data = extractors.get(currName.toUpperCase()).extract(headerToCol, currRow);
                 } else {
-                    data = extractRow();
+                    data = new AutoCADElement(); // Doesn't have an extractor for it
+                    Logger.logError(String.format("This AutoCADExcelParser has no extractor for name \"%s\"", currName));
                 }
             } catch(Exception ex){
                 Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
@@ -229,7 +202,8 @@ public class AutoCADExcelParser {
             fileName, 
             new DimensionExtractor(),
             new LineExtractor(),
-            new PolylineExtractor()
+            new PolylineExtractor(),
+            new TextExtractor()
         ).parse();
     }
 }

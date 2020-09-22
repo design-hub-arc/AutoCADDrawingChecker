@@ -1,7 +1,7 @@
 package autocadDrawingChecker.autocadData.extractors;
 
 import autocadDrawingChecker.autocadData.AutoCADAttribute;
-import autocadDrawingChecker.autocadData.AutoCADPolyline;
+import autocadDrawingChecker.autocadData.elements.AutoCADPolyline;
 
 /**
  *
