@@ -15,12 +15,10 @@ public class Main {
     public static void main(String[] args) {
         Application app = Application.getInstance();
         
-        //app.getData()
-        //    .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx")
-        //    .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Check Sample - Master File.xls.xlsx");
-
-//            .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with");
-        //System.out.println(app.grade().toString());
-        app.createGui();
+        app.getData()
+            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
+            .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
+        System.out.println(app.grade().toString());
+        //app.createGui();
     }
 }

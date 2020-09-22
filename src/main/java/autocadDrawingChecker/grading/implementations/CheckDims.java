@@ -21,7 +21,7 @@ public class CheckDims implements AbstractElementCriteria<AutoCADDimension> {
         double ret = 0.0;
         
         // grade on 3 things...
-        ret += 1.0 - MathUtil.percentError(d1.getDynamicDimension(), d2.getDynamicDimension());
+        ret += (d1.getDynamicDimension() == d2.getDynamicDimension()) ? 1.0 : 0.0; //1.0 - MathUtil.percentError(d1.getDynamicDimension(), d2.getDynamicDimension());
         ret += (d1.getDimensionStyle().equals(d2.getDimensionStyle())) ? 1.0 : 0.0;
         ret += (d1.getTextDefinedSize().equals(d2.getTextDefinedSize())) ? 1.0 : 0.0;
         // ... so take the average

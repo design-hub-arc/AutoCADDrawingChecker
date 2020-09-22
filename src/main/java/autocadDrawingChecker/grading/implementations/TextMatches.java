@@ -12,7 +12,7 @@ public class TextMatches implements AbstractElementCriteria<AutoCADText> {
     
     @Override
     public double getMatchScore(AutoCADText row1, AutoCADText row2){
-        // currently just a basic "if it matches exactly, you get 100%, else, 0.
+        // "if it matches exactly, you get 100%, else, 0.
         return (row1.getTextContents().equals(row2.getTextContents())) ? 1.0 : 0.0;
     }
 
