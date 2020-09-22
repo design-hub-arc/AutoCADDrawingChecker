@@ -1,8 +1,6 @@
 package autocadDrawingChecker.autocadData.extractors;
 
 import autocadDrawingChecker.autocadData.AutoCADDimension;
-import java.util.HashMap;
-import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
@@ -15,11 +13,11 @@ public class DimensionExtractor extends AbstractAutoCADElementExtractor<AutoCADD
     }
 
     @Override
-    public AutoCADDimension extract(HashMap<String, Integer> columns, Row currentRow) {
+    public AutoCADDimension doExtract() {
         return new AutoCADDimension(
-            currentRow.getCell(columns.get("Dim Style")).toString(),
-            (int)currentRow.getCell(columns.get("DynamicDimension")).getNumericCellValue(),
-            currentRow.getCell(columns.get("TextDefinedSize")).toString()
+            getCellString("Dim Style"),
+            getCellInt("DynamicDimension"),
+            getCellString("TextDefinedSize")
         );
     }
 
