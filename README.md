@@ -21,15 +21,17 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 ## To Do
 * see AutoCADElementMatcher
 * Should we match rows for each comparison, or for the export as a whole? (wait on this)
-* automatically save log as txt
 * next project phase: convert drawings to xlsx
 * await Randy for acceptance criteria
 * check for start and end points swapped
 * use VMWare to connect to Design Hub computers to use AutoCAD
 * he usually won't use start, end, or deltas
 * he will mostly use lengths, angles, text, dimensions, layers
+
 * student work must be exact, so "correct or not" grading
+
 * don't do classpath automatic loader: explicitly load, not implicitly
+* see Tutorials folder on desktop
 * Look into Federal Section 508
     * https://www.epa.gov/accessibility/what-section-508
     * https://www.section508.gov/

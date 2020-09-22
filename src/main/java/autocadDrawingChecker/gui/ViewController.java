@@ -28,7 +28,7 @@ public class ViewController extends JFrame {
         JMenu logMenu = new JMenu("Log");
         JMenuItem saveLog = new JMenuItem("Save Log");
         saveLog.addActionListener((e)->{
-            FileChooserUtil.askCreateTextFile("Where do you want to save this log?", Logger.getLog());
+            FileChooserUtil.askCreateTextFile("Where do you want to save this log? (don't forget to name it)", Logger.getLog());
         });
         logMenu.add(saveLog);
         menuBar.add(logMenu);

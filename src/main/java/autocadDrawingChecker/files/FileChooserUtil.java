@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.function.Consumer;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -44,8 +47,25 @@ public class FileChooserUtil {
     public static void askCreateTextFile(String dialogTitle, String textFileContents){
         FileChooserUtil fcu = new FileChooserUtil(dialogTitle, JFileChooser.SAVE_DIALOG, JFileChooser.FILES_AND_DIRECTORIES);
         if(fcu.chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
+            File f = fcu.chooser.getSelectedFile();
+            String fStrPath = f.getAbsolutePath();
+            if(!fStrPath.endsWith(".txt")){
+                // rename it if it's extension is incorrect
+                Path fPath = f.toPath();
+                String pathStrIWant = fStrPath + ".txt";
+                try {                    
+                    if(Files.exists(fPath)){
+                        // rename it if it already exists.
+                        Files.move(fPath, Paths.get(pathStrIWant));
+                    }
+                    // regardless, redirect f to point to this new file path
+                    f = new File(pathStrIWant);
+                } catch(Exception ex){
+                    Logger.logError(ex);
+                }
+            }
             // may move this to a file writer util
-            try (BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fcu.chooser.getSelectedFile())))) {
+            try (BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)))) {
                 buff.write(textFileContents);
             } catch (IOException ex) {
                 Logger.logError(ex);
