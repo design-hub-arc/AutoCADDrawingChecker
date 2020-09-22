@@ -10,9 +10,8 @@ import org.apache.poi.ss.usermodel.Row;
 
 /**
  * This class is used to convert spreadsheet data
- * into an AutoCADElement. Ideally, this should allow
- * for more extensibility, as it moves the extraction
- * specifics out of the AutoCADExcelParse.
+ * into an AutoCADElement. These are used by AutoCADExcel parser to identify and
+ * extract elements from records in an Excel file. 
  * 
  * @author Matt Crow
  * @param <T> the type of AutoCADElement this extracts
@@ -27,24 +26,22 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
     /**
      * 
      * @param name if this name shows up in the "name" column of an AutoCAD export,
-     * this will attempt to extract that line.
-     * @param requiredColumns the columns this requires. Automatically converted to
-     * upper case and trimmed.
+     * this will attempt to extract that line. <b>Note that this name is converted to upper case</b>
+     * @param requiredColumns the columns this requires.
      */
     public AbstractAutoCADElementExtractor(String name, AutoCADAttribute... requiredColumns){
         this.name = name.toUpperCase();
         this.requiredColumns = Arrays.asList(requiredColumns);
     }
     
+    /**
+     * 
+     * @return a value in the name column in an AutoCAD export.
+     * When the name of a record in said export matches this method,
+     * that means this should extract from that record.
+     */
     public final String getName(){
         return name;
-    }
-    
-    protected final void setColumns(HashMap<AutoCADAttribute, Integer> cols){
-        currentCols = cols;
-    }
-    protected final void setCurrentRow(Row row){
-        currentRow = row;
     }
     
     /**
@@ -63,6 +60,14 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
         return currentRow.getCell(colIdx).toString(); // returns the contents of the cell as text 
     }
     
+    /**
+     * Gets the double value of the cell in the current
+     * row, in the given column.
+     * 
+     * @param col the column to get the cell value for
+     * @return the double value of the cell.
+     * @throws RuntimeException if the given column is not found or the cell is not numberical
+     */
     protected double getCellDouble(AutoCADAttribute col){
         String data = getCellString(col);
         double ret = 0.0;
@@ -75,6 +80,14 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
         return ret;
     }
     
+    /**
+     * Gets the integer value of the cell in the current
+     * row, in the given column.
+     * 
+     * @param col the column to get the cell value for
+     * @return the int value of the cell.
+     * @throws RuntimeException if the given column is not found, or the cell is non-numberical
+     */
     protected int getCellInt(AutoCADAttribute col){
         return (int)getCellDouble(col);
     }
@@ -93,15 +106,19 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
     
     /**
      * Extracts data from the given row, and converts it to an AutoCAD element.
-     * @param columns the mapping of column headers to the index of the column
+     * @param columns the mapping of columns to the index of the column
      * in the given row.
      * @param currentRow the row to extract data from
      * @return the extracted AutoCADElement.
      */
-    public final T extract(HashMap<AutoCADAttribute, Integer> columns, Row currentRow){
-        setColumns(columns);
-        setCurrentRow(currentRow);
-        return doExtract();
+    public synchronized final T extract(HashMap<AutoCADAttribute, Integer> columns, Row currentRow){
+        // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues
+        this.currentCols = columns;
+        this.currentRow = currentRow;
+        T ret = doExtract();
+        this.currentCols = null;
+        this.currentRow = null;
+        return ret;
     }
     
     /**

@@ -19,8 +19,6 @@ The more similar their file is to the instructor file, the higher their grade wi
 The program automatically adds an xlsx extension if you don't provide one, so no need to worry about that.
 
 ## To Do
-* Make AutoCADExcelParser easier to work with and extend. 
-  Maybe have an ElementLoader which checks if it has an element type for each element name
 * see AutoCADElementMatcher
 * Should we match rows for each comparison, or for the export as a whole? (wait on this)
 * automatically save log as txt
