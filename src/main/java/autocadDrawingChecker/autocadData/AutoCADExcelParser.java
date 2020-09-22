@@ -3,6 +3,7 @@ package autocadDrawingChecker.autocadData;
 import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor;
 import autocadDrawingChecker.autocadData.extractors.DimensionExtractor;
+import autocadDrawingChecker.autocadData.extractors.LineExtractor;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,44 +40,6 @@ public class AutoCADExcelParser {
             this.extractors.put(extractor.getName(), extractor);
         }
         currRow = null;
-    }
-    
-    /**
-     * Interprets the current row of the
-     * spreadsheet as an AutoCADLine, and
-     * returns it.
-     * 
-     * @return the current row, as an AutoCADLine 
-     */
-    private AutoCADLine extractLine(){
-        AutoCADLine ret = null;
-        try {
-            ret = new AutoCADLine(
-                getCellInt(AutoCADAttribute.ANGLE),
-                new double[]{
-                    getCellDouble(AutoCADAttribute.START_X),
-                    getCellDouble(AutoCADAttribute.START_Y),
-                    getCellDouble(AutoCADAttribute.START_Z)
-                },
-                new double[]{
-                    getCellDouble(AutoCADAttribute.END_X),
-                    getCellDouble(AutoCADAttribute.END_Y),
-                    getCellDouble(AutoCADAttribute.END_Z)
-                },
-                new double[]{
-                    getCellDouble(AutoCADAttribute.DELTA_X),
-                    getCellDouble(AutoCADAttribute.DELTA_Y),
-                    getCellDouble(AutoCADAttribute.DELTA_Z)
-                },
-                getCellDouble(AutoCADAttribute.LENGTH),
-                getCellDouble(AutoCADAttribute.THICKNESS)
-            );
-        } catch (Exception ex){
-            Logger.logError(String.format("Error while parsing line %s", currRow.toString()));
-            Logger.logError(ex);
-            
-        }
-        return ret;
     }
     
     private AutoCADPolyline extractPolyline(){
@@ -208,10 +171,6 @@ public class AutoCADExcelParser {
         Sheet sheet = workbook.getSheetAt(0);
         AutoCADExport containedTherein = new AutoCADExport(fileName);
         locateColumns(sheet.getRow(0));
-        HashMap<String, Integer> newCols = new HashMap<>(); // change
-        this.headerToCol.forEach((attr, i)->{
-            newCols.put(attr.getHeader(), i);
-        });
         int max = getRowCount(sheet);
         String currName = null;
         AutoCADElement data = null;
@@ -221,9 +180,7 @@ public class AutoCADExcelParser {
             try {
                 currName = getCellString(AutoCADAttribute.NAME);
                 if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase
-                    data = extractors.get(currName.toUpperCase()).extract(newCols, currRow);
-                } else if(getCellString(AutoCADAttribute.NAME).equals("Line")){
-                    data = extractLine();
+                    data = extractors.get(currName.toUpperCase()).extract(this.headerToCol, currRow);
                 } else if(getCellString(AutoCADAttribute.NAME).equals("Polyline")){
                     data = extractPolyline();
                 } else if(getCellString(AutoCADAttribute.NAME).equals("MText")){
@@ -277,6 +234,10 @@ public class AutoCADExcelParser {
      * @throws IOException if the fileName given does not point to an Excel file
      */
     public static AutoCADExport parse(String fileName, AbstractAutoCADElementExtractor<?>... extractors) throws IOException{
-        return new AutoCADExcelParser(fileName, new DimensionExtractor()).parse();
+        return new AutoCADExcelParser(
+            fileName, 
+            new DimensionExtractor(),
+            new LineExtractor()
+        ).parse();
     }
 }
