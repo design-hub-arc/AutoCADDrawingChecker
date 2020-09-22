@@ -2,10 +2,7 @@ package autocadDrawingChecker.autocadData;
 
 import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor;
-import autocadDrawingChecker.autocadData.extractors.DimensionExtractor;
-import autocadDrawingChecker.autocadData.extractors.LineExtractor;
-import autocadDrawingChecker.autocadData.extractors.PolylineExtractor;
-import autocadDrawingChecker.autocadData.extractors.TextExtractor;
+import autocadDrawingChecker.autocadData.extractors.ExtractorLoader;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,6 +31,11 @@ public class AutoCADExcelParser {
     private final HashMap<String, AbstractAutoCADElementExtractor<?>> extractors;
     private Row currRow;
     
+    /**
+     * Use this instead of the static parse method if you want to use a custom set of extractors
+     * @param fileToParse a path to the Excel file this should parse.
+     * @param extractors the extractors to use for converting rows to autoCAD elements
+     */
     public AutoCADExcelParser(String fileToParse, AbstractAutoCADElementExtractor<?>... extractors){
         fileName = fileToParse;
         headerToCol = new HashMap<>();
@@ -188,22 +190,21 @@ public class AutoCADExcelParser {
      * 
      * This is a shorthand for
      * <pre><code>
-     * new AutoCADExcelParser(fileName).parse();
+     * new AutoCADExcelParser(fileName, ExtractorLoader.getAll()).parse();
      * </code></pre>
      * 
+     * Note that this defaults to use the extractors listed in ExtractorLoader
+     * 
+     * @see ExtractorLoader#getAll() 
      * @param fileName the complete path to an Excel file.
-     * @param extractors the extractors to use
      * @return the contents of the first sheet of the given Excel file , as 
      * an AutoCADExport.
      * @throws IOException if the fileName given does not point to an Excel file
      */
-    public static AutoCADExport parse(String fileName, AbstractAutoCADElementExtractor<?>... extractors) throws IOException{
+    public static AutoCADExport parse(String fileName) throws IOException{
         return new AutoCADExcelParser(
             fileName, 
-            new DimensionExtractor(),
-            new LineExtractor(),
-            new PolylineExtractor(),
-            new TextExtractor()
+            ExtractorLoader.getAll()
         ).parse();
     }
 }
