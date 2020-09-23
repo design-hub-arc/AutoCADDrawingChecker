@@ -1,5 +1,7 @@
 package autocadDrawingChecker.util;
 
+import java.util.List;
+
 /**
  * I will want to implement this
  * class to explicitly load classes,
@@ -11,6 +13,16 @@ package autocadDrawingChecker.util;
  * @param <T> the type of object
  * this will load
  */
-public class AbstractLoader<T> {
-    
+public abstract class AbstractLoader<T> {
+    /**
+     * This method should return constructed 
+     * objects of all subclasses
+     * of T that are relevant to this loader.
+     * These objects returned should not have
+     * mutable states, as they will be accessible
+     * by the whole program.
+     * 
+     * @return a list of objects of T.
+     */
+    public abstract T[] getAll();
 }

@@ -1,5 +1,7 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor;
+import autocadDrawingChecker.grading.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.PageRenderer;
@@ -17,13 +19,18 @@ public class Application {
     private final DrawingCheckerData data;
     private ViewController window;
     
+    private AbstractAutoCADElementExtractor<?>[] extractors;
+    private AbstractGradingCriteria[] criteria;
+    
     private static Application instance;
     
     private Application(){
         if(instance != null){
             throw new ExceptionInInitializerError("Application is supposed to be a singleton: No more than one instance!");
         }
-        data = new DrawingCheckerData();        
+        data = new DrawingCheckerData();
+        extractors = new AbstractAutoCADElementExtractor<?>[0];
+        criteria = new AbstractGradingCriteria[0];
     }
     
     public static final Application getInstance(){
@@ -31,6 +38,34 @@ public class Application {
             instance = new Application();
         }
         return instance;
+    }
+    
+    /**
+     * Sets which set of extractors this will use to parse AutoCAD data.
+     * 
+     * @param extractors
+     * @return this. 
+     */
+    public final Application setExtractors(AbstractAutoCADElementExtractor<?>[] extractors){
+        this.extractors = extractors;
+        return this;
+    }
+    
+    public final AbstractAutoCADElementExtractor<?>[] getExtractors(){
+        return extractors;
+    }
+    
+    public final Application setLoadedCriteria(AbstractGradingCriteria[] criteria){
+        this.criteria = criteria;
+        data.clearCriteria();
+        for(AbstractGradingCriteria crit : criteria){
+            data.addCriteria(crit);
+        }
+        return this;
+    }
+    
+    public final AbstractGradingCriteria[] getGradedCriteria(){
+        return criteria;
     }
     
     public final Application createGui(){

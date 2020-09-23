@@ -4,6 +4,7 @@ import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor;
 import autocadDrawingChecker.autocadData.extractors.ExtractorLoader;
 import autocadDrawingChecker.logging.Logger;
+import autocadDrawingChecker.start.Application;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -188,14 +189,8 @@ public class AutoCADExcelParser {
      * given complete file path, and
      * returns its contents as an AutoCADExport.
      * 
-     * This is a shorthand for
-     * <pre><code>
-     * new AutoCADExcelParser(fileName, ExtractorLoader.getAll()).parse();
-     * </code></pre>
+     * This automatically uses the extractors set in the Application class.
      * 
-     * Note that this defaults to use the extractors listed in ExtractorLoader
-     * 
-     * @see ExtractorLoader#getAll() 
      * @param fileName the complete path to an Excel file.
      * @return the contents of the first sheet of the given Excel file , as 
      * an AutoCADExport.
@@ -204,7 +199,7 @@ public class AutoCADExcelParser {
     public static AutoCADExport parse(String fileName) throws IOException{
         return new AutoCADExcelParser(
             fileName, 
-            ExtractorLoader.getAll()
+            Application.getInstance().getExtractors()
         ).parse();
     }
 }

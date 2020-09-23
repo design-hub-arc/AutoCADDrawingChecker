@@ -1,5 +1,8 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.autocadData.extractors.ExtractorLoader;
+import autocadDrawingChecker.grading.GradingCriteriaLoader;
+
 /**
  * Main servers as the starting point for the
  * application. Future versions may add support
@@ -14,11 +17,13 @@ public class Main {
      */
     public static void main(String[] args) {
         Application app = Application.getInstance();
-        
+        app.setExtractors(new ExtractorLoader().getAll());
+        app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
+        /*
         app.getData()
             .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
             .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
-        System.out.println(app.grade().toString());
-        //app.createGui();
+        System.out.println(app.grade().toString());*/
+        app.createGui();
     }
 }
