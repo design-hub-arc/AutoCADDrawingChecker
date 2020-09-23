@@ -11,7 +11,7 @@ public class LineCount implements AbstractGradingCriteria {
 
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
-        return 1.0 - MathUtil.percentError(exp1.size(), exp2.size());
+        return (exp1.size() == exp2.size()) ? 1.0 : 0.0;//1.0 - MathUtil.percentError(exp1.size(), exp2.size());
     }
 
     @Override

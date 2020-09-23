@@ -27,9 +27,6 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 * use VMWare to connect to Design Hub computers to use AutoCAD
 * he usually won't use start, end, or deltas
 * he will mostly use lengths, angles, text, dimensions, layers
-
-* student work must be exact, so "correct or not" grading
-
 * don't do classpath automatic loader: explicitly load, not implicitly
 * see Tutorials folder on desktop
 * Look into Federal Section 508

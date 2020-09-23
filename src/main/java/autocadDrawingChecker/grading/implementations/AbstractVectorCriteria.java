@@ -21,7 +21,7 @@ public interface AbstractVectorCriteria<T extends AutoCADElement> extends Abstra
         int numComponents = Math.min(v1.length, v2.length);
         
         for(int i = 0; i < numComponents; i++){
-            score += 1.0 - MathUtil.percentError(v1[i], v2[i]);
+            score += (v1[i] == v2[i]) ? 1.0 : 0.0;//1.0 - MathUtil.percentError(v1[i], v2[i]);
         }
         score /= numComponents; // average percent correct
         
