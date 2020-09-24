@@ -12,6 +12,9 @@ public class AutoCADPolyline extends AutoCADElement {
     private final double globalWidth;
     
     private static final double DEFAULT_THICKNESS = 1.0;
+    private static final double DEFAULT_AREA = 1.0;
+    private static final String DEFAULT_CLOSED = "FALSE";
+    private static final double DEFAULT_GLOBAL_WIDTH = 1.0;
     
     public AutoCADPolyline(double len, double thick, double area, String closed, double globalWidth){
         super();
@@ -21,8 +24,8 @@ public class AutoCADPolyline extends AutoCADElement {
         this.closed = closed;
         this.globalWidth = globalWidth;
     }
-    public AutoCADPolyline(double len, double area, String closed, double globalWidth){
-        this(len, DEFAULT_THICKNESS, area, closed, globalWidth);
+    public AutoCADPolyline(double len){
+        this(len, DEFAULT_THICKNESS, DEFAULT_AREA, DEFAULT_CLOSED, DEFAULT_GLOBAL_WIDTH);
     }
     
     public final double getLength(){
