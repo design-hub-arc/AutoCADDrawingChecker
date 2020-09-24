@@ -1,13 +1,12 @@
 package autocadDrawingChecker.autocadData.elements;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import java.util.Arrays;
 
 /**
  *
  * @author Matt
  */
-public class AutoCADText extends AutoCADElement {
+public class AutoCADMultilineText extends AutoCADElement {
     private final String contents;
     private final String contentsRTF;
     private final double[] position;
@@ -15,7 +14,7 @@ public class AutoCADText extends AutoCADElement {
     private final int showBorders;
     private final double width;
     
-    public AutoCADText(String textContents, String rtfContents, double[] coords, int theta, int showBorders, double width) {
+    public AutoCADMultilineText(String textContents, String rtfContents, double[] coords, int theta, int showBorders, double width) {
         super();
         contents = textContents;
         contentsRTF = rtfContents;

@@ -1,13 +1,13 @@
 package autocadDrawingChecker.autocadData.extractors;
 
 import autocadDrawingChecker.autocadData.AutoCADAttribute;
-import autocadDrawingChecker.autocadData.elements.AutoCADText;
+import autocadDrawingChecker.autocadData.elements.AutoCADMultilineText;
 
 /**
  *
  * @author Matt
  */
-public class TextExtractor extends AbstractAutoCADElementExtractor<AutoCADText> {
+public class MTextExtractor extends AbstractAutoCADElementExtractor<AutoCADMultilineText> {
     private static final AutoCADAttribute[] REQ_COLS = new AutoCADAttribute[]{
         AutoCADAttribute.CONTENTS,
         AutoCADAttribute.CONTENTS_RTF,
@@ -19,13 +19,13 @@ public class TextExtractor extends AbstractAutoCADElementExtractor<AutoCADText> 
         AutoCADAttribute.WIDTH
     };
     
-    public TextExtractor() {
+    public MTextExtractor() {
         super("MText", REQ_COLS);
     }
 
     @Override
-    public AutoCADText doExtract() {
-        return new AutoCADText(
+    public AutoCADMultilineText doExtract() {
+        return new AutoCADMultilineText(
             getCellString(AutoCADAttribute.CONTENTS),
             getCellString(AutoCADAttribute.CONTENTS_RTF),
             new double[]{
