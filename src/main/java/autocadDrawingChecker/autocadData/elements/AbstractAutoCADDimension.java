@@ -5,20 +5,20 @@ package autocadDrawingChecker.autocadData.elements;
  *
  * @author Matt Crow
  */
-public class AutoCADDimension extends AutoCADElement {
+public abstract class AbstractAutoCADDimension extends AutoCADElement {
     private final String style;
     private final int dynamicDimension;
     private final String textDefSize;
     
     private static final int DEFAULT_DYNAMIC_DIMENSION = -1;
     
-    public AutoCADDimension(String style, int dynamicDim, String textSize){
+    public AbstractAutoCADDimension(String style, int dynamicDim, String textSize){
         super();
         this.style = style;
         dynamicDimension = dynamicDim;
         textDefSize = textSize;
     }
-    public AutoCADDimension(String style, String textSize){
+    public AbstractAutoCADDimension(String style, String textSize){
         this(style, DEFAULT_DYNAMIC_DIMENSION, textSize);
     }
     

@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading.implementations;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADDimension;
+import autocadDrawingChecker.autocadData.elements.AbstractAutoCADDimension;
 import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import autocadDrawingChecker.grading.AbstractElementCriteria;
 import autocadDrawingChecker.grading.MathUtil;
@@ -9,7 +9,7 @@ import autocadDrawingChecker.grading.MathUtil;
  *
  * @author Matt
  */
-public class CheckDims implements AbstractElementCriteria<AutoCADDimension> {
+public class CheckDims implements AbstractElementCriteria<AbstractAutoCADDimension> {
 
     @Override
     public String getName() {
@@ -17,7 +17,7 @@ public class CheckDims implements AbstractElementCriteria<AutoCADDimension> {
     }
     
     @Override
-    public double getMatchScore(AutoCADDimension d1, AutoCADDimension d2){
+    public double getMatchScore(AbstractAutoCADDimension d1, AbstractAutoCADDimension d2){
         double ret = 0.0;
         
         // grade on 3 things...
@@ -36,8 +36,8 @@ public class CheckDims implements AbstractElementCriteria<AutoCADDimension> {
     }
 
     @Override
-    public AutoCADDimension cast(AutoCADElement e) {
-        return (e instanceof AutoCADDimension) ? (AutoCADDimension)e : null;
+    public AbstractAutoCADDimension cast(AutoCADElement e) {
+        return (e instanceof AbstractAutoCADDimension) ? (AbstractAutoCADDimension)e : null;
     }
 
 }
