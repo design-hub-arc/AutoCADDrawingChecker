@@ -41,7 +41,8 @@ public enum AutoCADAttribute {
     GLOBAL_WIDTH("Global Width"),
     DIM_STYLE("Dim Style"),
     DYNAMIC_DIMENSION("DynamicDimension"),
-    TEXT_DEFINED_SIZE("TextDefinedSize");
+    TEXT_DEFINED_SIZE("TextDefinedSize"),
+    VALUE("Value");
     
     private final String header;
     

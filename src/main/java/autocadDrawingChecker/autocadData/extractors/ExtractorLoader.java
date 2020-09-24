@@ -16,6 +16,7 @@ public class ExtractorLoader extends AbstractLoader<AbstractAutoCADElementExtrac
         return new AbstractAutoCADElementExtractor<?>[]{
             new LineExtractor(),
             new DimensionExtractor(),
+            new TextExtractor(),
             new MTextExtractor(),
             new PolylineExtractor()
         };
