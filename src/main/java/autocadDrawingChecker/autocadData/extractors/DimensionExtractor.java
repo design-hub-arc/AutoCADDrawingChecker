@@ -10,7 +10,7 @@ import autocadDrawingChecker.autocadData.elements.AutoCADDimension;
 public class DimensionExtractor extends AbstractAutoCADElementExtractor<AutoCADDimension> {
     private static final AutoCADAttribute[] REQ_COLS = new AutoCADAttribute[]{
         AutoCADAttribute.DIM_STYLE,
-        AutoCADAttribute.DYNAMIC_DIMENSION,
+        //AutoCADAttribute.DYNAMIC_DIMENSION,
         AutoCADAttribute.TEXT_DEFINED_SIZE
     };
     
@@ -22,7 +22,7 @@ public class DimensionExtractor extends AbstractAutoCADElementExtractor<AutoCADD
     public AutoCADDimension doExtract() {
         return new AutoCADDimension(
             getCellString(AutoCADAttribute.DIM_STYLE),
-            getCellInt(AutoCADAttribute.DYNAMIC_DIMENSION),
+            //getCellInt(AutoCADAttribute.DYNAMIC_DIMENSION),
             getCellString(AutoCADAttribute.TEXT_DEFINED_SIZE)
         );
     }

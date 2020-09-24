@@ -1,6 +1,5 @@
 package autocadDrawingChecker.autocadData.elements;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 
 /**
  *
@@ -11,11 +10,16 @@ public class AutoCADDimension extends AutoCADElement {
     private final int dynamicDimension;
     private final String textDefSize;
     
+    private static final int DEFAULT_DYNAMIC_DIMENSION = -1;
+    
     public AutoCADDimension(String style, int dynamicDim, String textSize){
         super();
         this.style = style;
         dynamicDimension = dynamicDim;
         textDefSize = textSize;
+    }
+    public AutoCADDimension(String style, String textSize){
+        this(style, DEFAULT_DYNAMIC_DIMENSION, textSize);
     }
     
     public final String getDimensionStyle(){

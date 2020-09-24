@@ -1,7 +1,5 @@
 package autocadDrawingChecker.autocadData.elements;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
-
 /**
  *
  * @author Matt
@@ -13,6 +11,8 @@ public class AutoCADPolyline extends AutoCADElement {
     private final String closed;
     private final double globalWidth;
     
+    private static final double DEFAULT_THICKNESS = 1.0;
+    
     public AutoCADPolyline(double len, double thick, double area, String closed, double globalWidth){
         super();
         length = len;
@@ -20,6 +20,9 @@ public class AutoCADPolyline extends AutoCADElement {
         this.area = area;
         this.closed = closed;
         this.globalWidth = globalWidth;
+    }
+    public AutoCADPolyline(double len, double area, String closed, double globalWidth){
+        this(len, DEFAULT_THICKNESS, area, closed, globalWidth);
     }
     
     public final double getLength(){

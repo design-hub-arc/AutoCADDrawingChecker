@@ -166,11 +166,11 @@ public class AutoCADExcelParser {
                     data.setLayer(getCellString(AutoCADAttribute.LAYER));
                     data.setCount(getCellInt(AutoCADAttribute.COUNT)); 
                     data.setName(getCellString(AutoCADAttribute.NAME));
-                    data.setColor(getCellString(AutoCADAttribute.COLOR));
+                    //data.setColor(getCellString(AutoCADAttribute.COLOR));
                     data.setLineType(getCellString(AutoCADAttribute.LINE_TYPE));
-                    data.setLineTypeScale(getCellDouble(AutoCADAttribute.LINE_TYPE_SCALE));
+                    //data.setLineTypeScale(getCellDouble(AutoCADAttribute.LINE_TYPE_SCALE));
                     data.setLineWeight(getCellString(AutoCADAttribute.LINE_WEIGTH));
-                    data.setPlot(getCellString(AutoCADAttribute.PLOT_STYLE));
+                    //data.setPlot(getCellString(AutoCADAttribute.PLOT_STYLE));
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
                     Logger.logError(ex);

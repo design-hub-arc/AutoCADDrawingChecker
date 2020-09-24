@@ -10,7 +10,7 @@ import autocadDrawingChecker.autocadData.elements.AutoCADPolyline;
 public class PolylineExtractor extends AbstractAutoCADElementExtractor<AutoCADPolyline>{
     private static final AutoCADAttribute[] REQ_COLS = new AutoCADAttribute[]{
         AutoCADAttribute.LENGTH,
-        AutoCADAttribute.THICKNESS,
+        //AutoCADAttribute.THICKNESS,
         AutoCADAttribute.AREA,
         AutoCADAttribute.CLOSED,
         AutoCADAttribute.GLOBAL_WIDTH
@@ -23,7 +23,7 @@ public class PolylineExtractor extends AbstractAutoCADElementExtractor<AutoCADPo
     public AutoCADPolyline doExtract() {
         return new AutoCADPolyline(
             getCellDouble(AutoCADAttribute.LENGTH),
-            getCellDouble(AutoCADAttribute.THICKNESS),
+            //getCellDouble(AutoCADAttribute.THICKNESS),
             getCellDouble(AutoCADAttribute.AREA),
             getCellString(AutoCADAttribute.CLOSED),
             getCellDouble(AutoCADAttribute.GLOBAL_WIDTH)

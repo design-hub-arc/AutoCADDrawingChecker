@@ -19,8 +19,8 @@ public class LineExtractor extends AbstractAutoCADElementExtractor<AutoCADLine> 
         AutoCADAttribute.DELTA_X,
         AutoCADAttribute.DELTA_Y,
         AutoCADAttribute.DELTA_Z,
-        AutoCADAttribute.LENGTH,
-        AutoCADAttribute.THICKNESS
+        AutoCADAttribute.LENGTH//,
+        //AutoCADAttribute.THICKNESS
     };
     
     public LineExtractor() {
@@ -46,8 +46,8 @@ public class LineExtractor extends AbstractAutoCADElementExtractor<AutoCADLine> 
                 getCellDouble(AutoCADAttribute.DELTA_Y),
                 getCellDouble(AutoCADAttribute.DELTA_Z)
             },
-            getCellDouble(AutoCADAttribute.LENGTH),
-            getCellDouble(AutoCADAttribute.THICKNESS)
+            getCellDouble(AutoCADAttribute.LENGTH)//,
+            //getCellDouble(AutoCADAttribute.THICKNESS)
         );
     }
 }

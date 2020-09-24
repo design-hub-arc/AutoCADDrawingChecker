@@ -1,15 +1,10 @@
 package autocadDrawingChecker.autocadData.elements;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
 import java.util.Arrays;
 
 /**
  * The AutoCADLine class is used to differentiate 
  * between geometric lines and other AutoCAD elements.
- * 
- * I'm not quite sure how AutoCAD works, so I
- * don't know if I'll need different classes
- * for each element type.
  * 
  * @author Matt Crow
  */
@@ -22,6 +17,7 @@ public class AutoCADLine extends AutoCADElement {
     private final double thickness;
     
     public static final int DIMENSION_COUNT = 3;
+    public static final double DEFAULT_THICKNESS = 1.0;
     
     public AutoCADLine(int theta, double[] start, double[] end, double[] ds, double len, double thick) {
         super();
@@ -31,6 +27,10 @@ public class AutoCADLine extends AutoCADElement {
         deltas = Arrays.copyOf(ds, DIMENSION_COUNT);
         length = len;
         thickness = thick;
+    }
+    
+    public AutoCADLine(int theta, double[] start, double[] end, double[] ds, double len){
+        this(theta, start, end, ds, len, DEFAULT_THICKNESS);
     }
     
     public final double getStart(int dimension){
