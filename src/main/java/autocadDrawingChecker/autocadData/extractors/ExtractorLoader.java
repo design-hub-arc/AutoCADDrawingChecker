@@ -19,7 +19,8 @@ public class ExtractorLoader extends AbstractLoader<AbstractAutoCADElementExtrac
             new DiametricDimensionExtractor(),
             new TextExtractor(),
             new MTextExtractor(),
-            new PolylineExtractor()
+            new PolylineExtractor(),
+            new CircleExtractor()
         };
     }
 }
