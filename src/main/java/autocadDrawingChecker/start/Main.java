@@ -19,11 +19,11 @@ public class Main {
         Application app = Application.getInstance();
         app.setExtractors(new ExtractorLoader().getAll());
         app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
-        
+        /*
         app.getData()
             .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Acceptance Test Drawing 1\\Better Data Extracts\\instructor file.xls")
             .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Acceptance Test Drawing 1\\Better Data Extracts");
-        System.out.println(app.grade().toString());
-        //app.createGui();
+        System.out.println(app.grade().toString());*/
+        app.createGui();
     }
 }

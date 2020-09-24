@@ -23,7 +23,6 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 * Should we match rows for each comparison, or for the export as a whole? (wait on this)
 * next project phase: convert drawings to xlsx
 * await Randy for acceptance criteria
-* use VMWare to connect to Design Hub computers to use AutoCAD
 * see Tutorials folder on desktop
 * Look into Federal Section 508
     * https://www.epa.gov/accessibility/what-section-508
