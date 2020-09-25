@@ -1,4 +1,4 @@
-package autocadDrawingChecker.notImpl;
+package autocadDrawingChecker._notImpl;
 
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;

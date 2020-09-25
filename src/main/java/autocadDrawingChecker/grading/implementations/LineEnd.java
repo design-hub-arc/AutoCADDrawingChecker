@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading.implementations;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADLine;
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
+import autocadDrawingChecker.data.elements.AutoCADLine;
+import autocadDrawingChecker.data.elements.AutoCADElement;
 
 /**
  *

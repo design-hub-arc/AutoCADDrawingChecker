@@ -1,8 +1,15 @@
-package autocadDrawingChecker.autocadData;
+package autocadDrawingChecker.data.extractors;
 
 /**
  * An AutoCADAttribute represents
  * a column in an AutoCAD export.
+ * 
+ * This will likely be removed in the future,
+ * and replaced by simply using static string 
+ * constants in the various extractors, as that
+ * is a far more extendable pattern than this.
+ * 
+ * PRO-TIP: control shift F and replace when refactoring
  * 
  * @author Matt Crow
  */

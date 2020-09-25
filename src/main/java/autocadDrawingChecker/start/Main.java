@@ -1,6 +1,6 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.autocadData.extractors.ExtractorLoader;
+import autocadDrawingChecker.data.extractors.ExtractorLoader;
 import autocadDrawingChecker.grading.GradingCriteriaLoader;
 
 /**

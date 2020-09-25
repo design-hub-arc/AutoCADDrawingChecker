@@ -22,14 +22,12 @@
  * There are several other utility classes in this package:
  * <ul>
  * <li>AutoCADAttribute: lists all the columns expected in an AutoCAD export Excel file</li>
- * <li>AutoCADElementMatcher: used to match elements between two files. Essentially, "this element in the student file is supposed to be this element in the instructor file"</li>
  * <li>AutoCADExcelParser: takes a file path, and returns that file as an AutoCADExport</li>
  * <li>AutoCADExport: a collection of AutoCADElements. This is the class is very important</li>
- * <li>MatchingAutoCADElements: a pair of AutoCADElements matched by the element matcher. Used extensively by grading</li>
  * </ul>
  * 
  * @see autocadDrawingChecker.autocadData.elements.AutoCADElement
  * @see autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor
  * @see autocadDrawingChecker.autocadData.extractors.ExtractorLoader
  */
-package autocadDrawingChecker.autocadData;
+package autocadDrawingChecker.data;

@@ -1,7 +1,6 @@
-package autocadDrawingChecker.autocadData.extractors;
+package autocadDrawingChecker.data.extractors;
 
-import autocadDrawingChecker.autocadData.AutoCADAttribute;
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
+import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.logging.Logger;
 import java.util.Arrays;
 import java.util.HashMap;

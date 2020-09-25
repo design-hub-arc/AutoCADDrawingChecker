@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.autocadData.AutoCADExport;
+import autocadDrawingChecker.data.elements.AutoCADExport;
 
 /**
  * The AbstractGradingCriteria interface is used to

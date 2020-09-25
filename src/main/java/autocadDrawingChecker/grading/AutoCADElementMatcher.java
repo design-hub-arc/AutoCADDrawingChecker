@@ -1,6 +1,7 @@
-package autocadDrawingChecker.autocadData;
+package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
+import autocadDrawingChecker.data.elements.AutoCADExport;
+import autocadDrawingChecker.data.elements.AutoCADElement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;

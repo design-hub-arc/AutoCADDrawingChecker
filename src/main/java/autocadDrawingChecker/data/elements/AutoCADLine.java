@@ -1,4 +1,4 @@
-package autocadDrawingChecker.autocadData.elements;
+package autocadDrawingChecker.data.elements;
 
 import java.util.Arrays;
 

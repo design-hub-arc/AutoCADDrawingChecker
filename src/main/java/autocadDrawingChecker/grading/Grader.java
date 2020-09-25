@@ -1,8 +1,8 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.files.ExcelFileLocator;
-import autocadDrawingChecker.autocadData.AutoCADExcelParser;
-import autocadDrawingChecker.autocadData.AutoCADExport;
+import autocadDrawingChecker.data.AutoCADExcelParser;
+import autocadDrawingChecker.data.elements.AutoCADExport;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 import java.util.Arrays;

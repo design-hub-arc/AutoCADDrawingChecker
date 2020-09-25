@@ -1,7 +1,6 @@
-package autocadDrawingChecker.autocadData.extractors;
+package autocadDrawingChecker.data.extractors;
 
-import autocadDrawingChecker.autocadData.AutoCADAttribute;
-import autocadDrawingChecker.autocadData.elements.AutoCADDiametricDimension;
+import autocadDrawingChecker.data.elements.AutoCADDiametricDimension;
 
 /**
  *

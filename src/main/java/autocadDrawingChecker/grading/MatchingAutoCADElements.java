@@ -1,6 +1,6 @@
-package autocadDrawingChecker.autocadData;
+package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.autocadData.elements.AutoCADElement;
+import autocadDrawingChecker.data.elements.AutoCADElement;
 
 /**
  * The MatchingAutoCADElements class is 

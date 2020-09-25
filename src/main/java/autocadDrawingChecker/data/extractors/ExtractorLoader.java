@@ -1,4 +1,4 @@
-package autocadDrawingChecker.autocadData.extractors;
+package autocadDrawingChecker.data.extractors;
 
 import autocadDrawingChecker.util.AbstractLoader;
 
