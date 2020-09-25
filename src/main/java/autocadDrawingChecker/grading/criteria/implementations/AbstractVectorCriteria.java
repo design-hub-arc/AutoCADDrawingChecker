@@ -2,7 +2,6 @@ package autocadDrawingChecker.grading.criteria.implementations;
 
 import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
-import autocadDrawingChecker.grading.MathUtil;
 
 /**
  * AbstractVectorCriteria is used grading based on some multi-element grading
@@ -30,7 +29,7 @@ public interface AbstractVectorCriteria<T extends AutoCADElement> extends Abstra
     
     /**
      * 
-     * @param e
+     * @param e the element to extract a vector from
      * @return the vector interpretation of the given element,
      * which this will grade on
      */

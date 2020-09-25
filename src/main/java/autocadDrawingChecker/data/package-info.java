@@ -26,8 +26,8 @@
  * <li>AutoCADExport: a collection of AutoCADElements. This is the class is very important</li>
  * </ul>
  * 
- * @see autocadDrawingChecker.autocadData.elements.AutoCADElement
- * @see autocadDrawingChecker.autocadData.extractors.AbstractAutoCADElementExtractor
- * @see autocadDrawingChecker.autocadData.extractors.ExtractorLoader
+ * @see autocadDrawingChecker.data.elements.AutoCADElement
+ * @see autocadDrawingChecker.data.extractors.AbstractAutoCADElementExtractor
+ * @see autocadDrawingChecker.data.extractors.ExtractorLoader
  */
 package autocadDrawingChecker.data;

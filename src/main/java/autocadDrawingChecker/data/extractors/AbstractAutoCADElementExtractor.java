@@ -94,8 +94,8 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
     
     /**
      * Checks to see if the given columns contain all the columns this needs.
-     * @param columns
-     * @return 
+     * @param columns the columns to check against
+     * @return whether or not the given set of columns contains all the columns this extractor needs
      */
     public final boolean hasRequiredColumns(HashMap<AutoCADAttribute, Integer> columns){
         return requiredColumns.stream().allMatch((AutoCADAttribute requiredColumn)->{

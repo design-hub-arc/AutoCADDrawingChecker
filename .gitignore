@@ -2,5 +2,6 @@
 .nb-gradle/
 /build/classes/*
 /build/tmp/*
+/build/docs/*
 !/build/libs/*
 gradle.properties

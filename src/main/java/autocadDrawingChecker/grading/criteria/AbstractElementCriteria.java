@@ -18,7 +18,7 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
     /**
      * Converts e to the given type T. If that
      * is not possible, return null instead.
-     * @param e
+     * @param e the element to attempt to cast to T
      * @return e as T, if possible
      */
     public abstract T cast(AutoCADElement e);
@@ -27,9 +27,9 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
     
     /**
      * Computes the average match score of elements in the given exports.
-     * @param exp1
-     * @param exp2
-     * @return 
+     * @param exp1 the instructor export
+     * @param exp2 the student export to grade
+     * @return the student's net score for this criteria. Ranges from 0.0 to 1.0
      */
     @Override
     public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){

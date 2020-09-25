@@ -43,7 +43,8 @@ public class Application {
     /**
      * Sets which set of extractors this will use to parse AutoCAD data.
      * 
-     * @param extractors
+     * @param extractors the extractors the program should use to convert spreadsheet data into
+     * geometric elements.
      * @return this. 
      */
     public final Application setExtractors(AbstractAutoCADElementExtractor<?>[] extractors){

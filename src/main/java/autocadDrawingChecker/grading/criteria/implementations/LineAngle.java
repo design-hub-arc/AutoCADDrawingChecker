@@ -11,8 +11,8 @@ import autocadDrawingChecker.grading.MathUtil;
 public class LineAngle implements AbstractElementCriteria<AutoCADLine> {
     /**
      * 
-     * @param r1
-     * @param r2
+     * @param r1 a line in the instructor's file
+     * @param r2 a line in the student's file
      * @return 1.0 if r2 is parallel to r1, else 0.0  
      */
     @Override

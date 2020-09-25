@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  another. Essentially, this class compares two exports, and asks "which elements from the second export are supposed to match which elements in the first?"
  * 
  * <h2> A Rigorous Definition of what this Should do </h2>
- * Given sets A and B, and function f(a from A, b from B) => real
+ * Given sets A and B, and function <pre>f(a from A, b from B) =&gt; real</pre>
  * this class returns the set C such that each element c in C contains
  * an ordered pair (a from A, b from B) such that 
  * there exists no set c in C such that for any c2 in C, c2 shares an element with c and c2 is not c
@@ -42,10 +42,12 @@ public class AutoCADElementMatcher<T extends AutoCADElement> {
     
     /**
      * 
-     * @param src
-     * @param cmp
+     * @param src the instructor AutoCADExport the student's file should conform to
+     * @param cmp the student's file
      * @param tryCast a function returning the given AutoCADElement as type T, or null if it cannot cast
-     * @param scoringFunction 
+     * @param scoringFunction a function which returns a double between 0.0 and 1.0. When given an instructor and student file, it should return a number
+     * within this range, with higher scores meaning the student's export is similar to the instructor export, and lower ones meaning the two exports are 
+     * different. Essentially, this acts as a grader assigning a score based on how well the student did by some metric.
      */
     public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, Function<AutoCADElement, T> tryCast, BiFunction<T, T, Double> scoringFunction){
         exp1 = src;

@@ -10,9 +10,8 @@ import java.util.List;
  handles grading a single student
  file to the instructor file.
  * <b>Note that this comparison may 
- * not be commutative: 
+ * not be commutative:</b> 
  * <pre>GradedExport(x, y) != GradedExport(y, x)</pre>
- * </b>
  * 
  * @author Matt Crow.
  */
