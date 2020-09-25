@@ -1,7 +1,7 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.data.extractors.ExtractorLoader;
-import autocadDrawingChecker.grading.GradingCriteriaLoader;
+import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
 
 /**
  * Main servers as the starting point for the

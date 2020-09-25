@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui.chooseCriteria;
 
-import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.start.Application;
 import java.awt.BorderLayout;
 import javax.swing.JCheckBox;

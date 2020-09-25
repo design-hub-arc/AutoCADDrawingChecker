@@ -1,4 +1,4 @@
-package autocadDrawingChecker.grading;
+package autocadDrawingChecker.grading.criteria;
 
 import autocadDrawingChecker.data.elements.AutoCADExport;
 
