@@ -1,6 +1,5 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.files.ExcelFileLocator;
 import autocadDrawingChecker.data.AutoCADExcelParser;
 import autocadDrawingChecker.data.elements.AutoCADExport;
 import autocadDrawingChecker.logging.Logger;

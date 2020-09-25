@@ -1,7 +1,7 @@
 package autocadDrawingChecker.gui.runPage;
 
-import autocadDrawingChecker.files.FileChooserUtil;
-import autocadDrawingChecker.files.FileType;
+import autocadDrawingChecker.util.FileChooserUtil;
+import autocadDrawingChecker.util.FileType;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.logging.Logger;
 import java.io.File;

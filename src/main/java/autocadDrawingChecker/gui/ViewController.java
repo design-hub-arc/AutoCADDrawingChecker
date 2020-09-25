@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui;
 
-import autocadDrawingChecker.files.FileChooserUtil;
+import autocadDrawingChecker.util.FileChooserUtil;
 import autocadDrawingChecker.logging.Logger;
 import java.awt.Toolkit;
 import javax.swing.JFrame;

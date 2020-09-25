@@ -1,4 +1,4 @@
-package autocadDrawingChecker.files;
+package autocadDrawingChecker.grading;
 
 import java.io.File;
 import java.nio.file.Paths;

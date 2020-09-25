@@ -1,4 +1,4 @@
-package autocadDrawingChecker.files;
+package autocadDrawingChecker.util;
 
 import autocadDrawingChecker.logging.Logger;
 import java.io.BufferedWriter;

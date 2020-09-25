@@ -1,7 +1,7 @@
 package autocadDrawingChecker.gui.chooseFiles;
 
-import autocadDrawingChecker.files.FileChooserUtil;
-import autocadDrawingChecker.files.FileType;
+import autocadDrawingChecker.util.FileChooserUtil;
+import autocadDrawingChecker.util.FileType;
 import autocadDrawingChecker.start.Application;
 import java.io.File;
 

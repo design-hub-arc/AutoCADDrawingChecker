@@ -1,4 +1,4 @@
-package autocadDrawingChecker.files;
+package autocadDrawingChecker.util;
 
 /**
  * @author Matt
