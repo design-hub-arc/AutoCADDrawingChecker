@@ -15,10 +15,9 @@ import org.apache.poi.ss.usermodel.Row;
  * @author Matt Crow
  * @param <T> the type of AutoCADElement this extracts
  */
-public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> {
+public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> extends RecordExtractor<T> {
     private final String name;
     private final List<AutoCADAttribute> requiredColumns;
-    private HashMap<AutoCADAttribute, Integer> currentCols;
     private Row currentRow;
     
     
@@ -52,11 +51,14 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
      * @throws RuntimeException if the given column is not found
      */
     protected String getCellString(AutoCADAttribute col){
+        /*
         int colIdx = currentCols.get(col);
         if(colIdx == -1){
             throw new RuntimeException(String.format("Missing column: %s", col.getHeader()));
         }
         return currentRow.getCell(colIdx).toString(); // returns the contents of the cell as text 
+        */
+        return super.getCellString(col.getHeader());
     }
     
     /**
@@ -68,7 +70,7 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
      * @throws RuntimeException if the given column is not found or the cell is not numberical
      */
     protected double getCellDouble(AutoCADAttribute col){
-        String data = getCellString(col);
+        String data = getCellString(col.getHeader());
         double ret = 0.0;
         try {
             ret = Double.parseDouble(data);
@@ -110,15 +112,16 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
      * @param currentRow the row to extract data from
      * @return the extracted AutoCADElement.
      */
+    /*
     public synchronized final T extract(HashMap<AutoCADAttribute, Integer> columns, Row currentRow){
-        // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues
+        // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues        
         this.currentCols = columns;
         this.currentRow = currentRow;
         T ret = doExtract();
         this.currentCols = null;
         this.currentRow = null;
         return ret;
-    }
+    }*/
     
     /**
      * Performs extraction on the current row.
@@ -134,5 +137,5 @@ public abstract class AbstractAutoCADElementExtractor<T extends AutoCADElement> 
      * @see AbstractAutoCADElementExtractor#getCellInt
      * @return the extracted element
      */
-    public abstract T doExtract();
+    //public abstract T doExtract();
 }

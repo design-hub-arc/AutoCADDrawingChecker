@@ -18,7 +18,7 @@ public class RotatedDimensionExtractor extends AbstractAutoCADElementExtractor<A
     }
 
     @Override
-    public AutoCADRotatedDimension doExtract() {
+    public AutoCADRotatedDimension createNew() {
         return new AutoCADRotatedDimension(
             getCellString(AutoCADAttribute.DIM_STYLE),
             //getCellInt(AutoCADAttribute.DYNAMIC_DIMENSION),

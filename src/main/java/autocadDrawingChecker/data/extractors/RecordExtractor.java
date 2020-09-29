@@ -9,7 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 /**
  * @author Matt
  */
-public class RecordExtractor {
+public abstract class RecordExtractor<T extends Record> {
     private HashMap<String, Integer> currentCols;
     private Row currentRow;
     
@@ -38,6 +38,17 @@ public class RecordExtractor {
         return ret;
     }
     
+    protected String getCellString(String col){
+        String ret = null;
+        try {
+            ret = (String)getCell(col);
+        } catch(ClassCastException ex){
+            Logger.logError(String.format("Column \"%s\" is not a string", col));
+            throw ex;
+        }
+        return ret;
+    }
+    
     protected boolean currentRowHasCell(String col){
         int colIdx = currentCols.get(col);
         boolean hasCol = 
@@ -55,23 +66,25 @@ public class RecordExtractor {
      * @param currentRow the row to extract data from
      * @return the extracted AutoCADElement.
      */
-    public synchronized final Record extract(HashMap<String, Integer> columns, Row currentRow){
+    public synchronized final T extract(HashMap<String, Integer> columns, Row currentRow){
         // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues
         this.currentCols = columns;
         this.currentRow = currentRow;
-        Record ret = doExtract();
+        T ret = doExtract();
         this.currentCols = null;
         this.currentRow = null;
         return ret;
     }
     
-    private Record doExtract(){
-        Record ret = new Record();
+    private T doExtract(){
+        T ret = createNew();
         currentCols.keySet().forEach((header)->{
             if(this.currentRowHasCell(header)){
                 ret.setAttribute(header, getCell(header));
             }
         });
         return ret;
-    } 
+    }
+    
+    public abstract T createNew();
 }

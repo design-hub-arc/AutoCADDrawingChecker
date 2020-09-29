@@ -27,7 +27,7 @@ public class LineExtractor extends AbstractAutoCADElementExtractor<AutoCADLine> 
     }
 
     @Override
-    public AutoCADLine doExtract() {
+    public AutoCADLine createNew() {
         return new AutoCADLine(
             getCellInt(AutoCADAttribute.ANGLE),
             new double[]{

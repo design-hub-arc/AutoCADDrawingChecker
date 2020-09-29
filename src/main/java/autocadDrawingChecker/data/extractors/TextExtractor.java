@@ -16,7 +16,7 @@ public class TextExtractor extends AbstractAutoCADElementExtractor<AutoCADText> 
     }
 
     @Override
-    public AutoCADText doExtract() {
+    public AutoCADText createNew() {
         return new AutoCADText(
             getCellString(AutoCADAttribute.VALUE),
             getCellInt(AutoCADAttribute.ROTATION)

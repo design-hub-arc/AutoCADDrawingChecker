@@ -18,7 +18,7 @@ public class CircleExtractor extends AbstractAutoCADElementExtractor<AutoCADCirc
     }
 
     @Override
-    public AutoCADCircle doExtract() {
+    public AutoCADCircle createNew() {
         return new AutoCADCircle(
             new double[]{
                 getCellDouble(AutoCADAttribute.CENTER_X),

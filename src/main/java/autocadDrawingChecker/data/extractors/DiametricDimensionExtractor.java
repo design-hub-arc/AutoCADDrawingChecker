@@ -18,7 +18,7 @@ public class DiametricDimensionExtractor extends AbstractAutoCADElementExtractor
     }
 
     @Override
-    public AutoCADDiametricDimension doExtract() {
+    public AutoCADDiametricDimension createNew() {
         return new AutoCADDiametricDimension(
             getCellString(AutoCADAttribute.DIM_STYLE),
             //getCellInt(AutoCADAttribute.DYNAMIC_DIMENSION),

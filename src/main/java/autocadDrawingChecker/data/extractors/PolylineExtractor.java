@@ -19,7 +19,7 @@ public class PolylineExtractor extends AbstractAutoCADElementExtractor<AutoCADPo
     }
 
     @Override
-    public AutoCADPolyline doExtract() {
+    public AutoCADPolyline createNew() {
         return new AutoCADPolyline(
             getCellDouble(AutoCADAttribute.LENGTH)//,
             //getCellDouble(AutoCADAttribute.THICKNESS),

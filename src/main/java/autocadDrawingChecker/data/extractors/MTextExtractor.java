@@ -23,7 +23,7 @@ public class MTextExtractor extends AbstractAutoCADElementExtractor<AutoCADMulti
     }
 
     @Override
-    public AutoCADMultilineText doExtract() {
+    public AutoCADMultilineText createNew() {
         return new AutoCADMultilineText(
             getCellString(AutoCADAttribute.CONTENTS),
             getCellString(AutoCADAttribute.CONTENTS_RTF),

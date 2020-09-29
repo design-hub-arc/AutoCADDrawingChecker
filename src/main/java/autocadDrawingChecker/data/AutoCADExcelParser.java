@@ -145,7 +145,6 @@ public class AutoCADExcelParser {
         
         
         LinkedList<Record> recordList = new LinkedList<>();
-        RecordExtractor newExtr = new RecordExtractor();
         HashMap<String, Integer> strToCol = new HashMap<>();
         this.headerToCol.forEach((attr, col)->strToCol.put(attr.getHeader(), col));
         
@@ -174,20 +173,12 @@ public class AutoCADExcelParser {
             currRow = sheet.getRow(rowNum);
             if(!isValidRow(currRow)){
                 continue;
-            }
-            
-            
-            
-            rec = newExtr.extract(strToCol, currRow);
-            if(rec != null){
-                recordList.add(rec);
-            }
-            
+            }    
             
             try {
                 currName = getCellString(AutoCADAttribute.NAME);
                 if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase
-                    data = extractors.get(currName.toUpperCase()).extract(headerToCol, currRow);
+                    data = extractors.get(currName.toUpperCase()).extract(strToCol, currRow);
                 } else {
                     data = new AutoCADElement(); // Doesn't have an extractor for it
                     Logger.logError(String.format("This AutoCADExcelParser has no extractor for name \"%s\"", currName));
@@ -211,8 +202,6 @@ public class AutoCADExcelParser {
             }
         }
         Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
-        //Logger.log("Records:");
-        //recordList.forEach(Logger::log);
         
         workbook.close();
         return containedTherein;
