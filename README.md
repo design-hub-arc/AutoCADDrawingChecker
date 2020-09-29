@@ -22,8 +22,6 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 * see AutoCADElementMatcher
 * Should we match rows for each comparison, or for the export as a whole? (wait on this)
 * next project phase: convert drawings to xlsx
-* make Excel Parser skip empty rows instead of just stopping on the first empty row:
-    - consider: what if rows X and X + 2 are set, but row X + 1 is empty?
 * Given double X and double Y, don't do "X == Y", instead do "Math.abs(X - Y) < threshold"
 * see Tutorials folder on desktop
 * Look into Federal Section 508

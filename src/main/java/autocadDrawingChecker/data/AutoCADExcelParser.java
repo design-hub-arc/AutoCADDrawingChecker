@@ -4,7 +4,6 @@ import autocadDrawingChecker.data.extractors.AutoCADAttribute;
 import autocadDrawingChecker.data.elements.AutoCADExport;
 import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.data.extractors.AbstractAutoCADElementExtractor;
-import autocadDrawingChecker.data.extractors.ExtractorLoader;
 import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.start.Application;
 import java.io.FileInputStream;
@@ -72,22 +71,18 @@ public class AutoCADExcelParser {
         }
     }
     
-    /**
-     * 
-     * @param sheet
-     * @return the number of rows containing data in the given sheet 
-     */
-    private int getRowCount(Sheet sheet){
-        int ret = 0;
-        Iterator<Row> iter = sheet.rowIterator();
-        while(iter.hasNext()){
-            if(iter.next().getLastCellNum() == -1){
-                break;
-            } else {
-                ret++;
+    private boolean isRowEmpty(Row row){
+        boolean empty = false;
+        Iterator<Cell> cellIter = row.cellIterator();
+        while(cellIter.hasNext() && !empty){
+            if(cellIter.next().toString().equals("")){
+                empty = true;
             }
         }
-        return ret;
+        return empty;
+    }
+    private boolean isValidRow(Row row){
+        return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);
     }
     
     /**
@@ -143,12 +138,30 @@ public class AutoCADExcelParser {
         Sheet sheet = workbook.getSheetAt(0);
         AutoCADExport containedTherein = new AutoCADExport(fileName);
         locateColumns(sheet.getRow(0));
-        int max = getRowCount(sheet);
+        
+        
+        int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
+        /*
+        Note that numRows will be greater than or
+        equal to the last row with data, but not
+        every row is guaranteed to contain data.
+        
+        From the Apache POI javadoc:
+        """
+        Gets the last row on the sheet 
+        Note: rows which had content before and were set to empty later might still be counted as rows by Excel and Apache POI, 
+        so the result of this method will include such rows and thus the returned value might be higher than expected!
+        """
+        */
+        
         String currName = null;
         AutoCADElement data = null;
         //               skip headers
-        for(int rowNum = 1; rowNum < max; rowNum++){
+        for(int rowNum = 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
+            if(!isValidRow(currRow)){
+                continue;
+            }
             try {
                 currName = getCellString(AutoCADAttribute.NAME);
                 if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase
