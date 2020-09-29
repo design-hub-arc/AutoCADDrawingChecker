@@ -201,13 +201,7 @@ public class AutoCADExcelParser {
                 // which do we need?
                 try {
                     data.setLayer(getCellString(AutoCADAttribute.LAYER));
-                    data.setCount(getCellInt(AutoCADAttribute.COUNT)); 
                     data.setName(getCellString(AutoCADAttribute.NAME));
-                    //data.setColor(getCellString(AutoCADAttribute.COLOR));
-                    data.setLineType(getCellString(AutoCADAttribute.LINE_TYPE));
-                    //data.setLineTypeScale(getCellDouble(AutoCADAttribute.LINE_TYPE_SCALE));
-                    data.setLineWeight(getCellString(AutoCADAttribute.LINE_WEIGTH));
-                    //data.setPlot(getCellString(AutoCADAttribute.PLOT_STYLE));
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
                     Logger.logError(ex);
@@ -216,7 +210,10 @@ public class AutoCADExcelParser {
                 data = null;
             }
         }
-        //Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
+        Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
+        //Logger.log("Records:");
+        //recordList.forEach(Logger::log);
+        
         workbook.close();
         return containedTherein;
     }
