@@ -3,7 +3,9 @@ package autocadDrawingChecker.data;
 import autocadDrawingChecker.data.extractors.AutoCADAttribute;
 import autocadDrawingChecker.data.elements.AutoCADExport;
 import autocadDrawingChecker.data.elements.AutoCADElement;
+import autocadDrawingChecker.data.elements.Record;
 import autocadDrawingChecker.data.extractors.AbstractAutoCADElementExtractor;
+import autocadDrawingChecker.data.extractors.RecordExtractor;
 import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.start.Application;
 import java.io.FileInputStream;
@@ -12,6 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -140,6 +143,15 @@ public class AutoCADExcelParser {
         locateColumns(sheet.getRow(0));
         
         
+        
+        LinkedList<Record> recordList = new LinkedList<>();
+        RecordExtractor newExtr = new RecordExtractor();
+        HashMap<String, Integer> strToCol = new HashMap<>();
+        this.headerToCol.forEach((attr, col)->strToCol.put(attr.getHeader(), col));
+        
+        
+        
+        
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*
         Note that numRows will be greater than or
@@ -156,12 +168,22 @@ public class AutoCADExcelParser {
         
         String currName = null;
         AutoCADElement data = null;
+        Record rec = null;
         //               skip headers
         for(int rowNum = 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
             if(!isValidRow(currRow)){
                 continue;
             }
+            
+            
+            
+            rec = newExtr.extract(strToCol, currRow);
+            if(rec != null){
+                recordList.add(rec);
+            }
+            
+            
             try {
                 currName = getCellString(AutoCADAttribute.NAME);
                 if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase

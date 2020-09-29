@@ -1,5 +1,6 @@
-package autocadDrawingChecker._notImpl;
+package autocadDrawingChecker.data.extractors;
 
+import autocadDrawingChecker.data.elements.Record;
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
 import org.apache.poi.ss.usermodel.Cell;
@@ -39,15 +40,11 @@ public class RecordExtractor {
     
     protected boolean currentRowHasCell(String col){
         int colIdx = currentCols.get(col);
-        boolean hasCol = colIdx != -1;
-        if(hasCol){
-            try {
-                currentRow.getCell(colIdx);
-            } catch(Exception ex){
-                Logger.logError(ex);
-                hasCol = false;
-            }
-        }
+        boolean hasCol = 
+            colIdx != -1 && 
+            currentRow.getCell(colIdx) != null;
+        // getCell doesn't throw an exception if it doesn't have a cell for the given column: it just returns null
+        
         return hasCol;
     }
     

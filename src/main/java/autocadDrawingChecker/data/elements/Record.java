@@ -1,4 +1,4 @@
-package autocadDrawingChecker._notImpl;
+package autocadDrawingChecker.data.elements;
 
 import java.util.HashMap;
 
