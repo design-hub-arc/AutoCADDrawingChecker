@@ -1,13 +1,10 @@
 package autocadDrawingChecker.data;
 
-import autocadDrawingChecker.data.extractors.AutoCADAttribute;
 import autocadDrawingChecker.data.elements.AutoCADExport;
 import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.data.elements.Record;
-import autocadDrawingChecker.data.extractors.AbstractAutoCADElementExtractor;
 import autocadDrawingChecker.data.extractors.RecordExtractor;
 import autocadDrawingChecker.logging.Logger;
-import autocadDrawingChecker.start.Application;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,45 +29,34 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class AutoCADExcelParser {
     private final String fileName;
-    private final HashMap<AutoCADAttribute, Integer> headerToCol;
-    private final HashMap<String, AbstractAutoCADElementExtractor<?>> extractors;
+    private final HashMap<String, Integer> headerToCol;
     private Row currRow;
     
     /**
      * Use this instead of the static parse method if you want to use a custom set of extractors
      * @param fileToParse a path to the Excel file this should parse.
-     * @param extractors the extractors to use for converting rows to autoCAD elements
      */
-    public AutoCADExcelParser(String fileToParse, AbstractAutoCADElementExtractor<?>... extractors){
+    public AutoCADExcelParser(String fileToParse){
         fileName = fileToParse;
         headerToCol = new HashMap<>();
-        this.extractors = new HashMap<>();
-        for(AbstractAutoCADElementExtractor<?> extractor : extractors){
-            this.extractors.put(extractor.getName(), extractor);
-        }
         currRow = null;
     }
     
     /**
-     * Locates required headers within the given
+     * Locates headers within the given
      * row, and populates headerToCol appropriately.
-     * The header row is expected to contain each header
-     * detailed in AutoCADAttribute.
-     * 
-     * @see AutoCADAttribute
      * 
      * @param headerRow the first row of the spreadsheet,
      * containing headers.
      */
-    private void locateColumns(Row headerRow){
+    private synchronized void locateColumns(Row headerRow){
         headerToCol.clear();
         ArrayList<String> headers = new ArrayList<>();
         headerRow.cellIterator().forEachRemaining((Cell c)->{
-            headers.add(c.getStringCellValue().toUpperCase());
+            headers.add(c.toString().toUpperCase());
         });
-        for(AutoCADAttribute reqAttr : AutoCADAttribute.values()){
-            headerToCol.put(reqAttr, headers.indexOf(reqAttr.getHeader().toUpperCase()));
-            // may be -1. Not sure how we should handle missing headers
+        for(int i = 0; i < headers.size(); i++){
+            headerToCol.put(headers.get(i), i);
         }
     }
     
@@ -96,28 +82,12 @@ public class AutoCADExcelParser {
      * @return the string value of the cell.
      * @throws RuntimeException if the given column is not found
      */
-    private String getCellString(AutoCADAttribute col){
-        int colIdx = headerToCol.get(col);
+    private String getCellString(String col){
+        int colIdx = headerToCol.get(col.toUpperCase());
         if(colIdx == -1){
-            throw new RuntimeException(String.format("Missing column: %s", col.getHeader()));
+            throw new RuntimeException(String.format("Missing column: %s", col));
         }
         return currRow.getCell(colIdx).toString(); // returns the contents of the cell as text 
-    }
-    
-    private double getCellDouble(AutoCADAttribute col){
-        String data = getCellString(col);
-        double ret = 0.0;
-        try {
-            ret = Double.parseDouble(data);
-        } catch(NumberFormatException ex){
-            Logger.logError(String.format("Cannot convert \"%s\" to a double", data));
-            throw ex;
-        } 
-        return ret;
-    }
-    
-    private int getCellInt(AutoCADAttribute col){
-        return (int)getCellDouble(col);
     }
     
     private String currRowToString(){
@@ -143,10 +113,8 @@ public class AutoCADExcelParser {
         locateColumns(sheet.getRow(0));
         
         
-        
+        RecordExtractor recExtr = new RecordExtractor();
         LinkedList<Record> recordList = new LinkedList<>();
-        HashMap<String, Integer> strToCol = new HashMap<>();
-        this.headerToCol.forEach((attr, col)->strToCol.put(attr.getHeader(), col));
         
         
         
@@ -168,6 +136,7 @@ public class AutoCADExcelParser {
         String currName = null;
         AutoCADElement data = null;
         Record rec = null;
+        
         //               skip headers
         for(int rowNum = 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
@@ -176,17 +145,13 @@ public class AutoCADExcelParser {
             }    
             
             try {
-                currName = getCellString(AutoCADAttribute.NAME);
-                if(extractors.containsKey(currName.toUpperCase())){ // extractor names are all uppercase
-                    data = extractors.get(currName.toUpperCase()).extract(strToCol, currRow);
-                } else {
-                    data = new AutoCADElement(); // Doesn't have an extractor for it
-                    Logger.logError(String.format("This AutoCADExcelParser has no extractor for name \"%s\"", currName));
-                }
+                rec = recExtr.extract(headerToCol, currRow);
+                recordList.add(rec);
             } catch(Exception ex){
                 Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
                 Logger.logError(ex);
             }
+            /*
             if(data != null){
                 // sets these attributes for every element
                 // which do we need?
@@ -199,9 +164,11 @@ public class AutoCADExcelParser {
                 }
                 containedTherein.add(data);
                 data = null;
-            }
+            }*/
         }
-        Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
+        //Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
+        Logger.log("Record List:\n");
+        recordList.forEach(Logger::log);
         
         workbook.close();
         return containedTherein;
@@ -212,8 +179,6 @@ public class AutoCADExcelParser {
      * given complete file path, and
      * returns its contents as an AutoCADExport.
      * 
-     * This automatically uses the extractors set in the Application class.
-     * 
      * @param fileName the complete path to an Excel file.
      * @return the contents of the first sheet of the given Excel file , as 
      * an AutoCADExport.
@@ -221,8 +186,7 @@ public class AutoCADExcelParser {
      */
     public static AutoCADExport parse(String fileName) throws IOException{
         return new AutoCADExcelParser(
-            fileName, 
-            Application.getInstance().getExtractors()
+            fileName
         ).parse();
     }
 }

@@ -1,6 +1,5 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.data.extractors.ExtractorLoader;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
 
 /**
@@ -17,7 +16,6 @@ public class Main {
      */
     public static void main(String[] args) {
         Application app = Application.getInstance();
-        app.setExtractors(new ExtractorLoader().getAll());
         app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
         
         app.getData()

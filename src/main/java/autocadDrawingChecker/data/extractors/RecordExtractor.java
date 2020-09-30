@@ -9,7 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 /**
  * @author Matt
  */
-public abstract class RecordExtractor<T extends Record> {
+public class RecordExtractor {
     private HashMap<String, Integer> currentCols;
     private Row currentRow;
     
@@ -66,18 +66,18 @@ public abstract class RecordExtractor<T extends Record> {
      * @param currentRow the row to extract data from
      * @return the extracted AutoCADElement.
      */
-    public synchronized final T extract(HashMap<String, Integer> columns, Row currentRow){
+    public synchronized final Record extract(HashMap<String, Integer> columns, Row currentRow){
         // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues
         this.currentCols = columns;
         this.currentRow = currentRow;
-        T ret = doExtract();
+        Record ret = doExtract();
         this.currentCols = null;
         this.currentRow = null;
         return ret;
     }
     
-    private T doExtract(){
-        T ret = createNew();
+    private Record doExtract(){
+        Record ret = new Record();
         currentCols.keySet().forEach((header)->{
             if(this.currentRowHasCell(header)){
                 ret.setAttribute(header, getCell(header));
@@ -85,6 +85,4 @@ public abstract class RecordExtractor<T extends Record> {
         });
         return ret;
     }
-    
-    public abstract T createNew();
 }
