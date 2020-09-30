@@ -14,14 +14,20 @@ import java.util.LinkedList;
  */
 public class AutoCADExport extends LinkedList<AutoCADElement> {
     private final String fileName;
+    private final LinkedList<Record> records; // temporary until I refactor this to a list of records
     
     public AutoCADExport(String fileName){
         super();
         this.fileName = fileName;
+        records = new LinkedList<>();
     }
     
     public final String getFileName(){
         return fileName;
+    }
+    
+    public final void addRecord(Record rec){
+        records.add(rec);
     }
     
     /**
@@ -51,6 +57,8 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
         StringBuilder sb = new StringBuilder();
         sb.append("AutoCAD Data Export:");
         forEach((AutoCADElement row)->sb.append("\n").append(row.toString()));
+        sb.append("Records:");
+        records.forEach((rec)->sb.append("\n").append(rec.toString()));
         sb.append("\nEnd of AutoCAD Export Data");
         return sb.toString();
     }

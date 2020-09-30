@@ -1,7 +1,6 @@
 package autocadDrawingChecker.data;
 
 import autocadDrawingChecker.data.elements.AutoCADExport;
-import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.data.elements.Record;
 import autocadDrawingChecker.data.extractors.RecordExtractor;
 import autocadDrawingChecker.logging.Logger;
@@ -11,7 +10,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -74,22 +72,6 @@ public class AutoCADExcelParser {
         return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);
     }
     
-    /**
-     * Gets the string value of the cell in the current
-     * row, in the given column.
-     * 
-     * @param col the column to get the cell value for
-     * @return the string value of the cell.
-     * @throws RuntimeException if the given column is not found
-     */
-    private String getCellString(String col){
-        int colIdx = headerToCol.get(col.toUpperCase());
-        if(colIdx == -1){
-            throw new RuntimeException(String.format("Missing column: %s", col));
-        }
-        return currRow.getCell(colIdx).toString(); // returns the contents of the cell as text 
-    }
-    
     private String currRowToString(){
         StringBuilder b = new StringBuilder();
         b.append("[");
@@ -114,10 +96,6 @@ public class AutoCADExcelParser {
         
         
         RecordExtractor recExtr = new RecordExtractor();
-        LinkedList<Record> recordList = new LinkedList<>();
-        
-        
-        
         
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*
@@ -133,42 +111,22 @@ public class AutoCADExcelParser {
         """
         */
         
-        String currName = null;
-        AutoCADElement data = null;
         Record rec = null;
         
         //               skip headers
         for(int rowNum = 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
-            if(!isValidRow(currRow)){
-                continue;
-            }    
-            
-            try {
-                rec = recExtr.extract(headerToCol, currRow);
-                recordList.add(rec);
-            } catch(Exception ex){
-                Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
-                Logger.logError(ex);
-            }
-            /*
-            if(data != null){
-                // sets these attributes for every element
-                // which do we need?
+            if(isValidRow(currRow)){
                 try {
-                    data.setLayer(getCellString(AutoCADAttribute.LAYER));
-                    data.setName(getCellString(AutoCADAttribute.NAME));
+                    rec = recExtr.extract(headerToCol, currRow);
+                    containedTherein.addRecord(rec);
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
                     Logger.logError(ex);
                 }
-                containedTherein.add(data);
-                data = null;
-            }*/
+            }
         }
-        //Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
-        Logger.log("Record List:\n");
-        recordList.forEach(Logger::log);
+        Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
         
         workbook.close();
         return containedTherein;

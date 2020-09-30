@@ -23,6 +23,7 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 * Should we match rows for each comparison, or for the export as a whole? (wait on this)
 * next project phase: convert drawings to xlsx
 * Given double X and double Y, don't do "X == Y", instead do "Math.abs(X - Y) < threshold"
+* Grade on every column provided
 * see Tutorials folder on desktop
 * Look into Federal Section 508
     * https://www.epa.gov/accessibility/what-section-508
