@@ -126,7 +126,7 @@ public class AutoCADExcelParser {
                 }
             }
         }
-        Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
+        //Logger.log("In AutoCADExcelParser.parse...\n" + containedTherein.toString());
         
         workbook.close();
         return containedTherein;

@@ -1,6 +1,5 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.criteria.implementations.CheckDims;
 import autocadDrawingChecker.grading.criteria.implementations.LinesPerLayer;
 import autocadDrawingChecker.grading.criteria.implementations.LineStart;
@@ -10,7 +9,6 @@ import autocadDrawingChecker.grading.criteria.implementations.LineCount;
 import autocadDrawingChecker.grading.criteria.implementations.LineAngle;
 import autocadDrawingChecker.grading.criteria.implementations.TextMatches;
 import autocadDrawingChecker.util.AbstractLoader;
-import java.util.ArrayList;
 
 /**
  * The GradingCriteriaLoader is used
@@ -22,14 +20,15 @@ public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteri
     @Override
     public final AbstractGradingCriteria[] getAll(){
         return new AbstractGradingCriteria[]{
-            new LineCount(),
-            new LinesPerLayer(),
-            new LineLength(),
-            new LineAngle(),
-            new LineStart(),
-            new LineEnd(),
-            new CheckDims(),
-            new TextMatches()
+            //new LineCount(),
+            new LinesPerLayer()//,
+            //new LineLength(),
+            //new LineAngle(),
+            //new LineStart(),
+            //new LineEnd(),
+            //new CheckDims(),
+            //new TextMatches(),
+            //new CompareAllColumns()
         };
     }
 }

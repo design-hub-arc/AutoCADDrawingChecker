@@ -52,6 +52,26 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
         return lineCounts;
     } 
     
+    public final HashMap<Object, LinkedList<Record>> sortRecordsByColumn(String column){
+        HashMap<Object, LinkedList<Record>> valueToRecords = new HashMap<>();
+        records.forEach((record)->{
+            Object value = record.getAttribute(column);
+            if(!valueToRecords.containsKey(value)){
+                valueToRecords.put(value, new LinkedList<>());
+            }
+            valueToRecords.get(value).add(record);
+        });
+        return valueToRecords;
+    }
+    public final HashMap<Object, Integer> getCountsPerColumnValue(String column){
+        HashMap<Object, LinkedList<Record>> sorted = sortRecordsByColumn(column);
+        HashMap<Object, Integer> counts = new HashMap<>();
+        sorted.forEach((key, list)->{
+            counts.put(key, list.size());
+        });
+        return counts;
+    }
+    
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
