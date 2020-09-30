@@ -5,7 +5,6 @@ import autocadDrawingChecker.data.elements.AutoCADExport;
 import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.data.elements.Record;
 import autocadDrawingChecker.data.extractors.AbstractAutoCADElementExtractor;
-import autocadDrawingChecker.data.extractors.RecordExtractor;
 import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.start.Application;
 import java.io.FileInputStream;
@@ -167,7 +166,7 @@ public class AutoCADExcelParser {
         
         String currName = null;
         AutoCADElement data = null;
-        Record rec = null;
+        
         //               skip headers
         for(int rowNum = 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
@@ -188,7 +187,6 @@ public class AutoCADExcelParser {
                 Logger.logError(ex);
             }
             if(data != null){
-                // sets these attributes for every element
                 // which do we need?
                 try {
                     data.setLayer(getCellString(AutoCADAttribute.LAYER));
