@@ -25,9 +25,9 @@ public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteri
             new LineLength(),
             new LineAngle(),
             new LineStart(),
-            new LineEnd()//,
+            new LineEnd(),
             //new CheckDims(),
-            //new TextMatches(),
+            new TextMatches()//,
             //new CompareAllColumns()
         };
     }
