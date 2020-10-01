@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -59,14 +60,14 @@ public class AutoCADExcelParser {
     }
     
     private boolean isRowEmpty(Row row){
-        boolean empty = false;
+        boolean couldBeEmpty = true;
         Iterator<Cell> cellIter = row.cellIterator();
-        while(cellIter.hasNext() && !empty){
-            if(cellIter.next().toString().equals("")){
-                empty = true;
+        while(cellIter.hasNext() && couldBeEmpty){
+            if(!cellIter.next().getCellType().equals(CellType.BLANK)){
+                couldBeEmpty = false;
             }
         }
-        return empty;
+        return couldBeEmpty;
     }
     private boolean isValidRow(Row row){
         return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);

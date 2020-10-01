@@ -1,5 +1,6 @@
 package autocadDrawingChecker.data.elements;
 
+import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
 
 /**
@@ -50,7 +51,7 @@ public class AutoCADElement {
     }
     public final Object getAttribute(String attributeName){
         if(!hasAttribute(attributeName)){
-            throw new NullPointerException();
+            throw new NullPointerException(String.format("Doesn't have attribute \"%s\"", attributeName));
         }
         return attributes.get(sanitizeAttributeName(attributeName));
     }

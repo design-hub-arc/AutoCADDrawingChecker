@@ -4,6 +4,7 @@ import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 /**
@@ -32,7 +33,7 @@ public class AutoCADElementExtractor {
                 break;
             default:
                 Logger.logError(String.format("RecordExtractor encountered cell with type %s", c.getCellType().name()));
-                ret = c.toString();
+                //ret = c.toString();
                 break;
         }
         return ret;
@@ -53,7 +54,7 @@ public class AutoCADElementExtractor {
         int colIdx = currentCols.get(col);
         boolean hasCol = 
             colIdx != -1 && 
-            currentRow.getCell(colIdx) != null;
+            currentRow.getCell(colIdx) != null && currentRow.getCell(colIdx).getCellType() != CellType.BLANK;
         // getCell doesn't throw an exception if it doesn't have a cell for the given column: it just returns null
         
         return hasCol;
