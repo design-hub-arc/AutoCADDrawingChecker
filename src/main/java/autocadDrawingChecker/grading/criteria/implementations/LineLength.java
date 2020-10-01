@@ -52,4 +52,9 @@ public class LineLength implements AbstractElementCriteria<AutoCADLine> {
         return (e instanceof AutoCADLine) ? (AutoCADLine)e : null;
     }
 
+    @Override
+    public String[] getAllowedTypes() {
+        return new String[]{"Line"};
+    }
+
 }

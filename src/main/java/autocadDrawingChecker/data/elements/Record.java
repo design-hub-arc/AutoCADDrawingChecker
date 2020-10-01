@@ -30,6 +30,9 @@ public class Record {
         }
         return attributes.get(sanitizeAttributeName(attributeName));
     }
+    public final String getAttributeString(String attributeName){
+        return (String)getAttribute(attributeName);
+    }
     
     @Override
     public String toString(){

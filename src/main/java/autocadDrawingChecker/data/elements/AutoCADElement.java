@@ -18,7 +18,7 @@ public class AutoCADElement extends Record {
         this.setAttribute(NAME_COL, newName);
     }
     public final String getName(){
-        return (String)getAttribute(NAME_COL);
+        return getAttributeString(NAME_COL);
     }
     
     public final void setLayer(String layer){

@@ -40,4 +40,9 @@ public class CheckDims implements AbstractElementCriteria<AbstractAutoCADDimensi
         return (e instanceof AbstractAutoCADDimension) ? (AbstractAutoCADDimension)e : null;
     }
 
+    @Override
+    public String[] getAllowedTypes() {
+        return new String[]{"Diametric Dimension", "Rotated Dimension"};
+    }
+
 }

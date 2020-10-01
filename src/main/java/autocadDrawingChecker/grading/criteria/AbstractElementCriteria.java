@@ -12,9 +12,10 @@ import java.util.List;
  * is graded based on how well its individual elements score.
  * 
  * @author Matt Crow
- * @param <T> the type of elements to grade
  */
 public interface AbstractElementCriteria<T extends AutoCADElement> extends AbstractGradingCriteria {
+    public static final String[] ANY_TYPE = new String[0];
+    
     /**
      * Converts e to the given type T. If that
      * is not possible, return null instead.
@@ -43,4 +44,15 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
         }
         return netScore;
     }
+    
+    /**
+     * 
+     * @return a list of AutoCAD Name column values.
+     * This is meant to filter out unwanted rows.
+     * May remove later.
+     * 
+     * You can make this return AbstractElementCriteria.ANY_TYPE
+     * to allow all record types.
+     */
+    public abstract String[] getAllowedTypes();
 }

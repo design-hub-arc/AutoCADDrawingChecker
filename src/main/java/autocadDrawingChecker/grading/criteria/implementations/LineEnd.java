@@ -31,4 +31,10 @@ public class LineEnd implements AbstractVectorCriteria<AutoCADLine> {
     public AutoCADLine cast(AutoCADElement e) {
         return (e instanceof AutoCADLine) ? (AutoCADLine)e : null;
     }
+
+    @Override
+    public String[] getAllowedTypes() {
+        return new String[]{"Line"};
+        
+    }
 }

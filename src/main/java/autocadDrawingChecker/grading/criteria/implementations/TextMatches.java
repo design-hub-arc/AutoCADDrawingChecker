@@ -2,6 +2,7 @@ package autocadDrawingChecker.grading.criteria.implementations;
 
 import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.data.elements.AbstractAutoCADText;
+import autocadDrawingChecker.data.elements.Record;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 
 /**
@@ -12,7 +13,7 @@ public class TextMatches implements AbstractElementCriteria<AbstractAutoCADText>
     
     @Override
     public double getMatchScore(AbstractAutoCADText row1, AbstractAutoCADText row2){
-        // "if it matches exactly, you get 100%, else, 0.
+        // "if it matches exactly, you get 100%, else, 0."
         return (row1.getTextContents().equals(row2.getTextContents())) ? 1.0 : 0.0;
     }
 
@@ -29,6 +30,11 @@ public class TextMatches implements AbstractElementCriteria<AbstractAutoCADText>
     @Override
     public AbstractAutoCADText cast(AutoCADElement e) {
         return (e instanceof AbstractAutoCADText) ? (AbstractAutoCADText)e : null;
+    }
+
+    @Override
+    public String[] getAllowedTypes() {
+        return new String[]{"Text", "MText"};
     }
 
 }

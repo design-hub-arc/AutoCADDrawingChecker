@@ -2,6 +2,7 @@ package autocadDrawingChecker.grading.criteria.implementations;
 
 import autocadDrawingChecker.data.elements.AutoCADLine;
 import autocadDrawingChecker.data.elements.AutoCADElement;
+import autocadDrawingChecker.data.elements.Record;
 
 /**
  *
@@ -30,5 +31,10 @@ public class LineStart implements AbstractVectorCriteria<AutoCADLine> {
     @Override
     public AutoCADLine cast(AutoCADElement e) {
         return (e instanceof AutoCADLine) ? (AutoCADLine)e : null;
+    }
+
+    @Override
+    public String[] getAllowedTypes(){
+        return new String[]{"Line"};
     }
 }
