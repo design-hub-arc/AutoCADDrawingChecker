@@ -52,12 +52,7 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
         boolean acceptable = Arrays.equals(types, ANY_TYPE);
         for(int i = 0; i < types.length && !acceptable; i++){
             acceptable = eType.equalsIgnoreCase(types[i]);
-        }
-        
-        if(!e.getName().equalsIgnoreCase("Line")){
-            System.out.println();
-        }
-        
+        }        
         return acceptable;
     }
     

@@ -22,10 +22,10 @@ public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteri
         return new AbstractGradingCriteria[]{
             //new LineCount(),
             new LinesPerLayer(),
-            //new LineLength(),
-            new LineAngle()//,
-            //new LineStart(),
-            //new LineEnd(),
+            new LineLength(),
+            new LineAngle(),
+            new LineStart(),
+            new LineEnd()//,
             //new CheckDims(),
             //new TextMatches(),
             //new CompareAllColumns()
