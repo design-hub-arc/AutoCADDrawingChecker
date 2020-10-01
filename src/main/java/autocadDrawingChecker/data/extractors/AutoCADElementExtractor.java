@@ -1,6 +1,6 @@
 package autocadDrawingChecker.data.extractors;
 
-import autocadDrawingChecker.data.elements.Record;
+import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
 import org.apache.poi.ss.usermodel.Cell;
@@ -9,7 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 /**
  * @author Matt
  */
-public class RecordExtractor {
+public class AutoCADElementExtractor {
     private HashMap<String, Integer> currentCols;
     private Row currentRow;
     
@@ -66,18 +66,18 @@ public class RecordExtractor {
      * @param currentRow the row to extract data from
      * @return the extracted AutoCADElement.
      */
-    public synchronized final Record extract(HashMap<String, Integer> columns, Row currentRow){
+    public synchronized final AutoCADElement extract(HashMap<String, Integer> columns, Row currentRow){
         // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues
         this.currentCols = columns;
         this.currentRow = currentRow;
-        Record ret = doExtract();
+        AutoCADElement ret = doExtract();
         this.currentCols = null;
         this.currentRow = null;
         return ret;
     }
     
-    private Record doExtract(){
-        Record ret = new Record();
+    private AutoCADElement doExtract(){
+        AutoCADElement ret = new AutoCADElement();
         currentCols.keySet().forEach((header)->{
             if(this.currentRowHasCell(header)){
                 ret.setAttribute(header, getCell(header));

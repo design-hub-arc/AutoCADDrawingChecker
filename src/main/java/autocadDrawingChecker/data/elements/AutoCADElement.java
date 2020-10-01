@@ -1,17 +1,21 @@
 package autocadDrawingChecker.data.elements;
 
+import java.util.HashMap;
+
 /**
  * An AutoCADElement represents
  a single record in an AutoCADExport.
  * 
  * @author Matt Crow
  */
-public class AutoCADElement extends Record {
+public class AutoCADElement {
+    private final HashMap<String, Object> attributes;
+    
     public static final String NAME_COL = "Name";
     public static final String LAYER_COL = "Layer";
     
     public AutoCADElement(){
-        super();
+        this.attributes = new HashMap<>();
     }
     
     public final void setName(String newName){
@@ -33,11 +37,34 @@ public class AutoCADElement extends Record {
         return (String)getAttribute(LAYER_COL);
     }
     
+    private String sanitizeAttributeName(String name){
+        return name.trim().toUpperCase();
+    }
+    
+    public final AutoCADElement setAttribute(String attrName, Object value){
+        attributes.put(sanitizeAttributeName(attrName), value);
+        return this;
+    }
+    public final boolean hasAttribute(String attributeName){
+        return attributes.containsKey(sanitizeAttributeName(attributeName));
+    }
+    public final Object getAttribute(String attributeName){
+        if(!hasAttribute(attributeName)){
+            throw new NullPointerException();
+        }
+        return attributes.get(sanitizeAttributeName(attributeName));
+    }
+    public final String getAttributeString(String attributeName){
+        return (String)getAttribute(attributeName);
+    }
+    
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("AutoCAD Element:");
-        sb.append(super.toString());
+        attributes.forEach((k, v)->{
+            sb.append(String.format("\n- %s : %s", k, v.toString()));
+        });
         return sb.toString();
     }
 }

@@ -1,6 +1,5 @@
 package autocadDrawingChecker.data.elements;
 
-import autocadDrawingChecker.data.elements.AutoCADElement;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -14,20 +13,14 @@ import java.util.LinkedList;
  */
 public class AutoCADExport extends LinkedList<AutoCADElement> {
     private final String fileName;
-    private final LinkedList<Record> records; // temporary until I refactor this to a list of records
-    
+     
     public AutoCADExport(String fileName){
         super();
         this.fileName = fileName;
-        records = new LinkedList<>();
     }
     
     public final String getFileName(){
         return fileName;
-    }
-    
-    public final void addRecord(Record rec){
-        records.add(rec);
     }
     
     /**
@@ -52,9 +45,9 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
         return lineCounts;
     } 
     
-    public final HashMap<Object, LinkedList<Record>> sortRecordsByColumn(String column){
-        HashMap<Object, LinkedList<Record>> valueToRecords = new HashMap<>();
-        records.forEach((record)->{
+    public final HashMap<Object, LinkedList<AutoCADElement>> sortRecordsByColumn(String column){
+        HashMap<Object, LinkedList<AutoCADElement>> valueToRecords = new HashMap<>();
+        forEach((record)->{
             Object value = record.getAttribute(column);
             if(!valueToRecords.containsKey(value)){
                 valueToRecords.put(value, new LinkedList<>());
@@ -64,7 +57,7 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
         return valueToRecords;
     }
     public final HashMap<Object, Integer> getCountsPerColumnValue(String column){
-        HashMap<Object, LinkedList<Record>> sorted = sortRecordsByColumn(column);
+        HashMap<Object, LinkedList<AutoCADElement>> sorted = sortRecordsByColumn(column);
         HashMap<Object, Integer> counts = new HashMap<>();
         sorted.forEach((key, list)->{
             counts.put(key, list.size());
@@ -77,8 +70,6 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
         StringBuilder sb = new StringBuilder();
         sb.append("AutoCAD Data Export:");
         forEach((AutoCADElement row)->sb.append("\n").append(row.toString()));
-        sb.append("Records:");
-        records.forEach((rec)->sb.append("\n").append(rec.toString()));
         sb.append("\nEnd of AutoCAD Export Data");
         return sb.toString();
     }

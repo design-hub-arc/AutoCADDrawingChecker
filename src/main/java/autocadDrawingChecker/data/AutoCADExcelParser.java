@@ -1,8 +1,8 @@
 package autocadDrawingChecker.data;
 
+import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.data.elements.AutoCADExport;
-import autocadDrawingChecker.data.elements.Record;
-import autocadDrawingChecker.data.extractors.RecordExtractor;
+import autocadDrawingChecker.data.extractors.AutoCADElementExtractor;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -95,7 +95,7 @@ public class AutoCADExcelParser {
         locateColumns(sheet.getRow(0));
         
         
-        RecordExtractor recExtr = new RecordExtractor();
+        AutoCADElementExtractor recExtr = new AutoCADElementExtractor();
         
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*
@@ -111,7 +111,7 @@ public class AutoCADExcelParser {
         """
         */
         
-        Record rec = null;
+        AutoCADElement rec = null;
         
         //               skip headers
         for(int rowNum = 1; rowNum < numRows; rowNum++){
@@ -119,7 +119,7 @@ public class AutoCADExcelParser {
             if(isValidRow(currRow)){
                 try {
                     rec = recExtr.extract(headerToCol, currRow);
-                    containedTherein.addRecord(rec);
+                    containedTherein.add(rec);
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
                     Logger.logError(ex);
