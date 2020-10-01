@@ -55,7 +55,13 @@ public class AutoCADElement {
         return attributes.get(sanitizeAttributeName(attributeName));
     }
     public final String getAttributeString(String attributeName){
-        return (String)getAttribute(attributeName);
+        return getAttribute(attributeName).toString();
+    }
+    public final double getAttributeDouble(String attributeName){
+        return Double.parseDouble(getAttributeString(attributeName));
+    }
+    public final int getAttributeInt(String attributeName){
+        return (int)getAttributeDouble(attributeName);
     }
     
     @Override

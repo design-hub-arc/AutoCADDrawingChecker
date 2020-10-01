@@ -21,9 +21,9 @@ public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteri
     public final AbstractGradingCriteria[] getAll(){
         return new AbstractGradingCriteria[]{
             //new LineCount(),
-            new LinesPerLayer()//,
+            new LinesPerLayer(),
             //new LineLength(),
-            //new LineAngle(),
+            new LineAngle()//,
             //new LineStart(),
             //new LineEnd(),
             //new CheckDims(),

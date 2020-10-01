@@ -4,6 +4,7 @@ import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.data.elements.AutoCADExport;
 import autocadDrawingChecker.grading.AutoCADElementMatcher;
 import autocadDrawingChecker.grading.MatchingAutoCADElements;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
      */
     @Override
     public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){
-        List<MatchingAutoCADElements<T>> matches = new AutoCADElementMatcher<>(exp1, exp2, this::cast, this::getMatchScore).findMatches();
+        List<MatchingAutoCADElements<T>> matches = new AutoCADElementMatcher<>(exp1, exp2, this::canAccept, this::cast, this::getMatchScore).findMatches();
         double netScore = matches.stream().map((MatchingAutoCADElements<T> match)->{
             return getMatchScore(match.getElement1(), match.getElement2());
         }).reduce(0.0, Double::sum);
@@ -43,6 +44,21 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
             netScore /= matches.size();
         }
         return netScore;
+    }
+    
+    public default boolean canAccept(AutoCADElement e){
+        String[] types = getAllowedTypes();
+        String eType = e.getName();
+        boolean acceptable = Arrays.equals(types, ANY_TYPE);
+        for(int i = 0; i < types.length && !acceptable; i++){
+            acceptable = eType.equalsIgnoreCase(types[i]);
+        }
+        
+        if(!e.getName().equalsIgnoreCase("Line")){
+            System.out.println();
+        }
+        
+        return acceptable;
     }
     
     /**

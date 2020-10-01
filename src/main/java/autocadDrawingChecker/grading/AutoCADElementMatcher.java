@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -38,20 +39,23 @@ public class AutoCADElementMatcher<T extends AutoCADElement> {
     private final AutoCADExport exp1;
     private final AutoCADExport exp2;
     private final Function<AutoCADElement, T> caster;
+    private final Predicate<AutoCADElement> accepter;
     private final BiFunction<T, T, Double> score;
     
     /**
      * 
      * @param src the instructor AutoCADExport the student's file should conform to
      * @param cmp the student's file
+     * @param accepter a function which accepts an AutoCADElement, and returns true iff the element should be included in matching.
      * @param tryCast a function returning the given AutoCADElement as type T, or null if it cannot cast
-     * @param scoringFunction a function which returns a double between 0.0 and 1.0. When given an instructor and student file, it should return a number
+    * @param scoringFunction a function which returns a double between 0.0 and 1.0. When given an instructor and student file, it should return a number
      * within this range, with higher scores meaning the student's export is similar to the instructor export, and lower ones meaning the two exports are 
      * different. Essentially, this acts as a grader assigning a score based on how well the student did by some metric.
      */
-    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, Function<AutoCADElement, T> tryCast, BiFunction<T, T, Double> scoringFunction){
+    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, Predicate<AutoCADElement> accepter, Function<AutoCADElement, T> tryCast, BiFunction<T, T, Double> scoringFunction){
         exp1 = src;
         exp2 = cmp;
+        this.accepter = accepter;
         caster = tryCast;
         score = scoringFunction;
     }
@@ -73,14 +77,13 @@ public class AutoCADElementMatcher<T extends AutoCADElement> {
         List<MatchingAutoCADElements<T>> matches = new LinkedList<>();
         
         // pool of unmatched elements
-        List<T> pool = exp2.stream().filter((AutoCADElement e)->{
-            //return e instanceof T; doesn't work because of how generics are implemented
-            return true;
-        }).map(caster).filter((T casted)->{ // use caster to cast ...
-            return casted != null;          // ... then ignore element which it couldn't casr
+        List<T> pool = exp2.stream().filter(accepter).map(caster).filter((T casted)->{ 
+            // use caster to cast ...
+            return casted != null;
+            // ... then ignore element which it couldn't casr
         }).collect(Collectors.toList());
         
-        exp1.stream().map(caster).filter((T casted)->{
+        exp1.stream().filter(accepter).map(caster).filter((T casted)->{
             return casted != null;
         }).forEach((T srcRow)->{
             // find the closest match to srcRow
