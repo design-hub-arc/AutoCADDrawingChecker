@@ -1,6 +1,5 @@
-package autocadDrawingChecker.data.extractors;
+package autocadDrawingChecker.data;
 
-import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,7 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 /**
  * @author Matt
  */
-public class AutoCADElementExtractor {
+class AutoCADElementExtractor {
     private HashMap<String, Integer> currentCols;
     private Row currentRow;
     

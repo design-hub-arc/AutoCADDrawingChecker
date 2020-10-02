@@ -1,8 +1,5 @@
 package autocadDrawingChecker.data;
 
-import autocadDrawingChecker.data.elements.AutoCADElement;
-import autocadDrawingChecker.data.elements.AutoCADExport;
-import autocadDrawingChecker.data.extractors.AutoCADElementExtractor;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;

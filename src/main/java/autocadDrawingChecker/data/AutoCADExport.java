@@ -1,4 +1,4 @@
-package autocadDrawingChecker.data.elements;
+package autocadDrawingChecker.data;
 
 import java.util.HashMap;
 import java.util.LinkedList;
