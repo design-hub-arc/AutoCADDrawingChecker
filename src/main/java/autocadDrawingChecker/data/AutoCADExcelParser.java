@@ -29,7 +29,6 @@ public class AutoCADExcelParser {
     private Row currRow;
     
     /**
-     * Use this instead of the static parse method if you want to use a custom set of extractors
      * @param fileToParse a path to the Excel file this should parse.
      */
     public AutoCADExcelParser(String fileToParse){
@@ -134,6 +133,9 @@ public class AutoCADExcelParser {
      * Reads the Excel file with the
      * given complete file path, and
      * returns its contents as an AutoCADExport.
+     * 
+     * Later versions may extract multiple Exports based on column values,
+     * or this functionality may be deferred to AutoCADExport.
      * 
      * @param fileName the complete path to an Excel file.
      * @return the contents of the first sheet of the given Excel file , as 

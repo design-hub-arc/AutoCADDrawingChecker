@@ -7,7 +7,7 @@ import java.util.LinkedList;
  * An AutoCADExport is used to store the data extracted by
  * AutoCADExcelParser. One should use LinkedList methods,
  * such as LinkedList::forEach and LinkedList::stream, to
- * operate on the contents of the Export
+ * operate on the contents of the Export.
  * 
  * @author Matt Crow
  */

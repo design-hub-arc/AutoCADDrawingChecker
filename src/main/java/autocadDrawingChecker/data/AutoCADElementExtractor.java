@@ -31,7 +31,7 @@ class AutoCADElementExtractor {
                 ret = c.getStringCellValue();
                 break;
             default:
-                Logger.logError(String.format("RecordExtractor encountered cell with type %s", c.getCellType().name()));
+                Logger.logError(String.format("AutoCADElementExtractor encountered cell with type %s", c.getCellType().name()));
                 //ret = c.toString();
                 break;
         }
