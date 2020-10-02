@@ -27,8 +27,8 @@ public interface AbstractElementCriteria extends AbstractGradingCriteria {
      */
     @Override
     public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){
-        List<MatchingAutoCADElements<AutoCADElement>> matches = new AutoCADElementMatcher(exp1, exp2, this::canAccept, this::getMatchScore).findMatches();
-        double netScore = matches.stream().map((MatchingAutoCADElements<AutoCADElement> match)->{
+        List<MatchingAutoCADElements> matches = new AutoCADElementMatcher(exp1, exp2, this::canAccept, this::getMatchScore).findMatches();
+        double netScore = matches.stream().map((MatchingAutoCADElements match)->{
             return getMatchScore(match.getElement1(), match.getElement2());
         }).reduce(0.0, Double::sum);
         

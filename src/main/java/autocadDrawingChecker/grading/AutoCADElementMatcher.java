@@ -66,8 +66,8 @@ public class AutoCADElementMatcher {
      * @return the list of matches between the two
      * given files.
      */
-    public List<MatchingAutoCADElements<AutoCADElement>> findMatches(){
-        List<MatchingAutoCADElements<AutoCADElement>> matches = new LinkedList<>();
+    public List<MatchingAutoCADElements> findMatches(){
+        List<MatchingAutoCADElements> matches = new LinkedList<>();
         
         // pool of unmatched elements
         List<AutoCADElement> pool = exp2.stream().filter(accepter).collect(Collectors.toList());
@@ -89,7 +89,7 @@ public class AutoCADElementMatcher {
             
             // some rows may not match at all
             if(bestRow != null){
-                MatchingAutoCADElements<AutoCADElement> m = new MatchingAutoCADElements<>(srcRow, bestRow);
+                MatchingAutoCADElements m = new MatchingAutoCADElements(srcRow, bestRow);
                 //System.out.println("In AutoCADElementMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);
