@@ -1,15 +1,13 @@
 package autocadDrawingChecker.grading.criteria.implementations;
 
-import autocadDrawingChecker.data.elements.AbstractAutoCADDimension;
-import autocadDrawingChecker.data.elements.AutoCADElement;
+import autocadDrawingChecker.data.AutoCADElement;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
-import autocadDrawingChecker.grading.MathUtil;
 
 /**
  *
  * @author Matt
  */
-public class CheckDims implements AbstractElementCriteria<AbstractAutoCADDimension> {
+public class CheckDims implements AbstractElementCriteria {
 
     @Override
     public String getName() {
@@ -17,27 +15,18 @@ public class CheckDims implements AbstractElementCriteria<AbstractAutoCADDimensi
     }
     
     @Override
-    public double getMatchScore(AbstractAutoCADDimension d1, AbstractAutoCADDimension d2){
-        double ret = 0.0;
-        
-        // grade on 3 things...
-        ret += (d1.getDynamicDimension() == d2.getDynamicDimension()) ? 1.0 : 0.0; //1.0 - MathUtil.percentError(d1.getDynamicDimension(), d2.getDynamicDimension());
-        ret += (d1.getDimensionStyle().equals(d2.getDimensionStyle())) ? 1.0 : 0.0;
-        ret += (d1.getTextDefinedSize().equals(d2.getTextDefinedSize())) ? 1.0 : 0.0;
-        // ... so take the average
-        ret /= 3.0;
-        
-        return ret;
+    public double getMatchScore(AutoCADElement d1, AutoCADElement d2){
+        return (d1.getAttribute("dim style").equals(d2.getAttribute("dim style"))) ? 1.0 : 0.0;
     }
     
     @Override
     public String getDescription() {
-        return "Checks the dimensions of a student export against those of the instructor";
+        return "Checks the dim style of a student export against those of the instructor";
     }
 
     @Override
-    public AbstractAutoCADDimension cast(AutoCADElement e) {
-        return (e instanceof AbstractAutoCADDimension) ? (AbstractAutoCADDimension)e : null;
+    public String[] getAllowedTypes() {
+        return new String[]{"Diametric Dimension", "Rotated Dimension"};
     }
 
 }

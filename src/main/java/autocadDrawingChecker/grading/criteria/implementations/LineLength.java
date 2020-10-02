@@ -1,30 +1,25 @@
 package autocadDrawingChecker.grading.criteria.implementations;
 
-import autocadDrawingChecker.data.elements.AutoCADExport;
-import autocadDrawingChecker.data.elements.AutoCADLine;
-import autocadDrawingChecker.data.elements.AutoCADElement;
+import autocadDrawingChecker.data.AutoCADExport;
+import autocadDrawingChecker.data.AutoCADElement;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
-import autocadDrawingChecker.grading.MathUtil;
 
 /**
- * Looks like this works!
  * 
  * @author Matt Crow
  */
-public class LineLength implements AbstractElementCriteria<AutoCADLine> {
+public class LineLength implements AbstractElementCriteria {
     
     @Override
-    public double getMatchScore(AutoCADLine r1, AutoCADLine r2){
-        return  (r1.getLength() == r2.getLength()) ? 1.0 : 0.0;//1.0 - MathUtil.percentError(r1.getLength(), r2.getLength());
+    public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
+        return  (r1.getAttributeDouble("length") == r2.getAttributeDouble("length")) ? 1.0 : 0.0;
     }
     
     private double getTotalLineLength(AutoCADExport exp){
         return exp.stream().filter((AutoCADElement e)->{
-            return e instanceof AutoCADLine;
+            return this.canAccept(e);
         }).map((AutoCADElement imReallyALine)->{
-            return (AutoCADLine)imReallyALine;
-        }).map((AutoCADLine line)->{
-            return line.getLength();
+            return imReallyALine.getAttributeDouble("length");
         }).reduce(0.0, Double::sum);
     }
     
@@ -48,8 +43,8 @@ public class LineLength implements AbstractElementCriteria<AutoCADLine> {
     }
 
     @Override
-    public AutoCADLine cast(AutoCADElement e) {
-        return (e instanceof AutoCADLine) ? (AutoCADLine)e : null;
+    public String[] getAllowedTypes() {
+        return new String[]{"Line"};
     }
 
 }

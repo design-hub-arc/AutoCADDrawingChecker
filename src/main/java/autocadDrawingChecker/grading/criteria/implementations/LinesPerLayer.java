@@ -1,8 +1,7 @@
 package autocadDrawingChecker.grading.criteria.implementations;
 
-import autocadDrawingChecker.data.elements.AutoCADExport;
+import autocadDrawingChecker.data.AutoCADExport;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.grading.MathUtil;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -15,10 +14,10 @@ public class LinesPerLayer implements AbstractGradingCriteria {
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
         double score = 0.0;
-        HashMap<String, Integer> srcLines = exp1.getLayerLineCounts();
-        HashMap<String, Integer> cmpLines = exp2.getLayerLineCounts();
+        HashMap<Object, Integer> srcLines = exp1.getCountsPerColumnValue("Layer");//exp1.getLayerLineCounts();
+        HashMap<Object, Integer> cmpLines = exp2.getCountsPerColumnValue("Layer");//exp2.getLayerLineCounts();
         
-        for(String layer : srcLines.keySet()){
+        for(Object layer : srcLines.keySet()){
             if(cmpLines.containsKey(layer) && Objects.equals(cmpLines.get(layer), srcLines.get(layer))){
                 score++; // only gives points on layers which contain the exact same number of lines
             }

@@ -2,7 +2,7 @@ package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.AutoCADExcelParser;
-import autocadDrawingChecker.data.elements.AutoCADExport;
+import autocadDrawingChecker.data.AutoCADExport;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.elements.AutoCADExport;
+import autocadDrawingChecker.data.AutoCADExport;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class GradedExport {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Comparing %s to %s:", instructorExport.getFileName(), studentExport.getFileName()));
+        sb.append(String.format("Comparing %s to \n%s:", instructorExport.getFileName(), studentExport.getFileName()));
         grades.forEach((attr, score)->{
             sb.append(String.format("\n* %s: %d%%", attr.getName(), (int)(score * 100)));
         });
