@@ -6,7 +6,7 @@ import autocadDrawingChecker.data.elements.AutoCADElement;
  *
  * @author Matt
  */
-public class LineEnd implements AbstractVectorCriteria<AutoCADElement> {
+public class LineEnd implements AbstractVectorCriteria {
     @Override
     public String getDescription() {
         return "Grades based on how closesly the student's line end points match up with those of the instructor's";
@@ -25,11 +25,6 @@ public class LineEnd implements AbstractVectorCriteria<AutoCADElement> {
             e.getAttributeDouble("end y")
         };
         return v;
-    }
-
-    @Override
-    public AutoCADElement cast(AutoCADElement e) {
-        return e;
     }
 
     @Override

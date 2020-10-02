@@ -14,18 +14,10 @@ import java.util.List;
  * 
  * @author Matt Crow
  */
-public interface AbstractElementCriteria<T extends AutoCADElement> extends AbstractGradingCriteria {
+public interface AbstractElementCriteria extends AbstractGradingCriteria {
     public static final String[] ANY_TYPE = new String[0];
     
-    /**
-     * Converts e to the given type T. If that
-     * is not possible, return null instead.
-     * @param e the element to attempt to cast to T
-     * @return e as T, if possible
-     */
-    public abstract T cast(AutoCADElement e);
-    
-    public abstract double getMatchScore(T e1, T e2);
+    public abstract double getMatchScore(AutoCADElement e1, AutoCADElement e2);
     
     /**
      * Computes the average match score of elements in the given exports.
@@ -35,8 +27,8 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
      */
     @Override
     public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){
-        List<MatchingAutoCADElements<T>> matches = new AutoCADElementMatcher<>(exp1, exp2, this::canAccept, this::cast, this::getMatchScore).findMatches();
-        double netScore = matches.stream().map((MatchingAutoCADElements<T> match)->{
+        List<MatchingAutoCADElements<AutoCADElement>> matches = new AutoCADElementMatcher(exp1, exp2, this::canAccept, this::getMatchScore).findMatches();
+        double netScore = matches.stream().map((MatchingAutoCADElements<AutoCADElement> match)->{
             return getMatchScore(match.getElement1(), match.getElement2());
         }).reduce(0.0, Double::sum);
         
@@ -46,6 +38,14 @@ public interface AbstractElementCriteria<T extends AutoCADElement> extends Abstr
         return netScore;
     }
     
+    /**
+     * Checks to see if the given AutoCADElement can -or should-
+     * be graded by this criteria. This is used by the AutoCADElementMatcher
+     * to decide if the given element should be graded.
+     * @see AutoCADElementMatcher
+     * @param e the AutoCADElement to check
+     * @return whether or not this criteria can grade e
+     */
     public default boolean canAccept(AutoCADElement e){
         String[] types = getAllowedTypes();
         String eType = e.getName();

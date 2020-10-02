@@ -7,7 +7,7 @@ import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
  *
  * @author Matt
  */
-public class CheckDims implements AbstractElementCriteria<AutoCADElement> {
+public class CheckDims implements AbstractElementCriteria {
 
     @Override
     public String getName() {
@@ -38,13 +38,8 @@ public class CheckDims implements AbstractElementCriteria<AutoCADElement> {
     }
 
     @Override
-    public AutoCADElement cast(AutoCADElement e) {
-        return e;
-    }
-
-    @Override
     public String[] getAllowedTypes() {
-        return new String[]{"Diametric Dimension", "Rotated Dimension", "Rotated Dimension"};
+        return new String[]{"Diametric Dimension", "Rotated Dimension"};
     }
 
 }

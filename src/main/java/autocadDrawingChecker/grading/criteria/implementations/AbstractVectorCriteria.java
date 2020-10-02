@@ -9,11 +9,10 @@ import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
  * but I may change to normalized dot product later.
  * 
  * @author Matt Crow
- * @param <T> the type of AutoCADElement this will grade
  */
-public interface AbstractVectorCriteria<T extends AutoCADElement> extends AbstractElementCriteria<T> {
+public interface AbstractVectorCriteria extends AbstractElementCriteria {
     @Override
-    public default double getMatchScore(T e1, T e2){
+    public default double getMatchScore(AutoCADElement e1, AutoCADElement e2){
         double score = 0.0;
         double[] v1 = extractVector(e1);
         double[] v2 = extractVector(e2);
@@ -33,5 +32,5 @@ public interface AbstractVectorCriteria<T extends AutoCADElement> extends Abstra
      * @return the vector interpretation of the given element,
      * which this will grade on
      */
-    public abstract double[] extractVector(T e);
+    public abstract double[] extractVector(AutoCADElement e);
 }

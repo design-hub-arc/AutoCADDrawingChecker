@@ -5,7 +5,6 @@ import autocadDrawingChecker.data.elements.AutoCADElement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -30,33 +29,27 @@ import java.util.stream.Collectors;
  * <li>C must contain the maximum average value of f(c) possible <b>This is the hard one</b></li>
  * </ul>
  * 
- * @author Matt Crow
- * @param <T> the type of AutoCADElements to match. Elements 
- * which cannot be converted to this type will be ignored. Use 
- * AutoCADElement to keep all elements. 
+ * @author Matt Crow 
  */
-public class AutoCADElementMatcher<T extends AutoCADElement> {
+public class AutoCADElementMatcher {
     private final AutoCADExport exp1;
     private final AutoCADExport exp2;
-    private final Function<AutoCADElement, T> caster;
     private final Predicate<AutoCADElement> accepter;
-    private final BiFunction<T, T, Double> score;
+    private final BiFunction<AutoCADElement, AutoCADElement, Double> score;
     
     /**
      * 
      * @param src the instructor AutoCADExport the student's file should conform to
      * @param cmp the student's file
      * @param accepter a function which accepts an AutoCADElement, and returns true iff the element should be included in matching.
-     * @param tryCast a function returning the given AutoCADElement as type T, or null if it cannot cast
     * @param scoringFunction a function which returns a double between 0.0 and 1.0. When given an instructor and student file, it should return a number
      * within this range, with higher scores meaning the student's export is similar to the instructor export, and lower ones meaning the two exports are 
      * different. Essentially, this acts as a grader assigning a score based on how well the student did by some metric.
      */
-    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, Predicate<AutoCADElement> accepter, Function<AutoCADElement, T> tryCast, BiFunction<T, T, Double> scoringFunction){
+    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, Predicate<AutoCADElement> accepter, BiFunction<AutoCADElement, AutoCADElement, Double> scoringFunction){
         exp1 = src;
         exp2 = cmp;
         this.accepter = accepter;
-        caster = tryCast;
         score = scoringFunction;
     }
     
@@ -73,26 +66,20 @@ public class AutoCADElementMatcher<T extends AutoCADElement> {
      * @return the list of matches between the two
      * given files.
      */
-    public List<MatchingAutoCADElements<T>> findMatches(){
-        List<MatchingAutoCADElements<T>> matches = new LinkedList<>();
+    public List<MatchingAutoCADElements<AutoCADElement>> findMatches(){
+        List<MatchingAutoCADElements<AutoCADElement>> matches = new LinkedList<>();
         
         // pool of unmatched elements
-        List<T> pool = exp2.stream().filter(accepter).map(caster).filter((T casted)->{ 
-            // use caster to cast ...
-            return casted != null;
-            // ... then ignore element which it couldn't casr
-        }).collect(Collectors.toList());
+        List<AutoCADElement> pool = exp2.stream().filter(accepter).collect(Collectors.toList());
         
-        exp1.stream().filter(accepter).map(caster).filter((T casted)->{
-            return casted != null;
-        }).forEach((T srcRow)->{
+        exp1.stream().filter(accepter).forEach((AutoCADElement srcRow)->{
             // find the closest match to srcRow
             double bestScore = 0.0;
             double currScore = 0.0;
-            T bestRow = null;
+            AutoCADElement bestRow = null;
             
             // find the highest score
-            for(T cmpRow : pool){
+            for(AutoCADElement cmpRow : pool){
                 currScore = score.apply(srcRow, cmpRow);
                 if(currScore > bestScore){
                     bestScore = currScore;
@@ -102,7 +89,7 @@ public class AutoCADElementMatcher<T extends AutoCADElement> {
             
             // some rows may not match at all
             if(bestRow != null){
-                MatchingAutoCADElements<T> m = new MatchingAutoCADElements<>(srcRow, bestRow);
+                MatchingAutoCADElements<AutoCADElement> m = new MatchingAutoCADElements<>(srcRow, bestRow);
                 //System.out.println("In AutoCADElementMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);

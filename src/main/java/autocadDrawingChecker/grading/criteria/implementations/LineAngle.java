@@ -7,7 +7,7 @@ import autocadDrawingChecker.grading.MathUtil;
 /**
  * @author Matt Crow
  */
-public class LineAngle implements AbstractElementCriteria<AutoCADElement> {
+public class LineAngle implements AbstractElementCriteria {
     /**
      * 
      * @param r1 a line in the instructor's file
@@ -31,11 +31,6 @@ public class LineAngle implements AbstractElementCriteria<AutoCADElement> {
     @Override
     public String getName() {
         return "Line Angle";
-    }
-
-    @Override
-    public AutoCADElement cast(AutoCADElement e) {
-        return e;
     }
 
     @Override

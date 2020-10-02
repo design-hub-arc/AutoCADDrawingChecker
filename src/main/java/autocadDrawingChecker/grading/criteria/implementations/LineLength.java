@@ -5,11 +5,10 @@ import autocadDrawingChecker.data.elements.AutoCADElement;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 
 /**
- * Looks like this works!
  * 
  * @author Matt Crow
  */
-public class LineLength implements AbstractElementCriteria<AutoCADElement> {
+public class LineLength implements AbstractElementCriteria {
     
     @Override
     public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
@@ -41,11 +40,6 @@ public class LineLength implements AbstractElementCriteria<AutoCADElement> {
     @Override
     public String getName() {
         return "Line Length";
-    }
-
-    @Override
-    public AutoCADElement cast(AutoCADElement e) {
-        return e;
     }
 
     @Override
