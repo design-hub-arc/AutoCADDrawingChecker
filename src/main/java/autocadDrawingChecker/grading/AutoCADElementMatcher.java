@@ -2,6 +2,7 @@ package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.data.AutoCADExport;
 import autocadDrawingChecker.data.AutoCADElement;
+import autocadDrawingChecker.logging.Logger;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -80,7 +81,12 @@ public class AutoCADElementMatcher {
             
             // find the highest score
             for(AutoCADElement cmpRow : pool){
-                currScore = score.apply(srcRow, cmpRow);
+                try {
+                    currScore = score.apply(srcRow, cmpRow);
+                } catch (Exception ex){
+                    Logger.logError(ex);
+                    currScore = 0.0;
+                }
                 if(currScore > bestScore){
                     bestScore = currScore;
                     bestRow = cmpRow;
