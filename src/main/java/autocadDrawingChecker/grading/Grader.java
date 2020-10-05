@@ -3,10 +3,15 @@ package autocadDrawingChecker.grading;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.AutoCADExcelParser;
 import autocadDrawingChecker.data.AutoCADExport;
+import autocadDrawingChecker.grading.criteria.implementations.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -87,8 +92,20 @@ public class Grader {
         
         cmp = getStudentFiles();
         
+        
+        Set<String> cols = src.getColumns();
+        LinkedList<AbstractGradingCriteria> colCrits = new LinkedList<>();
+        for(String column : cols){
+            colCrits.add(new CompareColumn(column));
+        }
+        colCrits.forEach((c)->report.addCriteria(c));
+        
+        List<AbstractGradingCriteria> expCrit = new ArrayList<>();
+        expCrit.addAll(criteria);
+        expCrit.addAll(colCrits);
+        
         cmp.stream().forEach((exp)->{
-            report.add(new GradedExport(src, exp, criteria));
+            report.add(new GradedExport(src, exp, expCrit));
         });
         
         return report;

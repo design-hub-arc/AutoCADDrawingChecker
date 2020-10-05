@@ -4,6 +4,7 @@ import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.AutoCADExport;
 import autocadDrawingChecker.grading.criteria.implementations.CompareColumn;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,14 +21,20 @@ import java.util.Set;
 public class GradedExport {
     private final AutoCADExport instructorExport;
     private final AutoCADExport studentExport;
-    private final List<AbstractGradingCriteria> gradedCriteria;
+    private final Set<AbstractGradingCriteria> gradedCriteria;
     private final HashMap<AbstractGradingCriteria, Double> grades;
     private final double finalGrade;
     
+    /**
+     * 
+     * @param instructorsExport the instructor's AutoCADExport
+     * @param studentsExport the student's AutoCADExport
+     * @param gradeOnThese the criteria to grade on. 
+     */
     public GradedExport(AutoCADExport instructorsExport, AutoCADExport studentsExport, List<AbstractGradingCriteria> gradeOnThese){
         instructorExport = instructorsExport;
         studentExport = studentsExport;
-        gradedCriteria = gradeOnThese;
+        gradedCriteria = new HashSet<>(gradeOnThese);
         grades = new HashMap<>();
         finalGrade = runComparison();
     }
@@ -41,22 +48,7 @@ public class GradedExport {
             similarityScore += newScore;
         }
         
-        
-        
-        // new stuff
-        CompareColumn newCrit = null;
-        Set<String> cols = instructorExport.getColumns();
-        for(String column : cols){
-            newCrit = new CompareColumn(column);
-            newScore = newCrit.computeScore(instructorExport, studentExport);
-            grades.put(newCrit, newScore);
-            similarityScore += newScore;
-        }
-        
-        
-        
-        
-        return similarityScore / (gradedCriteria.size() + cols.size()); // average similarity score
+        return similarityScore / (gradedCriteria.size()); // average similarity score
     }
     
     public final AutoCADExport getInstructorFile(){
