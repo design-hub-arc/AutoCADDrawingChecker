@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
  * @author Matt Crow 
  */
 public class AutoCADElementMatcher {
-    private final AutoCADExport exp1;
-    private final AutoCADExport exp2;
+    private final List<AutoCADElement> exp1;
+    private final List<AutoCADElement> exp2;
     private final Predicate<AutoCADElement> accepter;
     private final BiFunction<AutoCADElement, AutoCADElement, Double> score;
     
@@ -47,7 +47,7 @@ public class AutoCADElementMatcher {
      * within this range, with higher scores meaning the student's export is similar to the instructor export, and lower ones meaning the two exports are 
      * different. Essentially, this acts as a grader assigning a score based on how well the student did by some metric.
      */
-    public AutoCADElementMatcher(AutoCADExport src, AutoCADExport cmp, Predicate<AutoCADElement> accepter, BiFunction<AutoCADElement, AutoCADElement, Double> scoringFunction){
+    public AutoCADElementMatcher(List<AutoCADElement> src, List<AutoCADElement> cmp, Predicate<AutoCADElement> accepter, BiFunction<AutoCADElement, AutoCADElement, Double> scoringFunction){
         exp1 = src;
         exp2 = cmp;
         this.accepter = accepter;
