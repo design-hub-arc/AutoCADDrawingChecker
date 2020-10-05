@@ -2,6 +2,7 @@ package autocadDrawingChecker.data;
 
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * An AutoCADElement represents
@@ -18,6 +19,10 @@ public class AutoCADElement {
     // no access modifier, so only classes in this package can invoke this
     AutoCADElement(){
         this.attributes = new HashMap<>();
+    }
+    
+    public final Set<String> getAttributes(){
+        return attributes.keySet();
     }
     
     /**

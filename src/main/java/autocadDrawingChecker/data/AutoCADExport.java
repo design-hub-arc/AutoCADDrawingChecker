@@ -1,7 +1,9 @@
 package autocadDrawingChecker.data;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * An AutoCADExport is used to store the data extracted by
@@ -63,6 +65,14 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
             counts.put(key, list.size());
         });
         return counts;
+    }
+    
+    public final Set<String> getColumns(){
+        Set<String> cols = new HashSet<>();
+        forEach((AutoCADElement e)->{
+            cols.addAll(e.getAttributes());
+        });
+        return cols;
     }
     
     @Override

@@ -2,8 +2,10 @@ package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.AutoCADExport;
+import autocadDrawingChecker.grading.criteria.implementations.CompareColumn;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The GradedExport class
@@ -38,7 +40,23 @@ public class GradedExport {
             grades.put(attr, newScore);
             similarityScore += newScore;
         }
-        return similarityScore / gradedCriteria.size(); // average similarity score
+        
+        
+        
+        // new stuff
+        CompareColumn newCrit = null;
+        Set<String> cols = instructorExport.getColumns();
+        for(String column : cols){
+            newCrit = new CompareColumn(column);
+            newScore = newCrit.computeScore(instructorExport, studentExport);
+            grades.put(newCrit, newScore);
+            similarityScore += newScore;
+        }
+        
+        
+        
+        
+        return similarityScore / (gradedCriteria.size() + cols.size()); // average similarity score
     }
     
     public final AutoCADExport getInstructorFile(){
