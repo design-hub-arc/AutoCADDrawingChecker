@@ -76,7 +76,6 @@ public class Grader {
      */
     public final GradingReport grade(){
         GradingReport report = new GradingReport();
-        criteria.forEach((crit)->report.addCriteria(crit));
         
         AutoCADExport trySrc = null;
         List<AutoCADExport> cmp = null;
@@ -92,20 +91,25 @@ public class Grader {
         
         cmp = getStudentFiles();
         
-        
-        Set<String> cols = src.getColumns();
-        LinkedList<AbstractGradingCriteria> colCrits = new LinkedList<>();
-        for(String column : cols){
-            colCrits.add(new CompareColumn(column));
+        /*
+        see which columns exist in the instructor export,
+        and add those columns to the list of criteria this
+        should grade on. Don't directly add them to this.criteria
+        though, as that could cause problems
+        */
+        Set<String> colsToGrade = (src == null) ? new HashSet<>() : src.getColumns();
+        LinkedList<AbstractGradingCriteria> colCriteria = new LinkedList<>();
+        for(String column : colsToGrade){
+            colCriteria.add(new CompareColumn(column));
         }
-        colCrits.forEach((c)->report.addCriteria(c));
         
-        List<AbstractGradingCriteria> expCrit = new ArrayList<>();
-        expCrit.addAll(criteria);
-        expCrit.addAll(colCrits);
+        List<AbstractGradingCriteria> finalGradedCriteria = new ArrayList<>();
+        finalGradedCriteria.addAll(criteria);
+        finalGradedCriteria.addAll(colCriteria);
+        finalGradedCriteria.forEach((c)->report.addCriteria(c));
         
         cmp.stream().forEach((exp)->{
-            report.add(new GradedExport(src, exp, expCrit));
+            report.add(new GradedExport(src, exp, finalGradedCriteria));
         });
         
         return report;

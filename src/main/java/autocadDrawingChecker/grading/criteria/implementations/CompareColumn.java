@@ -34,7 +34,8 @@ public class CompareColumn implements AbstractElementCriteria {
 
     @Override
     public String getName() {
-        return String.format("Compare %s column", column);
+        //                    Easier to read when it simply starts with the column name
+        return String.format("%s column", column);
     }
 
     @Override
