@@ -4,7 +4,6 @@ import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import org.apache.poi.hssf.record.CFRuleBase;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ComparisonOperator;
@@ -23,8 +22,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 /**
  * The GradingReport class is used to bundle a set of graded exports
  * together so they can be outputted together into one file. This
- * class will likely be rewritten in later versions to write the
- * report in a more easily readable format.
+ * class can be used to write the graded files to either a text file,
+ * or an Excel file.
  * 
  * @author Matt Crow
  */
@@ -37,7 +36,7 @@ public class GradingReport extends LinkedList<GradedExport> {
     private static final String CMP_FILE_HEADER = "Student File";
     private static final String FINAL_GRADE_HEADER = "Final Grade";
     
-    public GradingReport(){
+    GradingReport(){
         super();
         headerToCol = new HashMap<>();
         headers = new ArrayList<>();
@@ -47,21 +46,41 @@ public class GradingReport extends LinkedList<GradedExport> {
         addHeader(FINAL_GRADE_HEADER);
     }
     
+    /**
+     * Adds the given header to the list of
+     * headers the output file should contain.
+     * 
+     * @param header the header to add.
+     */
     private void addHeader(String header){
         headerToCol.put(header, headers.size());
         headers.add(header);
     }
     
+    /**
+     * Adds the given criteria to the list of criteria this should
+     * report in its output. Not this does not affect how the files
+     * are graded, it merely sets which grades to report.
+     * 
+     * @param criteria the criteria to include in this' output.
+     */
     public final void addCriteria(AbstractGradingCriteria criteria){
         gradedCriteria.put(criteria.getName(), criteria);
         addHeader(criteria.getName());
     }
     
+    /**
+     * 
+     * @return this comprehensive grading report,
+     * as an Excel file. Note this file is not yet
+     * created by this method, so it must still
+     * be written to a file on the user's computer.
+     */
     public final Workbook getAsWorkBook(){
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet reportSheet = workbook.createSheet("Grading Report");
         
-        
+        // create the headers
         XSSFRow headerRow = reportSheet.createRow(0);
         for(int i = 0; i < headers.size(); i++){
             headerRow.createCell(i, CellType.STRING).setCellValue(headers.get(i));
@@ -87,7 +106,6 @@ public class GradingReport extends LinkedList<GradedExport> {
                     case SRC_FILE_HEADER:
                         data = currExp.getInstructorFile().getFileName();
                         newCell.setCellValue((String)data);
-                        newCell.setCellStyle(null);
                         break;
                     case CMP_FILE_HEADER:
                         data = currExp.getStudentFile().getFileName();
@@ -108,8 +126,7 @@ public class GradingReport extends LinkedList<GradedExport> {
             }
         }
         
-        if(newCell != null){            
-            
+        if(newCell != null){
             XSSFSheetConditionalFormatting conditionalFormatting = reportSheet.getSheetConditionalFormatting();
             
             XSSFConditionalFormattingRule gotAnA = conditionalFormatting.createConditionalFormattingRule(ComparisonOperator.GE, "0.9");
@@ -124,7 +141,7 @@ public class GradingReport extends LinkedList<GradedExport> {
             XSSFConditionalFormattingRule gotAnF = conditionalFormatting.createConditionalFormattingRule(ComparisonOperator.LT, "0.7");
             gotAnF.createPatternFormatting().setFillBackgroundColor(IndexedColors.RED.getIndex());
             
-            // apparently, I can't have more than 3 rules
+            // apparently, I can't have more than 3 rules in one batch...
             XSSFConditionalFormattingRule[] rules = {
                 gotAnA,
                 gotAB,
@@ -137,7 +154,7 @@ public class GradingReport extends LinkedList<GradedExport> {
                 //                                              address of last cell
             };
             conditionalFormatting.addConditionalFormatting(ranges, rules);
-            conditionalFormatting.addConditionalFormatting(ranges, gotAnF);
+            conditionalFormatting.addConditionalFormatting(ranges, gotAnF); // ... so use this to include more than 3 rules
         }
         return workbook;
     }
