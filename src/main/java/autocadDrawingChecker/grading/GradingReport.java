@@ -4,14 +4,20 @@ import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import org.apache.poi.hssf.record.CFRuleBase;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.ComparisonOperator;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFConditionalFormattingRule;
 import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFSheetConditionalFormatting;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -54,6 +60,7 @@ public class GradingReport extends LinkedList<GradedExport> {
     public final Workbook getAsWorkBook(){
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet reportSheet = workbook.createSheet("Grading Report");
+        
         
         XSSFRow headerRow = reportSheet.createRow(0);
         for(int i = 0; i < headers.size(); i++){
@@ -101,6 +108,37 @@ public class GradingReport extends LinkedList<GradedExport> {
             }
         }
         
+        if(newCell != null){            
+            
+            XSSFSheetConditionalFormatting conditionalFormatting = reportSheet.getSheetConditionalFormatting();
+            
+            XSSFConditionalFormattingRule gotAnA = conditionalFormatting.createConditionalFormattingRule(ComparisonOperator.GE, "0.9");
+            gotAnA.createPatternFormatting().setFillBackgroundColor(IndexedColors.GREEN.getIndex());
+
+            XSSFConditionalFormattingRule gotAB = conditionalFormatting.createConditionalFormattingRule(ComparisonOperator.BETWEEN, "0.9", "0.8");
+            gotAB.createPatternFormatting().setFillBackgroundColor(IndexedColors.YELLOW.getIndex());
+            
+            XSSFConditionalFormattingRule gotAC = conditionalFormatting.createConditionalFormattingRule(ComparisonOperator.BETWEEN, "0.8", "0.7");
+            gotAC.createPatternFormatting().setFillBackgroundColor(IndexedColors.ORANGE.getIndex());
+            
+            XSSFConditionalFormattingRule gotAnF = conditionalFormatting.createConditionalFormattingRule(ComparisonOperator.LT, "0.7");
+            gotAnF.createPatternFormatting().setFillBackgroundColor(IndexedColors.RED.getIndex());
+            
+            // apparently, I can't have more than 3 rules
+            XSSFConditionalFormattingRule[] rules = {
+                gotAnA,
+                gotAB,
+                gotAC
+            };
+
+            CellRangeAddress[] ranges = {
+                //                                     address of first "final grade" cell
+                CellRangeAddress.valueOf(String.format("C2:%s", newCell.getAddress().formatAsString()))
+                //                                              address of last cell
+            };
+            conditionalFormatting.addConditionalFormatting(ranges, rules);
+            conditionalFormatting.addConditionalFormatting(ranges, gotAnF);
+        }
         return workbook;
     }
     
