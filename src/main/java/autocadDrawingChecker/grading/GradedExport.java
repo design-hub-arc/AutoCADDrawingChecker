@@ -25,12 +25,15 @@ public class GradedExport {
     private final double finalGrade;
     
     /**
+     * Note that this constructor is is package-private,
+     * so it can only be instantiated from within this package.
+     * This is done by the Grader class.
      * 
      * @param instructorsExport the instructor's AutoCADExport
      * @param studentsExport the student's AutoCADExport
      * @param gradeOnThese the criteria to grade on. 
      */
-    public GradedExport(AutoCADExport instructorsExport, AutoCADExport studentsExport, List<AbstractGradingCriteria> gradeOnThese){
+    GradedExport(AutoCADExport instructorsExport, AutoCADExport studentsExport, List<AbstractGradingCriteria> gradeOnThese){
         instructorExport = instructorsExport;
         studentExport = studentsExport;
         gradedCriteria = new HashSet<>(gradeOnThese);
@@ -38,6 +41,15 @@ public class GradedExport {
         finalGrade = runComparison();
     }
     
+    /**
+     * Computes the grade for the student
+     * file. It grades the export on each
+     * provided criteria, and gives the final
+     * grade as the average of the grades for
+     * each criteria.
+     * 
+     * @return the student's final grade. 
+     */
     private double runComparison(){
         double similarityScore = 0.0;
         double newScore = 0.0;
@@ -50,22 +62,54 @@ public class GradedExport {
         return similarityScore / (gradedCriteria.size()); // average similarity score
     }
     
+    /**
+     * 
+     * @return the instructor file this grades based on. 
+     */
     public final AutoCADExport getInstructorFile(){
         return instructorExport;
     }
     
+    /**
+     * 
+     * @return the student file this grades.
+     */
     public final AutoCADExport getStudentFile(){
         return studentExport;
     }
     
+    /**
+     * Note that the GradingReport uses
+     * a formula to dynamically calculate
+     * this in the spreadsheet it generates,
+     * so this method isn't used.
+     * 
+     * @return the final grade for this export. 
+     */
     public final double getFinalGrade(){
         return finalGrade;
     }
     
+    /**
+     * 
+     * @param criteria the criteria to get the grade for
+     * @return the grade the student got for the given criteria,
+     * or null if this didn't grade on the given criteria.
+     */
     public final double getGradeFor(AbstractGradingCriteria criteria){
         return grades.get(criteria);
     }
     
+    /**
+     * 
+     * @return a string representation of this
+     * graded export. If you wish to save this
+     * information to a text file, you may, but
+     * you can also save to an Excel file using
+     * the GradingReport class, which may be more
+     * helpful.
+     * @see GradingReport
+     */
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();

@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -86,8 +87,9 @@ public class GradingReport extends LinkedList<GradedExport> {
                         newCell.setCellValue((String)data);
                         break;
                     case FINAL_GRADE_HEADER:
-                        data = currExp.getFinalGrade();
-                        newCell.setCellValue((double)data);
+                        CellAddress oneToTheRight = new CellAddress(newCell.getRowIndex(), newCell.getColumnIndex() + 1);
+                        CellAddress endOfRow = new CellAddress(newCell.getRowIndex(), headers.size() - 1);
+                        newCell.setCellFormula(String.format("AVERAGE(%s:%s)", oneToTheRight.formatAsString(), endOfRow.formatAsString()));
                         newCell.setCellStyle(style);
                         break;
                     default:
