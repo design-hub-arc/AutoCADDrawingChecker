@@ -30,4 +30,5 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 
 
 ## Helpful Links
+* [CLI Parser](http://commons.apache.org/proper/commons-cli/javadocs/api-release/index.html)
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)
