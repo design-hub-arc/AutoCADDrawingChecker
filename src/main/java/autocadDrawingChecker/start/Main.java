@@ -23,7 +23,8 @@ public class Main {
     }
     
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments.
+     * How do I set these in Netbeans?
      */
     public static void main(String[] args) {
         Main main = new Main();
