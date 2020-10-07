@@ -3,6 +3,7 @@ package autocadDrawingChecker.start;
 import org.apache.commons.cli.DefaultParser;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
 import autocadDrawingChecker.logging.Logger;
+import java.util.Arrays;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option;
@@ -25,9 +26,15 @@ public class Main {
     /**
      * @param args the command line arguments.
      * How do I set these in Netbeans?
+     * 
+     * To pass arguments to Gradle, use
+     * 
+     * gradle run --args="args go in here"
      */
     public static void main(String[] args) {
         Main main = new Main();
+        
+        System.out.println("Args are " + Arrays.toString(args));
         
         
         Options cmdLineOpts = new Options();
