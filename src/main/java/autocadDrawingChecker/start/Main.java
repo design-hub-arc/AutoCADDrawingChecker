@@ -1,13 +1,8 @@
 package autocadDrawingChecker.start;
 
-import org.apache.commons.cli.DefaultParser;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
-import autocadDrawingChecker.logging.Logger;
 import java.util.Arrays;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.ParseException;
+import java.util.HashSet;
 
 /**
  * Main serves as the starting point for the
@@ -33,31 +28,25 @@ public class Main {
      */
     public static void main(String[] args) {
         Main main = new Main();
+        main.app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
+        
+        
         
         System.out.println("Args are " + Arrays.toString(args));
         
-        
-        Options cmdLineOpts = new Options();
-        Option instrFilePath = new Option("src", "instructor-file", false, "Instructor file path");
-        cmdLineOpts.addOption(instrFilePath);
-        
-        try {
-            CommandLine line = new DefaultParser().parse(cmdLineOpts, args);
-            String srcPath = line.getOptionValue("instructor-file");
-            if(srcPath != null){
-                main.app.getData().setInstructorFilePath(srcPath);
-                System.out.println(srcPath);
-            }
-        } catch (ParseException ex) {
-            Logger.logError(ex);
+        HashSet<String> argSet = new HashSet<>();
+        for(String arg : args){
+            argSet.add(arg.toLowerCase());
         }
+        boolean debug = argSet.contains("--debug");
         
-        main.app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
-        
-        main.app.getData()
-            //.setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
+        if(debug){
+            main.app.getData()
+            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
             .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
-        /*System.out.println(app.grade().toString());*/
-        main.app.createGui();
+            System.out.println(main.app.grade().toString());
+        } else {
+            main.app.createGui();
+        }
     }
 }
