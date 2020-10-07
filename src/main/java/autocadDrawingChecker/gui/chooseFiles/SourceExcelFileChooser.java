@@ -9,7 +9,7 @@ import java.io.File;
  *
  * @author Matt
  */
-public class SourceExcelFileChooser extends AbstractExcelFileChooser<File> {
+public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
     public SourceExcelFileChooser(String title, String popupText) {
         super(title, popupText);
     }
