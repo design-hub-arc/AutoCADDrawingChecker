@@ -1,5 +1,5 @@
-# AutoCADDrawingChecker
-A simple, extendable Java program used to compare vector exports from AutoCAD.
+# AutoCAD Drawing Checker
+A simple, extendable Java program used to compare Excel exports from AutoCAD.
 
 ## Project Summary
 
@@ -14,11 +14,10 @@ The more similar their file is to the instructor file, the higher their grade wi
     * Choose 1 or more Excel files
     * Choose 1 or more folders. Note that the program locates all Excel files under this folder, so it's OK if it has other files in there, the program will just ignore them.
     * A combination of the above.
-* Step 2: Choosing Grading Criteria. You can choose what the program grades students on by toggling these check boxes on or off.
-* Step 3: Running the Autograder. Once the program is done grading, it will ask you where you want to save the grading report. 
-The program automatically adds an xlsx extension if you don't provide one, so no need to worry about that.
+* Step 2: Choosing Grading Criteria. You can choose what the program grades students on by toggling these check boxes on or off. Regardless of what you select, the program will still grade every column in the instructor file.
+* Step 3: Running the Autograder. Once the program is done grading, it will ask you where you want to save the grading report. The program automatically adds an xlsx extension if you don't provide one, so no need to worry about that.
 
-## To Do
+## Matt's To Do List
 * see AutoCADElementMatcher
 * Should we match rows for each comparison, or for the export as a whole? (wait on this)
 * Given double X and double Y, don't do "X == Y", instead do "Math.abs(X - Y) < threshold"
@@ -30,5 +29,4 @@ The program automatically adds an xlsx extension if you don't provide one, so no
 
 
 ## Helpful Links
-* [CLI Parser](http://commons.apache.org/proper/commons-cli/javadocs/api-release/index.html)
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)
