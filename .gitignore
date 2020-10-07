@@ -4,5 +4,6 @@
 /build/classes/*
 /build/tmp/*
 /build/docs/*
+/build/distributions/*
 !/build/libs/*
 gradle.properties
