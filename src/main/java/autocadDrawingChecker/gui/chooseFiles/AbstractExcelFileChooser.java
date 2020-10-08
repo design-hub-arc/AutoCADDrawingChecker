@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -52,7 +53,9 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
         add(bottom, BorderLayout.PAGE_END);
         popupTitle = popupText;
         
+        // https://blog.christoffer.online/2011-01-09-drag-and-dropping-files-to-java-desktop-application/
         new DropTarget(this, this);
+        new DropTarget(text, this);
         
         selected = null;
     }
@@ -70,6 +73,14 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
         selectButtonPressed();
     }
     
+    /**
+     * Note that this method is called
+     * by Application, so don't call 
+     * Application.getInstance().getData().set...
+     * in this method
+     * 
+     * @param sel the file or files to select
+     */
     protected void setSelected(T sel){
         selected = sel;
     }
@@ -80,6 +91,14 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
     
     public abstract boolean isFileSelected();
     protected abstract void selectButtonPressed();
+    
+    /**
+     * Invoke this whenever the user selects a file
+     * or files.
+     * 
+     * @param sel the file or files the user selected 
+     */
+    protected abstract void userSelectedFile(T sel);
     protected abstract void filesDropped(List<File> files);
 
     @Override
@@ -102,8 +121,12 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
         for(DataFlavor flavor : flavors){
             if(flavor.isFlavorJavaFileListType()){
                 try {
+                    @SuppressWarnings("unchecked")
                     List<File> files = (List<File>)data.getTransferData(flavor);
-                    filesDropped(files);
+                    List<File> acceptableFiles = files.stream().filter((File f)->{
+                        return canAccept(f);
+                    }).collect(Collectors.toList());
+                    filesDropped(acceptableFiles);
                 } catch (UnsupportedFlavorException ex) {
                     ex.printStackTrace();
                 } catch (IOException ex) {
@@ -112,4 +135,6 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
             }
         }
     }
+
+    protected abstract boolean canAccept(File f);
 }

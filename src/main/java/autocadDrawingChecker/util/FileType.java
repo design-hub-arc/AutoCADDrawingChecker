@@ -1,5 +1,7 @@
 package autocadDrawingChecker.util;
 
+import java.io.File;
+
 /**
  * @author Matt
  */
@@ -21,5 +23,18 @@ public enum FileType {
     
     public final String[] getExtensions(){
         return extensions;
+    }
+    
+    public final boolean fileIsOfThisType(File f){
+        String path = f.getAbsolutePath();
+        String[] split = path.split("\\.");
+        boolean isType = false;
+        if(split.length != 0){
+            String ext = split[split.length - 1];
+            for(int i = 0; i < this.extensions.length && !isType; i++){
+                isType = ext.equalsIgnoreCase(this.extensions[i]);
+            }
+        }
+        return isType;
     }
 }

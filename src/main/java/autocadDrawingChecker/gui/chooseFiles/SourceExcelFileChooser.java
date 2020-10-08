@@ -29,16 +29,25 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
     @Override
     protected void selectButtonPressed() {
         FileChooserUtil.askChooseFile(getPopupTitle(), FileType.EXCEL, (File f)->{
-            setSelected(f);
-            Application.getInstance().getData().setInstructorFilePath(f.getAbsolutePath());
+            userSelectedFile(f);
         });
     }
 
     @Override
     protected void filesDropped(List<File> files) {
         if(!files.isEmpty()){
-            setSelected(files.get(0));
-            Application.getInstance().getData().setInstructorFilePath(files.get(0).getAbsolutePath());
+            userSelectedFile(files.get(0));
         }
+    }
+
+    @Override
+    protected void userSelectedFile(File sel) {
+        setSelected(sel);
+        Application.getInstance().getData().setInstructorFilePath(sel.getAbsolutePath());
+    }
+
+    @Override
+    protected boolean canAccept(File f) {
+        return FileType.EXCEL.fileIsOfThisType(f);
     }
 }
