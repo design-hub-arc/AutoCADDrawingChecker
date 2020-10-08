@@ -1,14 +1,15 @@
 package autocadDrawingChecker.util;
 
 import autocadDrawingChecker.logging.Logger;
+import autocadDrawingChecker.start.Application;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -19,6 +20,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class FileChooserUtil {
     private final JFileChooser chooser;
+    
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM-dd-uuuu_hh_mm_a");
     
     public FileChooserUtil(String dialogTitle, int dialogType, int fileSelectionMode){
         chooser = new JFileChooser();
@@ -44,32 +47,36 @@ public class FileChooserUtil {
             andThen.accept(fcu.chooser.getSelectedFiles());
         }
     }
-    public static void askCreateTextFile(String dialogTitle, String textFileContents){
-        FileChooserUtil fcu = new FileChooserUtil(dialogTitle, JFileChooser.SAVE_DIALOG, JFileChooser.FILES_AND_DIRECTORIES);
+    
+    public static void askSaveFile(String dialogTitle, String fileNameMiddle, String ext, Consumer<File> andThen){
+        FileChooserUtil fcu = new FileChooserUtil(dialogTitle, JFileChooser.SAVE_DIALOG, JFileChooser.DIRECTORIES_ONLY);
         if(fcu.chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
-            File f = fcu.chooser.getSelectedFile();
-            String fStrPath = f.getAbsolutePath();
-            if(!fStrPath.endsWith(".txt")){
-                // rename it if it's extension is incorrect
-                Path fPath = f.toPath();
-                String pathStrIWant = fStrPath + ".txt";
-                try {                    
-                    if(Files.exists(fPath)){
-                        // rename it if it already exists.
-                        Files.move(fPath, Paths.get(pathStrIWant));
-                    }
-                    // regardless, redirect f to point to this new file path
-                    f = new File(pathStrIWant);
-                } catch(Exception ex){
-                    Logger.logError(ex);
-                }
+            File folder = fcu.chooser.getSelectedFile();
+            LocalDateTime currDate = LocalDateTime.now();
+            String dateStr = currDate.format(DATE_FORMAT);
+            String desiredFilePath = Paths.get(
+                folder.getAbsolutePath(), 
+                String.format("%s %s %s.%s", Application.APP_NAME, dateStr, fileNameMiddle, ext)
+            ).toString();
+            File newFile = new File(desiredFilePath);
+            
+            int nextNum = 1;
+            while(newFile.exists()){
+                newFile = new File(desiredFilePath.replace(String.format(".%s", ext), String.format("-%d.%s", nextNum, ext)));
+                nextNum++;
             }
+            andThen.accept(newFile);
+        }
+    }
+    
+    public static void askWhereSaveLog(String dialogTitle, String textFileContents){
+        askSaveFile(dialogTitle, "log", "txt", (f)->{
             // may move this to a file writer util
             try (BufferedWriter buff = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)))) {
                 buff.write(textFileContents);
             } catch (IOException ex) {
                 Logger.logError(ex);
             }
-        }
+        });
     }
 }

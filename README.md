@@ -15,7 +15,7 @@ The more similar their file is to the instructor file, the higher their grade wi
     * Choose 1 or more folders. Note that the program locates all Excel files under this folder, so it's OK if it has other files in there, the program will just ignore them.
     * A combination of the above.
 * Step 2: Choosing Grading Criteria. You can choose what the program grades students on by toggling these check boxes on or off. Regardless of what you select, the program will still grade every column in the instructor file.
-* Step 3: Running the Autograder. (Don't forget to click 'Run'!) Once the program is done grading, it will ask you where you want to save the grading report. The program automatically adds an xlsx extension if you don't provide one, so no need to worry about that.
+* Step 3: Running the Autograder. (Don't forget to click 'Run'!) Once the program is done grading, it will ask you where you want to save the grading report.
 
 ## Matt's To Do List
 * see AutoCADElementMatcher
