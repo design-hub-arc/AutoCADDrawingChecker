@@ -1,8 +1,20 @@
 package autocadDrawingChecker.gui.chooseFiles;
 
 import java.awt.BorderLayout;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -13,7 +25,7 @@ import javax.swing.JTextArea;
  * @author Matt
  * @param <T> the type returned by AbstractExcelFileChooser::getSelected()
  */
-public abstract class AbstractExcelFileChooser<T> extends JComponent implements ActionListener {
+public abstract class AbstractExcelFileChooser<T> extends JComponent implements ActionListener, DropTargetListener {
     private T selected;
     private final JTextArea text;
     private final String popupTitle;
@@ -40,6 +52,8 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
         add(bottom, BorderLayout.PAGE_END);
         popupTitle = popupText;
         
+        new DropTarget(this, this);
+        
         selected = null;
     }
     
@@ -65,5 +79,37 @@ public abstract class AbstractExcelFileChooser<T> extends JComponent implements 
     }
     
     public abstract boolean isFileSelected();
-    protected abstract void selectButtonPressed(); 
+    protected abstract void selectButtonPressed();
+    protected abstract void filesDropped(List<File> files);
+
+    @Override
+    public void dragEnter(DropTargetDragEvent dtde) {}
+
+    @Override
+    public void dragOver(DropTargetDragEvent dtde) {}
+
+    @Override
+    public void dropActionChanged(DropTargetDragEvent dtde) {}
+
+    @Override
+    public void dragExit(DropTargetEvent dte) {}
+
+    @Override
+    public void drop(DropTargetDropEvent dtde) {
+        dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+        Transferable data = dtde.getTransferable();
+        DataFlavor[] flavors = data.getTransferDataFlavors();
+        for(DataFlavor flavor : flavors){
+            if(flavor.isFlavorJavaFileListType()){
+                try {
+                    List<File> files = (List<File>)data.getTransferData(flavor);
+                    filesDropped(files);
+                } catch (UnsupportedFlavorException ex) {
+                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
 }

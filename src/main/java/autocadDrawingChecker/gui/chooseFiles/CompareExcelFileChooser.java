@@ -5,6 +5,7 @@ import autocadDrawingChecker.util.FileType;
 import autocadDrawingChecker.start.Application;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -35,5 +36,12 @@ public class CompareExcelFileChooser extends AbstractExcelFileChooser<File[]> {
             String[] absPaths = Arrays.stream(fs).map((f)->f.getAbsolutePath()).toArray((size)->new String[size]);
             Application.getInstance().getData().setStudentFilePaths(absPaths);
         });
+    }
+
+    @Override
+    protected void filesDropped(List<File> files) {
+        this.setSelected(files.toArray(new File[files.size()]));
+        String[] absPaths = files.stream().map((f)->f.getAbsolutePath()).toArray((s)->new String[s]);
+        Application.getInstance().getData().setStudentFilePaths(absPaths);
     }
 }

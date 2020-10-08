@@ -6,6 +6,7 @@ import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import autocadDrawingChecker.logging.Logger;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JButton;
@@ -54,6 +55,8 @@ public class PageRenderer extends JPanel {
         });
         buttons.add(prevButton);
         nextButton = new JButton("Next Step");
+        nextButton.setBackground(Color.GREEN);
+        nextButton.setOpaque(true);
         nextButton.addActionListener((e)->{
             tryNextPage();
         });

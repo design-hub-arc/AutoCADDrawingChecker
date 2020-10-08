@@ -2,6 +2,7 @@ package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.util.FileChooserUtil;
 import autocadDrawingChecker.logging.Logger;
+import autocadDrawingChecker.start.Application;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,6 +24,8 @@ public class ViewController extends JFrame {
         } catch (Exception ex) {
             Logger.logError(ex);
         }
+        
+        setTitle(Application.APP_NAME);
         
         JMenuBar menuBar = new JMenuBar();
         JMenu logMenu = new JMenu("Log");

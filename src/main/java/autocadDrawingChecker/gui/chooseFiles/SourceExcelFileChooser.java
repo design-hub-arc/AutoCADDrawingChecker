@@ -4,6 +4,7 @@ import autocadDrawingChecker.util.FileChooserUtil;
 import autocadDrawingChecker.util.FileType;
 import autocadDrawingChecker.start.Application;
 import java.io.File;
+import java.util.List;
 
 /**
  *
@@ -31,5 +32,13 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
             setSelected(f);
             Application.getInstance().getData().setInstructorFilePath(f.getAbsolutePath());
         });
+    }
+
+    @Override
+    protected void filesDropped(List<File> files) {
+        if(!files.isEmpty()){
+            setSelected(files.get(0));
+            Application.getInstance().getData().setInstructorFilePath(files.get(0).getAbsolutePath());
+        }
     }
 }

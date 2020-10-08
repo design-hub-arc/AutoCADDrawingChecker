@@ -21,6 +21,7 @@ public class Application {
     private AbstractGradingCriteria[] criteria;
     
     private static Application instance;
+    public static final String APP_NAME = "AutoCAD Drawing Checker";
     
     private Application(){
         if(instance != null){
