@@ -1,15 +1,16 @@
 package autocadDrawingChecker.gui.chooseFiles;
 
-import autocadDrawingChecker.files.FileChooserUtil;
-import autocadDrawingChecker.files.FileType;
+import autocadDrawingChecker.util.FileChooserUtil;
+import autocadDrawingChecker.util.FileType;
 import autocadDrawingChecker.start.Application;
 import java.io.File;
+import java.util.List;
 
 /**
  *
  * @author Matt
  */
-public class SourceExcelFileChooser extends AbstractExcelFileChooser<File> {
+public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
     public SourceExcelFileChooser(String title, String popupText) {
         super(title, popupText);
     }
@@ -28,8 +29,25 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File> {
     @Override
     protected void selectButtonPressed() {
         FileChooserUtil.askChooseFile(getPopupTitle(), FileType.EXCEL, (File f)->{
-            setSelected(f);
-            Application.getInstance().getData().setInstructorFilePath(f.getAbsolutePath());
+            userSelectedFile(f);
         });
+    }
+
+    @Override
+    protected void filesDropped(List<File> files) {
+        if(!files.isEmpty()){
+            userSelectedFile(files.get(0));
+        }
+    }
+
+    @Override
+    protected void userSelectedFile(File sel) {
+        setSelected(sel);
+        Application.getInstance().getData().setInstructorFilePath(sel.getAbsolutePath());
+    }
+
+    @Override
+    protected boolean canAccept(File f) {
+        return FileType.EXCEL.fileIsOfThisType(f);
     }
 }

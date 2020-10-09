@@ -8,7 +8,7 @@
  * can grade students' assignments; and
  * the Grader class, which uses these criteria.
  * 
- * @see autocadDrawingChecker.grading.AbstractGradingCriteria
+ * @see autocadDrawingChecker.grading.criteria.AbstractGradingCriteria
  * @see autocadDrawingChecker.grading.Grader
  */
 package autocadDrawingChecker.grading;

@@ -3,8 +3,10 @@ package autocadDrawingChecker.gui.chooseFiles;
 import autocadDrawingChecker.gui.AbstractPage;
 import java.awt.GridLayout;
 import java.io.File;
+import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 /**
  * The ChooseFilesPage is where the user selects which files they want to grade.
@@ -18,14 +20,18 @@ public class ChooseFilesPage extends AbstractPage {
     public ChooseFilesPage() {
         super("Choose files to compare");
         setLayout(new GridLayout(1, 1));
+        setBackground(Color.CYAN);
         
-        JPanel choosers = new JPanel();
-        choosers.setLayout(new GridLayout(1, 2, 20, 20));
         srcChooser = new SourceExcelFileChooser("Instructor File", "choose the instructor Excel file");
-        choosers.add(srcChooser);
         cmpChooser = new CompareExcelFileChooser("Student Files", "choose one or more student files, or a whole folder of them");
-        choosers.add(cmpChooser);
-        add(choosers);
+        
+        Dimension d = new Dimension(50, 50);
+        srcChooser.setMinimumSize(d);
+        cmpChooser.setMinimumSize(d);
+        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, srcChooser, cmpChooser);
+        split.setResizeWeight(0.5);
+        
+        add(split);
     }
     
     public final void setSrcFile(File f){

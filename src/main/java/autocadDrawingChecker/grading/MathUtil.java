@@ -18,7 +18,7 @@ public class MathUtil {
      * @return a double between 0.0 and 1.0. The greater the difference between
      * the two given parameters, the greater this number will be. This returns 0.0
      * if and only if the two parameters are exactly the same. <b>Any percent
-     * error greater than 1.0 is rounded down to 1.0.
+     * error greater than 1.0 is rounded down to 1.0.</b>
      */
     public static double percentError(double whatIExpected, double whatIGot){
         double ret = 0.0;

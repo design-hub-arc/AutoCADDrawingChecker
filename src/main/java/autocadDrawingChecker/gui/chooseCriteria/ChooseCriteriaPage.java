@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui.chooseCriteria;
 
-import autocadDrawingChecker.grading.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.gui.AbstractPage;
 import java.awt.GridLayout;
 import java.util.List;

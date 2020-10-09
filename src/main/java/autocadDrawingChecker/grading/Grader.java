@@ -1,12 +1,17 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.files.ExcelFileLocator;
-import autocadDrawingChecker.autocadData.AutoCADExcelParser;
-import autocadDrawingChecker.autocadData.AutoCADExport;
+import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
+import autocadDrawingChecker.data.AutoCADExcelParser;
+import autocadDrawingChecker.data.AutoCADExport;
+import autocadDrawingChecker.grading.criteria.implementations.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -71,7 +76,6 @@ public class Grader {
      */
     public final GradingReport grade(){
         GradingReport report = new GradingReport();
-        criteria.forEach((crit)->report.addCriteria(crit));
         
         AutoCADExport trySrc = null;
         List<AutoCADExport> cmp = null;
@@ -87,8 +91,25 @@ public class Grader {
         
         cmp = getStudentFiles();
         
+        /*
+        see which columns exist in the instructor export,
+        and add those columns to the list of criteria this
+        should grade on. Don't directly add them to this.criteria
+        though, as that could cause problems
+        */
+        Set<String> colsToGrade = (src == null) ? new HashSet<>() : src.getColumns();
+        LinkedList<AbstractGradingCriteria> colCriteria = new LinkedList<>();
+        for(String column : colsToGrade){
+            colCriteria.add(new CompareColumn(column));
+        }
+        
+        List<AbstractGradingCriteria> finalGradedCriteria = new ArrayList<>();
+        finalGradedCriteria.addAll(criteria);
+        finalGradedCriteria.addAll(colCriteria);
+        finalGradedCriteria.forEach((c)->report.addCriteria(c));
+        
         cmp.stream().forEach((exp)->{
-            report.add(new GradedExport(src, exp, criteria));
+            report.add(new GradedExport(src, exp, finalGradedCriteria));
         });
         
         return report;
