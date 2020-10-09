@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -13,6 +14,8 @@ sourceCompatibility = '1.8'
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'autocadDrawingChecker.start.Main'
 }
+
+mainClassName = 'autocadDrawingChecker.start.Main' // need this for the application plugin
 
 jar {
     //need to manually set main class, otherwise, it just compiles the JAR as a library

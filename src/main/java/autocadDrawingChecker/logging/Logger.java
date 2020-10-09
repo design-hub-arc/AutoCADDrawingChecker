@@ -25,6 +25,10 @@ public class Logger {
         MSG_LISTENS.forEach((ml)->ml.messageLogged(msg));
     }
     
+    public static final void log(Object obj){
+        log(obj.toString());
+    }
+    
     public static final void log(double d){
         log(Double.toString(d));
     }

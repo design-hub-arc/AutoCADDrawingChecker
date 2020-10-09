@@ -1,7 +1,8 @@
 package autocadDrawingChecker.gui;
 
-import autocadDrawingChecker.files.FileChooserUtil;
+import autocadDrawingChecker.util.FileChooserUtil;
 import autocadDrawingChecker.logging.Logger;
+import autocadDrawingChecker.start.Application;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -24,11 +25,13 @@ public class ViewController extends JFrame {
             Logger.logError(ex);
         }
         
+        setTitle(Application.APP_NAME);
+        
         JMenuBar menuBar = new JMenuBar();
         JMenu logMenu = new JMenu("Log");
         JMenuItem saveLog = new JMenuItem("Save Log");
         saveLog.addActionListener((e)->{
-            FileChooserUtil.askCreateTextFile("Where do you want to save this log?", Logger.getLog());
+            FileChooserUtil.askWhereSaveLog("Where do you want to save this log?", Logger.getLog());
         });
         logMenu.add(saveLog);
         menuBar.add(logMenu);
