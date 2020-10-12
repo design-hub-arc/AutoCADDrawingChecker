@@ -1,5 +1,15 @@
-apply plugin: 'java'
-apply plugin: 'application'
+plugins { // Double quotes evaluate some expressions a-la backticks in JS. Sounds like I should use single quotes by default
+    id 'java'
+    id 'application'
+}
+
+/*
+ * Needs this specific name to work with the application
+ * plugin. Change this property to set the main class for
+ * running and Jar-ing
+*/
+mainClassName = 'autocadDrawingChecker.start.Main'
+version = '1.99'
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -12,16 +22,16 @@ sourceCompatibility = '1.8'
 // prefer. In this case NetBeans will not add these tasks but you may rely on
 // your own implementation.
 if (!hasProperty('mainClass')) {
-    ext.mainClass = 'autocadDrawingChecker.start.Main'
+    ext.mainClass = mainClassName
 }
-
-mainClassName = 'autocadDrawingChecker.start.Main' // need this for the application plugin
 
 jar {
     //need to manually set main class, otherwise, it just compiles the JAR as a library
     manifest {
         attributes(
-            'Main-Class': 'autocadDrawingChecker.start.Main'
+            'Main-Class': mainClassName,
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version
         )
     }
 
