@@ -46,4 +46,5 @@ You can contact Matt if you need help, and you provide him with the Log file you
 
 
 ## Helpful Links
+* [Apache CLI](https://commons.apache.org/proper/commons-cli/javadocs/api-release/index.html)
 * [Excel Library](https://poi.apache.org/apidocs/4.1/)

@@ -62,6 +62,8 @@ dependencies {
     //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
     testCompile group: 'junit', name: 'junit', version: '4.10'
     
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    
     // https://mvnrepository.com/artifact/org.apache.poi/poi
     compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
     
