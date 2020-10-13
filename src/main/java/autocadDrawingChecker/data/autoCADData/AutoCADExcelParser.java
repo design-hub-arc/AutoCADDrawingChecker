@@ -115,7 +115,7 @@ public class AutoCADExcelParser {
             currRow = sheet.getRow(rowNum);
             if(isValidRow(currRow)){
                 try {
-                    rec = recExtr.extract(headerToCol, currRow);
+                    rec = (AutoCADElement)recExtr.extract(headerToCol, currRow);
                     containedTherein.add(rec);
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
