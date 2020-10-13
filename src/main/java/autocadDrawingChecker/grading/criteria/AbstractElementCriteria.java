@@ -6,6 +6,7 @@ import autocadDrawingChecker.grading.AutoCADElementMatcher;
 import autocadDrawingChecker.grading.MatchingAutoCADElements;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * AbstractElementCriteria adds behavior to AbstractGradingCriteria to add
@@ -27,7 +28,9 @@ public interface AbstractElementCriteria extends AbstractGradingCriteria {
      */
     @Override
     public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){
-        List<MatchingAutoCADElements> matches = new AutoCADElementMatcher(exp1, exp2, this::canAccept, this::getMatchScore).findMatches();
+        List<AutoCADElement> l1 = exp1.stream().map((r)->(AutoCADElement)r).collect(Collectors.toList());
+        List<AutoCADElement> l2 = exp2.stream().map((r)->(AutoCADElement)r).collect(Collectors.toList());
+        List<MatchingAutoCADElements> matches = new AutoCADElementMatcher(l1, l2, this::canAccept, this::getMatchScore).findMatches();
         double netScore = matches.stream().map((MatchingAutoCADElements match)->{
             return getMatchScore(match.getElement1(), match.getElement2());
         }).reduce(0.0, Double::sum);

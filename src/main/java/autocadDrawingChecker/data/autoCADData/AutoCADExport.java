@@ -1,5 +1,6 @@
 package autocadDrawingChecker.data.autoCADData;
 
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -13,16 +14,10 @@ import java.util.Set;
  * 
  * @author Matt Crow
  */
-public class AutoCADExport extends LinkedList<AutoCADElement> {
-    private final String fileName;
+public class AutoCADExport extends ExtractedSpreadsheetContents {
      
     public AutoCADExport(String fileName){
-        super();
-        this.fileName = fileName;
-    }
-    
-    public final String getFileName(){
-        return fileName;
+        super(fileName);
     }
     
     /**
@@ -37,7 +32,7 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
      */
     public final HashMap<String, Integer> getLayerLineCounts(){
         HashMap<String, Integer> lineCounts = new HashMap<>();
-        forEach((AutoCADElement row)->{
+        this.stream().map((r)->(AutoCADElement)r).forEach((AutoCADElement row)->{
             String layer = row.getLayer();
             if(!lineCounts.containsKey(layer)){
                 lineCounts.put(layer, 0);
@@ -47,40 +42,8 @@ public class AutoCADExport extends LinkedList<AutoCADElement> {
         return lineCounts;
     } 
     
-    public final HashMap<Object, LinkedList<AutoCADElement>> sortRecordsByColumn(String column){
-        HashMap<Object, LinkedList<AutoCADElement>> valueToRecords = new HashMap<>();
-        forEach((record)->{
-            Object value = record.getAttribute(column);
-            if(!valueToRecords.containsKey(value)){
-                valueToRecords.put(value, new LinkedList<>());
-            }
-            valueToRecords.get(value).add(record);
-        });
-        return valueToRecords;
-    }
-    public final HashMap<Object, Integer> getCountsPerColumnValue(String column){
-        HashMap<Object, LinkedList<AutoCADElement>> sorted = sortRecordsByColumn(column);
-        HashMap<Object, Integer> counts = new HashMap<>();
-        sorted.forEach((key, list)->{
-            counts.put(key, list.size());
-        });
-        return counts;
-    }
-    
-    public final Set<String> getColumns(){
-        Set<String> cols = new HashSet<>();
-        forEach((AutoCADElement e)->{
-            cols.addAll(e.getAttributes());
-        });
-        return cols;
-    }
-    
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("AutoCAD Data Export:");
-        forEach((AutoCADElement row)->sb.append("\n").append(row.toString()));
-        sb.append("\nEnd of AutoCAD Export Data");
-        return sb.toString();
+        return String.format("AutoCAD Data Export:\n%s", super.toString());
     }
 }
