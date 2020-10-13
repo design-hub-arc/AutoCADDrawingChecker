@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading.criteria.implementations;
 
-import autocadDrawingChecker.data.AutoCADElement;
+import autocadDrawingChecker.data.autoCADData.AutoCADElement;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 
 /**

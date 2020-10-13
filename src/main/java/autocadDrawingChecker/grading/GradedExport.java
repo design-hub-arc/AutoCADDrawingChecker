@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.AutoCADExport;
+import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

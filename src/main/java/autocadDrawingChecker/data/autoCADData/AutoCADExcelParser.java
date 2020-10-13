@@ -1,4 +1,4 @@
-package autocadDrawingChecker.data;
+package autocadDrawingChecker.data.autoCADData;
 
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;

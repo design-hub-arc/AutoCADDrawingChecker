@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.data.AutoCADExport;
-import autocadDrawingChecker.data.AutoCADElement;
+import autocadDrawingChecker.data.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.autoCADData.AutoCADElement;
 import autocadDrawingChecker.logging.Logger;
 import java.util.LinkedList;
 import java.util.List;

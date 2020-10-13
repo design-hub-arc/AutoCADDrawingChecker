@@ -1,4 +1,4 @@
-package autocadDrawingChecker.data;
+package autocadDrawingChecker.data.autoCADData;
 
 import java.util.HashMap;
 import java.util.HashSet;
