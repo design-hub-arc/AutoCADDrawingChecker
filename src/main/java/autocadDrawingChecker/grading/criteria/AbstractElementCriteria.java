@@ -1,7 +1,8 @@
 package autocadDrawingChecker.grading.criteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.SpreadsheetRecord;
 import autocadDrawingChecker.grading.AutoCADElementMatcher;
 import autocadDrawingChecker.grading.MatchingAutoCADElements;
 import java.util.Arrays;
@@ -15,10 +16,10 @@ import java.util.stream.Collectors;
  * 
  * @author Matt Crow
  */
-public interface AbstractElementCriteria extends AbstractGradingCriteria {
+public interface AbstractElementCriteria<T extends SpreadsheetRecord, U extends ExtractedSpreadsheetContents> extends AbstractGradingCriteria<U> {
     public static final String[] ANY_TYPE = new String[0];
     
-    public abstract double getMatchScore(AutoCADElement e1, AutoCADElement e2);
+    public abstract double getMatchScore(T e1, T e2);
     
     /**
      * Computes the average match score of elements in the given exports.
@@ -27,12 +28,12 @@ public interface AbstractElementCriteria extends AbstractGradingCriteria {
      * @return the student's net score for this criteria. Ranges from 0.0 to 1.0
      */
     @Override
-    public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){
+    public default double computeScore(U exp1, U exp2){
         List<AutoCADElement> l1 = exp1.stream().map((r)->(AutoCADElement)r).collect(Collectors.toList());
         List<AutoCADElement> l2 = exp2.stream().map((r)->(AutoCADElement)r).collect(Collectors.toList());
         List<MatchingAutoCADElements> matches = new AutoCADElementMatcher(l1, l2, this::canAccept, this::getMatchScore).findMatches();
         double netScore = matches.stream().map((MatchingAutoCADElements match)->{
-            return getMatchScore(match.getElement1(), match.getElement2());
+            return getMatchScore(tryCast(match.getElement1()), tryCast(match.getElement2()));
         }).reduce(0.0, Double::sum);
         
         if(!matches.isEmpty()){
@@ -58,6 +59,8 @@ public interface AbstractElementCriteria extends AbstractGradingCriteria {
         }        
         return acceptable;
     }
+    
+    public abstract T tryCast(SpreadsheetRecord rec);
     
     /**
      * 

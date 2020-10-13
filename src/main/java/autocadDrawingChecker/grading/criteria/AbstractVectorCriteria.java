@@ -1,7 +1,7 @@
-package autocadDrawingChecker.grading.criteria.implementations;
+package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.autoCADData.AutoCADElement;
-import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.SpreadsheetRecord;
 
 /**
  * AbstractVectorCriteria is used grading based on some multi-element grading
@@ -10,9 +10,9 @@ import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
  * 
  * @author Matt Crow
  */
-public interface AbstractVectorCriteria extends AbstractElementCriteria {
+public interface AbstractVectorCriteria<T extends SpreadsheetRecord, U extends ExtractedSpreadsheetContents> extends AbstractElementCriteria<T, U> {
     @Override
-    public default double getMatchScore(AutoCADElement e1, AutoCADElement e2){
+    public default double getMatchScore(T e1, T e2){
         double score = 0.0;
         double[] v1 = extractVector(e1);
         double[] v2 = extractVector(e2);
@@ -32,5 +32,5 @@ public interface AbstractVectorCriteria extends AbstractElementCriteria {
      * @return the vector interpretation of the given element,
      * which this will grade on
      */
-    public abstract double[] extractVector(AutoCADElement e);
+    public abstract double[] extractVector(T e);
 }

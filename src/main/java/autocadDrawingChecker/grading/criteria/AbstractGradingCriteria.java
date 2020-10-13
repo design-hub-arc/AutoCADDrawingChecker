@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 
 /**
  * The AbstractGradingCriteria interface is used to
@@ -9,17 +9,18 @@ import autocadDrawingChecker.data.autoCADData.AutoCADExport;
  * exports.
  * 
  * @author Matt Crow
+ * @param <T> the type of spreadsheet contents this will grade
  */
-public interface AbstractGradingCriteria {
+public interface AbstractGradingCriteria<T extends ExtractedSpreadsheetContents> {
     /**
-     * This method should compare the given AutoCADExports to each other, and
+     * This method should compare the given ExtractedSpreadsheetContents to each other, and
      * return a double between 0.0 and 1.0. A value of 1.0 denotes the student's
      * file meets this criteria perfectly, while a 0.0 means it fails entirely.
      * @param exp1 The instructor file to compare to.
      * @param exp2 The student file to grade.
      * @return a double from 0.0 to 1.0.
      */
-    public abstract double computeScore(AutoCADExport exp1, AutoCADExport exp2);
+    public abstract double computeScore(T exp1, T exp2);
     
     /**
      * 

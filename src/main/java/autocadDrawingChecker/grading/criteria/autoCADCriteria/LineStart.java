@@ -1,12 +1,15 @@
-package autocadDrawingChecker.grading.criteria.implementations;
+package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
+import autocadDrawingChecker.grading.criteria.AbstractVectorCriteria;
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
+import autocadDrawingChecker.data.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.core.SpreadsheetRecord;
 
 /**
  *
  * @author Matt Crow
  */
-public class LineStart implements AbstractVectorCriteria {
+public class LineStart implements AbstractVectorCriteria<AutoCADElement, AutoCADExport> {
     @Override
     public String getDescription() {
         return "Grades based on how closesly the student's line start points match up with those of the instructor's";
@@ -30,5 +33,10 @@ public class LineStart implements AbstractVectorCriteria {
     @Override
     public String[] getAllowedTypes(){
         return new String[]{"Line"};
+    }
+
+    @Override
+    public AutoCADElement tryCast(SpreadsheetRecord rec) {
+        return (rec instanceof AutoCADElement) ? (AutoCADElement)rec : null;
     }
 }

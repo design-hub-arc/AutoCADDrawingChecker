@@ -1,15 +1,14 @@
-package autocadDrawingChecker.grading.criteria.implementations;
+package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
-import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 
 /**
  * @author Matt Crow
  */
-public class LineCount implements AbstractGradingCriteria {
+public class LineCount implements AbstractGradingCriteria<ExtractedSpreadsheetContents> {
 
     @Override
-    public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
+    public double computeScore(ExtractedSpreadsheetContents exp1, ExtractedSpreadsheetContents exp2) {
         return (exp1.size() == exp2.size()) ? 1.0 : 0.0;//1.0 - MathUtil.percentError(exp1.size(), exp2.size());
     }
 

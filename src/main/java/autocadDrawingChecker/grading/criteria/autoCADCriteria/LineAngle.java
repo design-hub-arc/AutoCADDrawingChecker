@@ -1,13 +1,12 @@
-package autocadDrawingChecker.grading.criteria.implementations;
+package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
-import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 import autocadDrawingChecker.grading.MathUtil;
 
 /**
  * @author Matt Crow
  */
-public class LineAngle implements AbstractElementCriteria {
+public class LineAngle implements AbstractAutoCADElementCriteria {
     /**
      * 
      * @param r1 a line in the instructor's file

@@ -1,12 +1,11 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.grading.criteria.implementations.LinesPerLayer;
-import autocadDrawingChecker.grading.criteria.implementations.LineStart;
-import autocadDrawingChecker.grading.criteria.implementations.LineLength;
-import autocadDrawingChecker.grading.criteria.implementations.LineEnd;
-import autocadDrawingChecker.grading.criteria.implementations.LineCount;
-import autocadDrawingChecker.grading.criteria.implementations.LineAngle;
-import autocadDrawingChecker.grading.criteria.implementations.TextMatches;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LinesPerLayer;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineStart;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineLength;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineEnd;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineAngle;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.TextMatches;
 import autocadDrawingChecker.util.AbstractLoader;
 
 /**

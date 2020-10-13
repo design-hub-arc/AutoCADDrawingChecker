@@ -1,4 +1,4 @@
-package autocadDrawingChecker.grading.criteria.implementations;
+package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
@@ -9,7 +9,7 @@ import java.util.Objects;
  *
  * @author Matt Crow
  */
-public class LinesPerLayer implements AbstractGradingCriteria {
+public class LinesPerLayer implements AbstractGradingCriteria<AutoCADExport> {
 
     @Override
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {

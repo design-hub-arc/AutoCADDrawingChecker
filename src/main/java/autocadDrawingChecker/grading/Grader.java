@@ -3,7 +3,7 @@ package autocadDrawingChecker.grading;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.autoCADData.AutoCADExcelParser;
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
-import autocadDrawingChecker.grading.criteria.implementations.CompareColumn;
+import autocadDrawingChecker.grading.criteria.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 import java.util.ArrayList;

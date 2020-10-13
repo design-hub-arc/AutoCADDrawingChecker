@@ -1,13 +1,13 @@
-package autocadDrawingChecker.grading.criteria.implementations;
+package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.autoCADData.AutoCADElement;
-import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.SpreadsheetRecord;
 
 /**
  *
  * @author Matt
  */
-public class CompareColumn implements AbstractElementCriteria {
+public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord, ExtractedSpreadsheetContents> {
     private final String column;
     
     /**
@@ -19,7 +19,7 @@ public class CompareColumn implements AbstractElementCriteria {
     }
 
     @Override
-    public double getMatchScore(AutoCADElement e1, AutoCADElement e2) {
+    public double getMatchScore(SpreadsheetRecord e1, SpreadsheetRecord e2) {
         double ret = 0.0;
         if(e1.hasAttribute(column) && e2.hasAttribute(column)){
             ret = (e1.getAttribute(column).equals(e2.getAttribute(column))) ? 1.0 : 0.0;
@@ -41,6 +41,11 @@ public class CompareColumn implements AbstractElementCriteria {
     @Override
     public String getDescription() {
         return String.format("Grades the student file based on how closely its %s column matches with that of the instructor file", column);
+    }
+
+    @Override
+    public SpreadsheetRecord tryCast(SpreadsheetRecord rec) {
+        return rec;
     }
 
 }

@@ -1,4 +1,4 @@
-package autocadDrawingChecker.grading.criteria.implementations;
+package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
@@ -9,7 +9,7 @@ import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
  * 
  * @author Matt Crow
  */
-public class LineLength implements AbstractElementCriteria {
+public class LineLength implements AbstractElementCriteria<AutoCADElement, AutoCADExport> {
     
     @Override
     public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
@@ -50,4 +50,8 @@ public class LineLength implements AbstractElementCriteria {
         return new String[]{"Line"};
     }
 
+    @Override
+    public AutoCADElement tryCast(SpreadsheetRecord rec) {
+        return (rec instanceof AutoCADElement) ? (AutoCADElement)rec : null;
+    }
 }
