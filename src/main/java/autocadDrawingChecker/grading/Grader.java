@@ -1,8 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.autoCADData.AutoCADExcelParser;
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.grading.criteria.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
@@ -22,11 +21,12 @@ import java.util.stream.Collectors;
  * of everyone's grade.
  * 
  * @author Matt Crow
+ * @param <T> the type of export to grade
  */
-public class Grader {
+public abstract class Grader<T extends ExtractedSpreadsheetContents> {
     private final String instrFilePath;
     private final String[] studentFilePaths;
-    private final List<AbstractGradingCriteria> criteria;
+    private final List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> criteria;
     
     /**
      * 
@@ -34,25 +34,22 @@ public class Grader {
      * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria> gradeThese){
+    public Grader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> gradeThese){
         instrFilePath = pathToInstructorFile;
         studentFilePaths = pathsToStudentFiles;
         criteria = gradeThese;
     }
     
-    private AutoCADExport getInstructorFile() throws IOException{
-        return AutoCADExcelParser.parse(instrFilePath);
-    }
+    protected abstract T parseFile(String path) throws IOException;
     
-    private List<AutoCADExport> getStudentFiles(){
+    private List<T> getStudentFiles(){
         return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{
             // locate all Excel files in all given paths...
             return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream();
         }).map((fileName)->{
-            // try to convert them to AutoCADExports...
-            AutoCADExport r = null;
+            T r = null;
             try {
-                r = AutoCADExcelParser.parse(fileName);
+                r = parseFile(fileName);
             } catch (IOException ex) {
                 Logger.logError(ex);
             }
@@ -77,17 +74,17 @@ public class Grader {
     public final GradingReport grade(){
         GradingReport report = new GradingReport();
         
-        AutoCADExport trySrc = null;
-        List<AutoCADExport> cmp = null;
+        T trySrc = null;
+        List<T> cmp = null;
         
         try {
-            trySrc = getInstructorFile();
+            trySrc = parseFile(this.instrFilePath);
         } catch (IOException ex) {
             Logger.logError(String.format("Failed to locate source file %s", instrFilePath));
             Logger.logError(ex);
         }
         
-        AutoCADExport src = trySrc; // need this to be effectively final for lambda
+        T src = trySrc; // need this to be effectively final for lambda
         
         cmp = getStudentFiles();
         

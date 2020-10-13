@@ -1,5 +1,7 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.SpreadsheetRecord;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ public class DrawingCheckerData {
     private String instructorFilePath;
     private String[] studentFilePaths;
     private final HashMap<String, Boolean> selectedCriteria;
-    private final HashMap<String, AbstractGradingCriteria> nameToCriteria;
+    private final HashMap<String, AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> nameToCriteria;
     
     public DrawingCheckerData(){
         instructorFilePath = null;
@@ -33,7 +35,7 @@ public class DrawingCheckerData {
     public final boolean isAnyCriteriaSelected(){
         return selectedCriteria.values().contains(Boolean.TRUE);
     }
-    public final boolean isCriteriaSelected(AbstractGradingCriteria criteria){
+    public final boolean isCriteriaSelected(AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> criteria){
         //                      has this loaded the criteria?                       is it toggled to true?
         return selectedCriteria.containsKey(criteria.getName()) && selectedCriteria.get(criteria.getName());
     }
@@ -55,12 +57,12 @@ public class DrawingCheckerData {
         nameToCriteria.put(crit.getName(), crit);
     }
     
-    public final List<AbstractGradingCriteria> getSelectedCriteria(){
+    public final List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> getSelectedCriteria(){
         return selectedCriteria.entrySet().stream().filter((Entry<String, Boolean> nameToIsSelected)->{
             return nameToIsSelected.getValue(); // the "isSelected" part of the entry
         }).map((Entry<String, Boolean> nameToIsSelected)->{
             return nameToCriteria.get(nameToIsSelected.getKey());
-        }).filter((AbstractGradingCriteria criteria)->{
+        }).filter((AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> criteria)->{
             return criteria != null;
         }).collect(Collectors.toList());
     }

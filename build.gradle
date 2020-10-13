@@ -49,6 +49,10 @@ jar {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA' 
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:unchecked'
+}
+
 repositories {
     mavenCentral()
     // You may define additional repositories, or even remove "mavenCentral()".

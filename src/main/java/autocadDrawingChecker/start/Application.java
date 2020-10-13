@@ -1,5 +1,6 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.grading.AutoCADGrader;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingReport;
@@ -87,8 +88,8 @@ public class Application {
             data.isAnyCriteriaSelected();
     }
     
-    public final GradingReport grade(){
-        Grader g = new Grader(
+    public final GradingReport gradeAutoCAD(){
+        AutoCADGrader g = new AutoCADGrader(
             data.getInstructorFilePath(),
             data.getStudentFilePaths(),
             data.getSelectedCriteria()

@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,12 +16,13 @@ import java.util.Set;
  * <pre>GradedExport(x, y) != GradedExport(y, x)</pre>
  * 
  * @author Matt Crow.
+ * @param <T> The type of export being graded
  */
-public class GradedExport {
-    private final AutoCADExport instructorExport;
-    private final AutoCADExport studentExport;
-    private final Set<AbstractGradingCriteria> gradedCriteria;
-    private final HashMap<AbstractGradingCriteria, Double> grades;
+public class GradedExport<T extends ExtractedSpreadsheetContents> {
+    private final T instructorExport;
+    private final T studentExport;
+    private final Set<AbstractGradingCriteria<T>> gradedCriteria;
+    private final HashMap<AbstractGradingCriteria<T>, Double> grades;
     private final double finalGrade;
     
     /**
@@ -29,11 +30,11 @@ public class GradedExport {
      * so it can only be instantiated from within this package.
      * This is done by the Grader class.
      * 
-     * @param instructorsExport the instructor's AutoCADExport
-     * @param studentsExport the student's AutoCADExport
+     * @param instructorsExport the instructor's export
+     * @param studentsExport the student's export
      * @param gradeOnThese the criteria to grade on. 
      */
-    GradedExport(AutoCADExport instructorsExport, AutoCADExport studentsExport, List<AbstractGradingCriteria> gradeOnThese){
+    GradedExport(T instructorsExport, T studentsExport, List<AbstractGradingCriteria<T>> gradeOnThese){
         instructorExport = instructorsExport;
         studentExport = studentsExport;
         gradedCriteria = new HashSet<>(gradeOnThese);
@@ -53,7 +54,7 @@ public class GradedExport {
     private double runComparison(){
         double similarityScore = 0.0;
         double newScore = 0.0;
-        for(AbstractGradingCriteria attr : gradedCriteria){
+        for(AbstractGradingCriteria<T> attr : gradedCriteria){
             newScore = attr.computeScore(instructorExport, studentExport);
             grades.put(attr, newScore);
             similarityScore += newScore;
@@ -66,7 +67,7 @@ public class GradedExport {
      * 
      * @return the instructor file this grades based on. 
      */
-    public final AutoCADExport getInstructorFile(){
+    public final T getInstructorFile(){
         return instructorExport;
     }
     
@@ -74,7 +75,7 @@ public class GradedExport {
      * 
      * @return the student file this grades.
      */
-    public final AutoCADExport getStudentFile(){
+    public final T getStudentFile(){
         return studentExport;
     }
     
@@ -96,7 +97,7 @@ public class GradedExport {
      * @return the grade the student got for the given criteria,
      * or null if this didn't grade on the given criteria.
      */
-    public final double getGradeFor(AbstractGradingCriteria criteria){
+    public final double getGradeFor(AbstractGradingCriteria<T> criteria){
         return grades.get(criteria);
     }
     
