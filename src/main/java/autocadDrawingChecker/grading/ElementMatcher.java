@@ -2,6 +2,7 @@ package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
+import autocadDrawingChecker.data.core.SpreadsheetRecord;
 import autocadDrawingChecker.logging.Logger;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * The AutoCADElementMatcher class is
+ * The ElementMatcher class is
  used to pair elements in one
  AutoCADExport to elements in
  another. Essentially, this class compares two exports, and asks "which elements from the second export are supposed to match which elements in the first?"
@@ -31,12 +32,13 @@ import java.util.stream.Collectors;
  * </ul>
  * 
  * @author Matt Crow 
+ * @param <T> the type of record this will match
  */
-public class AutoCADElementMatcher {
-    private final List<AutoCADElement> exp1;
-    private final List<AutoCADElement> exp2;
-    private final Predicate<AutoCADElement> accepter;
-    private final BiFunction<AutoCADElement, AutoCADElement, Double> score;
+public class ElementMatcher<T extends SpreadsheetRecord> {
+    private final List<T> exp1;
+    private final List<T> exp2;
+    private final Predicate<T> accepter;
+    private final BiFunction<T, T, Double> score;
     
     /**
      * 
@@ -47,7 +49,7 @@ public class AutoCADElementMatcher {
      * within this range, with higher scores meaning the student's export is similar to the instructor export, and lower ones meaning the two exports are 
      * different. Essentially, this acts as a grader assigning a score based on how well the student did by some metric.
      */
-    public AutoCADElementMatcher(List<AutoCADElement> src, List<AutoCADElement> cmp, Predicate<AutoCADElement> accepter, BiFunction<AutoCADElement, AutoCADElement, Double> scoringFunction){
+    public ElementMatcher(List<T> src, List<T> cmp, Predicate<T> accepter, BiFunction<T, T, Double> scoringFunction){
         exp1 = src;
         exp2 = cmp;
         this.accepter = accepter;
@@ -67,20 +69,20 @@ public class AutoCADElementMatcher {
      * @return the list of matches between the two
      * given files.
      */
-    public List<MatchingAutoCADElements> findMatches(){
-        List<MatchingAutoCADElements> matches = new LinkedList<>();
+    public List<MatchingElements<T>> findMatches(){
+        List<MatchingElements<T>> matches = new LinkedList<>();
         
         // pool of unmatched elements
-        List<AutoCADElement> pool = exp2.stream().filter(accepter).collect(Collectors.toList());
+        List<T> pool = exp2.stream().filter(accepter).collect(Collectors.toList());
         
-        exp1.stream().filter(accepter).forEach((AutoCADElement srcRow)->{
+        exp1.stream().filter(accepter).forEach((T srcRow)->{
             // find the closest match to srcRow
             double bestScore = 0.0;
             double currScore = 0.0;
-            AutoCADElement bestRow = null;
+            T bestRow = null;
             
             // find the highest score
-            for(AutoCADElement cmpRow : pool){
+            for(T cmpRow : pool){
                 try {
                     currScore = score.apply(srcRow, cmpRow);
                 } catch (Exception ex){
@@ -95,8 +97,8 @@ public class AutoCADElementMatcher {
             
             // some rows may not match at all
             if(bestRow != null){
-                MatchingAutoCADElements m = new MatchingAutoCADElements(srcRow, bestRow);
-                //System.out.println("In AutoCADElementMatcher.findMatches: " + m);
+                MatchingElements m = new MatchingElements(srcRow, bestRow);
+                //System.out.println("In ElementMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);
             }

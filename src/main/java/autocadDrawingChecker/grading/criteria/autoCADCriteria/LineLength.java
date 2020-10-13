@@ -9,7 +9,7 @@ import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
  * 
  * @author Matt Crow
  */
-public class LineLength implements AbstractElementCriteria<AutoCADElement, AutoCADExport> {
+public class LineLength implements AbstractElementCriteria<AutoCADElement, AutoCADExport>, AbstractAutoCADElementCriteria {
     
     @Override
     public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
@@ -30,7 +30,7 @@ public class LineLength implements AbstractElementCriteria<AutoCADElement, AutoC
     public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
         double srcTotalLength = getTotalLineLength(exp1);
         double cmpTotalLength = getTotalLineLength(exp2);
-        double avgLenScore = AbstractElementCriteria.super.computeScore(exp1, exp2);
+        double avgLenScore = AbstractAutoCADElementCriteria.super.computeScore(exp1, exp2);
         double totalLengthScore = (srcTotalLength == cmpTotalLength) ? 1.0 : 0.0;
         return (avgLenScore + totalLengthScore) / 2;//* (1.0 - MathUtil.percentError(srcTotalLength, cmpTotalLength));
     }
@@ -48,10 +48,5 @@ public class LineLength implements AbstractElementCriteria<AutoCADElement, AutoC
     @Override
     public String[] getAllowedTypes() {
         return new String[]{"Line"};
-    }
-
-    @Override
-    public AutoCADElement tryCast(SpreadsheetRecord rec) {
-        return (rec instanceof AutoCADElement) ? (AutoCADElement)rec : null;
     }
 }

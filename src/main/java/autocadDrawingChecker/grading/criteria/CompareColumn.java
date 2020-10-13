@@ -28,11 +28,6 @@ public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord,
     }
 
     @Override
-    public String[] getAllowedTypes() {
-        return AbstractElementCriteria.ANY_TYPE;
-    }
-
-    @Override
     public String getName() {
         //                    Easier to read when it simply starts with the column name
         return String.format("%s column", column);
@@ -48,4 +43,8 @@ public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord,
         return rec;
     }
 
+    @Override
+    public boolean canAccept(SpreadsheetRecord e) {
+        return e != null;
+    }
 }

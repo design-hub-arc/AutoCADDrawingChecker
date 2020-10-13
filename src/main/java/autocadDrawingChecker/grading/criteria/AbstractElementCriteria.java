@@ -1,11 +1,9 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.autoCADData.AutoCADElement;
 import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.data.core.SpreadsheetRecord;
-import autocadDrawingChecker.grading.AutoCADElementMatcher;
-import autocadDrawingChecker.grading.MatchingAutoCADElements;
-import java.util.Arrays;
+import autocadDrawingChecker.grading.ElementMatcher;
+import autocadDrawingChecker.grading.MatchingElements;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,8 +15,6 @@ import java.util.stream.Collectors;
  * @author Matt Crow
  */
 public interface AbstractElementCriteria<T extends SpreadsheetRecord, U extends ExtractedSpreadsheetContents> extends AbstractGradingCriteria<U> {
-    public static final String[] ANY_TYPE = new String[0];
-    
     public abstract double getMatchScore(T e1, T e2);
     
     /**
@@ -29,10 +25,10 @@ public interface AbstractElementCriteria<T extends SpreadsheetRecord, U extends 
      */
     @Override
     public default double computeScore(U exp1, U exp2){
-        List<AutoCADElement> l1 = exp1.stream().map((r)->(AutoCADElement)r).collect(Collectors.toList());
-        List<AutoCADElement> l2 = exp2.stream().map((r)->(AutoCADElement)r).collect(Collectors.toList());
-        List<MatchingAutoCADElements> matches = new AutoCADElementMatcher(l1, l2, this::canAccept, this::getMatchScore).findMatches();
-        double netScore = matches.stream().map((MatchingAutoCADElements match)->{
+        List<T> l1 = exp1.stream().map(this::tryCast).collect(Collectors.toList());
+        List<T> l2 = exp2.stream().map(this::tryCast).collect(Collectors.toList());
+        List<MatchingElements<T>> matches = new ElementMatcher<>(l1, l2, this::canAccept, this::getMatchScore).findMatches();
+        double netScore = matches.stream().map((MatchingElements<T> match)->{
             return getMatchScore(tryCast(match.getElement1()), tryCast(match.getElement2()));
         }).reduce(0.0, Double::sum);
         
@@ -42,34 +38,8 @@ public interface AbstractElementCriteria<T extends SpreadsheetRecord, U extends 
         return netScore;
     }
     
-    /**
-     * Checks to see if the given AutoCADElement can -or should-
-     * be graded by this criteria. This is used by the AutoCADElementMatcher
-     * to decide if the given element should be graded.
-     * @see AutoCADElementMatcher
-     * @param e the AutoCADElement to check
-     * @return whether or not this criteria can grade e
-     */
-    public default boolean canAccept(AutoCADElement e){
-        String[] types = getAllowedTypes();
-        String eType = e.getName();
-        boolean acceptable = Arrays.equals(types, ANY_TYPE);
-        for(int i = 0; i < types.length && !acceptable; i++){
-            acceptable = eType.equalsIgnoreCase(types[i]);
-        }        
-        return acceptable;
-    }
-    
     public abstract T tryCast(SpreadsheetRecord rec);
+    public abstract boolean canAccept(T e);
     
-    /**
-     * 
-     * @return a list of AutoCAD Name column values.
-     * This is meant to filter out unwanted rows.
-     * May remove later.
-     * 
-     * You can make this return AbstractElementCriteria.ANY_TYPE
-     * to allow all record types.
-     */
-    public abstract String[] getAllowedTypes();
+    
 }
