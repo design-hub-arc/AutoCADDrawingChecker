@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class DrawingCheckerData {
     private String instructorFilePath;
     private String[] studentFilePaths;
+    private AbstractGradeableDataType selectedDataType;
     private final List<AbstractGradeableDataType> gradeableDataTypes; 
     private final HashMap<String, Boolean> selectedCriteria;
     private final HashMap<String, AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> nameToCriteria;
@@ -23,6 +24,7 @@ public class DrawingCheckerData {
     public DrawingCheckerData(){
         instructorFilePath = null;
         studentFilePaths = new String[0];
+        selectedDataType = null;
         gradeableDataTypes = new LinkedList<>();
         selectedCriteria = new HashMap<>();
         nameToCriteria = new HashMap<>();
@@ -55,6 +57,10 @@ public class DrawingCheckerData {
     
     public final List<AbstractGradeableDataType> getGradeableDataTypes(){
         return gradeableDataTypes;
+    }
+    
+    public final void setSelectedDataType(AbstractGradeableDataType type){
+        selectedDataType = type;
     }
     
     public final void clearCriteria(){

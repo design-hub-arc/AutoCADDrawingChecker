@@ -2,6 +2,7 @@ package autocadDrawingChecker.gui;
 
 import autocadDrawingChecker.gui.runPage.OutputPage;
 import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
+import autocadDrawingChecker.gui.chooseDataType.ChooseDataTypePage;
 import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import autocadDrawingChecker.logging.Logger;
 import java.awt.BorderLayout;
@@ -32,6 +33,7 @@ public class PageRenderer extends JPanel {
     private final HashMap<String, AbstractPage> pages; // need this to map names to pages
     private int currPageIdx;
     
+    public static final String CHOOSE_DATA_TYPE = "choose data type";
     public static final String CHOOSE_FILES = "choose files";
     public static final String CHOOSE_CRITERIA = "choose criteria";
     public static final String OUTPUT = "output";
@@ -66,6 +68,7 @@ public class PageRenderer extends JPanel {
         pages = new HashMap<>(); // populated by addPage
         pageNames = new ArrayList<>();
         currPageIdx = 0;
+        addPage(CHOOSE_DATA_TYPE, new ChooseDataTypePage());
         addPage(CHOOSE_FILES, new ChooseFilesPage());
         addPage(CHOOSE_CRITERIA, new ChooseCriteriaPage());
         addPage(OUTPUT, new OutputPage());

@@ -1,6 +1,5 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.data.GradeableDataTypeLoader;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
 import java.util.Arrays;
