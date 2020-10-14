@@ -8,6 +8,7 @@ import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
 import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
+import autocadDrawingChecker.gui.chooseDataType.ChooseDataTypePage;
 import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import java.io.File;
 import java.util.ArrayList;
@@ -65,6 +66,11 @@ public class Application {
         }
         window = new ViewController();
         PageRenderer pane = window.getAppPane();
+        
+        ChooseDataTypePage chooseDataType = (ChooseDataTypePage)pane.getPage(PageRenderer.CHOOSE_DATA_TYPE);
+        if(data.isDataTypeSelected()){
+            chooseDataType.setSelectedDataType(data.getSelectedDataType());
+        }
         
         ChooseFilesPage chooseFiles = (ChooseFilesPage)pane.getPage(PageRenderer.CHOOSE_FILES);
         if(data.isInstructorFilePathSet()){

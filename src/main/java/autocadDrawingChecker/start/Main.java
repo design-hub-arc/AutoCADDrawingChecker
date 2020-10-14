@@ -29,9 +29,11 @@ public class Main {
      */
     public static void main(String[] args) {
         Main main = new Main();
+        DrawingCheckerData data = main.app.getData();
         main.app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
         new GradeableDataTypeLoader().getAll().forEach(main.app::addGradeableDataType);
-                
+        
+        data.setSelectedDataType(data.getGradeableDataTypes().get(1));
         
         System.out.println("Args are " + Arrays.toString(args));
         

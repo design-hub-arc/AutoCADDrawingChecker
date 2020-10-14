@@ -63,6 +63,14 @@ public class DrawingCheckerData {
         selectedDataType = type;
     }
     
+    public final boolean isDataTypeSelected(){
+        return selectedDataType != null;
+    }
+    
+    public final AbstractGradeableDataType getSelectedDataType(){
+        return selectedDataType;
+    }
+    
     public final void clearCriteria(){
         selectedCriteria.clear();
         nameToCriteria.clear();
