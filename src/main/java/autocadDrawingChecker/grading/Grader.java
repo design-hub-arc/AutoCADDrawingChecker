@@ -95,12 +95,12 @@ public abstract class Grader<T extends ExtractedSpreadsheetContents> {
         though, as that could cause problems
         */
         Set<String> colsToGrade = (src == null) ? new HashSet<>() : src.getColumns();
-        LinkedList<AbstractGradingCriteria> colCriteria = new LinkedList<>();
+        LinkedList<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> colCriteria = new LinkedList<>();
         for(String column : colsToGrade){
             colCriteria.add(new CompareColumn(column));
         }
         
-        List<AbstractGradingCriteria> finalGradedCriteria = new ArrayList<>();
+        List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> finalGradedCriteria = new ArrayList<>();
         finalGradedCriteria.addAll(criteria);
         finalGradedCriteria.addAll(colCriteria);
         finalGradedCriteria.forEach((c)->report.addCriteria(c));

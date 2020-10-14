@@ -1,5 +1,6 @@
 package autocadDrawingChecker.grading.criteria;
 
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LinesPerLayer;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineStart;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineLength;
@@ -7,6 +8,8 @@ import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineEnd;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineAngle;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.TextMatches;
 import autocadDrawingChecker.util.AbstractLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The GradingCriteriaLoader is used
@@ -14,17 +17,17 @@ import autocadDrawingChecker.util.AbstractLoader;
  * 
  * @author Matt Crow
  */
-public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteria>{
+public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>>{
     @Override
-    public final AbstractGradingCriteria[] getAll(){
-        return new AbstractGradingCriteria[]{
-            new LineCount(),
-            new LinesPerLayer(),
-            new LineLength(),
-            new LineAngle(),
-            new LineStart(),
-            new LineEnd(),
-            new TextMatches()
-        };
+    public final List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> getAll(){
+        ArrayList<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> ret = new ArrayList<>();
+        ret.add(new LineCount());
+        ret.add(new LinesPerLayer());
+        ret.add(new LineLength());
+        ret.add(new LineAngle());
+        ret.add(new LineStart());
+        ret.add(new LineEnd());
+        ret.add(new TextMatches());
+        return ret;
     }
 }

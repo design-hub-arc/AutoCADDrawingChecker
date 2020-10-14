@@ -1,15 +1,17 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.grading.AutoCADGrader;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
 import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
 import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -19,7 +21,7 @@ public class Application {
     private final DrawingCheckerData data;
     private ViewController window;
     
-    private AbstractGradingCriteria[] criteria;
+    private List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> criteria;
     
     private static Application instance;
     public static final String APP_NAME = "AutoCAD Drawing Checker";
@@ -29,7 +31,7 @@ public class Application {
             throw new ExceptionInInitializerError("Application is supposed to be a singleton: No more than one instance!");
         }
         data = new DrawingCheckerData();
-        criteria = new AbstractGradingCriteria[0];
+        criteria = new ArrayList<>();
     }
     
     public static final Application getInstance(){
@@ -39,16 +41,16 @@ public class Application {
         return instance;
     }
     
-    public final Application setLoadedCriteria(AbstractGradingCriteria[] criteria){
+    public final Application setLoadedCriteria(List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> criteria){
         this.criteria = criteria;
         data.clearCriteria();
-        for(AbstractGradingCriteria crit : criteria){
+        for(AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> crit : criteria){
             data.addCriteria(crit);
         }
         return this;
     }
     
-    public final AbstractGradingCriteria[] getGradedCriteria(){
+    public final List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> getGradedCriteria(){
         return criteria;
     }
     

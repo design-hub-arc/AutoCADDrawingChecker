@@ -95,7 +95,7 @@ public class ElementMatcher<T extends SpreadsheetRecord> {
             
             // some rows may not match at all
             if(bestRow != null){
-                MatchingElements m = new MatchingElements(srcRow, bestRow);
+                MatchingElements<T> m = new MatchingElements<>(srcRow, bestRow);
                 //System.out.println("In ElementMatcher.findMatches: " + m);
                 matches.add(m);
                 pool.remove(bestRow);

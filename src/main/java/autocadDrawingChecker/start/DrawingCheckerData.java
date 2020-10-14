@@ -1,9 +1,7 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -52,7 +50,7 @@ public class DrawingCheckerData {
         nameToCriteria.clear();
     }
     
-    public final void addCriteria(AbstractGradingCriteria crit){
+    public final void addCriteria(AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> crit){
         selectedCriteria.put(crit.getName(), Boolean.TRUE);
         nameToCriteria.put(crit.getName(), crit);
     }
@@ -66,8 +64,8 @@ public class DrawingCheckerData {
             return criteria != null;
         }).collect(Collectors.toList());
     }
-    public final HashMap<AbstractGradingCriteria, Boolean> getGradingCriteria(){
-        HashMap<AbstractGradingCriteria, Boolean> critToIsSel = new HashMap<>();
+    public final HashMap<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>, Boolean> getGradingCriteria(){
+        HashMap<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>, Boolean> critToIsSel = new HashMap<>();
         selectedCriteria.entrySet().forEach((entry)->{
             critToIsSel.put(nameToCriteria.get(entry.getKey()), entry.getValue());
         });
@@ -82,7 +80,7 @@ public class DrawingCheckerData {
         studentFilePaths = paths;
         return this;
     }
-    public final DrawingCheckerData setCriteriaSelected(AbstractGradingCriteria criteria, boolean isSelected){
+    public final DrawingCheckerData setCriteriaSelected(AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> criteria, boolean isSelected){
         selectedCriteria.put(criteria.getName(), isSelected);
         return this;
     }

@@ -1,5 +1,6 @@
 package autocadDrawingChecker.gui.chooseCriteria;
 
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.start.Application;
 import java.awt.BorderLayout;
@@ -37,7 +38,8 @@ public class CriteriaSelectionList extends JComponent {
         gbc.weighty = 0.0; // this make things "stick" together
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.PAGE_START;
-        Arrays.stream(Application.getInstance().getGradedCriteria()).map((AbstractGradingCriteria criteria)->{
+        
+        Application.getInstance().getGradedCriteria().stream().map((AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> criteria)->{
             return new CriteriaToggle(criteria);
         }).forEach((CriteriaToggle component)->{
             criteriaList.put(component.getCriteria().getName(), component);

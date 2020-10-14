@@ -1,5 +1,6 @@
 package autocadDrawingChecker.gui.chooseCriteria;
 
+import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.start.Application;
 import java.awt.BorderLayout;
@@ -16,10 +17,10 @@ import javax.swing.JTextArea;
  * @author Matt Crow
  */
 public class CriteriaToggle extends JComponent {
-    private final AbstractGradingCriteria criteria;
+    private final AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> criteria;
     private final JCheckBox selectBox;
     
-    public CriteriaToggle(AbstractGradingCriteria forCriteria){
+    public CriteriaToggle(AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> forCriteria){
         super();
         criteria = forCriteria;
         
@@ -46,7 +47,7 @@ public class CriteriaToggle extends JComponent {
         return selectBox.isSelected();
     }
     
-    public final AbstractGradingCriteria getCriteria(){
+    public final AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> getCriteria(){
         return criteria;
     }
 }
