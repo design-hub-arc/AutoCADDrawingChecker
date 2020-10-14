@@ -1,8 +1,10 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -14,12 +16,14 @@ import java.util.stream.Collectors;
 public class DrawingCheckerData {
     private String instructorFilePath;
     private String[] studentFilePaths;
+    private final List<AbstractGradeableDataType> gradeableDataTypes; 
     private final HashMap<String, Boolean> selectedCriteria;
     private final HashMap<String, AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> nameToCriteria;
     
     public DrawingCheckerData(){
         instructorFilePath = null;
         studentFilePaths = new String[0];
+        gradeableDataTypes = new LinkedList<>();
         selectedCriteria = new HashMap<>();
         nameToCriteria = new HashMap<>();
     }
@@ -43,6 +47,14 @@ public class DrawingCheckerData {
     }
     public final String[] getStudentFilePaths(){
         return studentFilePaths;
+    }
+    
+    public final void addGradeableDataType(AbstractGradeableDataType type){
+        gradeableDataTypes.add(type);
+    }
+    
+    public final List<AbstractGradeableDataType> getGradeableDataTypes(){
+        return gradeableDataTypes;
     }
     
     public final void clearCriteria(){

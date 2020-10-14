@@ -1,5 +1,6 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.grading.AutoCADGrader;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
@@ -52,6 +53,10 @@ public class Application {
     
     public final List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> getGradedCriteria(){
         return criteria;
+    }
+    
+    public final void addGradeableDataType(AbstractGradeableDataType t){
+        data.addGradeableDataType(t);
     }
     
     public final Application createGui(){

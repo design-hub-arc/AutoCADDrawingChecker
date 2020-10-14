@@ -1,5 +1,7 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.data.AbstractGradeableDataType;
+import autocadDrawingChecker.data.GradeableDataTypeLoader;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,8 +31,8 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
         main.app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
-        
-        
+        new GradeableDataTypeLoader().getAll().forEach(main.app::addGradeableDataType);
+                
         
         System.out.println("Args are " + Arrays.toString(args));
         
