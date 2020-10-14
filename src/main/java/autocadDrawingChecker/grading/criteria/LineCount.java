@@ -5,7 +5,7 @@ import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 /**
  * @author Matt Crow
  */
-public class LineCount implements AbstractGradingCriteria<ExtractedSpreadsheetContents> {
+public class LineCount implements AbstractGradingCriteria {
 
     @Override
     public double computeScore(ExtractedSpreadsheetContents exp1, ExtractedSpreadsheetContents exp2) {
@@ -20,6 +20,11 @@ public class LineCount implements AbstractGradingCriteria<ExtractedSpreadsheetCo
     @Override
     public String getName() {
         return "Line count";
+    }
+
+    @Override
+    public boolean canGrade(ExtractedSpreadsheetContents contents) {
+        return contents != null;
     }
 
 }

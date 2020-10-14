@@ -7,7 +7,7 @@ import autocadDrawingChecker.data.core.SpreadsheetRecord;
  *
  * @author Matt
  */
-public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord, ExtractedSpreadsheetContents> {
+public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord> {
     private final String column;
     
     /**
@@ -46,5 +46,10 @@ public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord,
     @Override
     public boolean canAccept(SpreadsheetRecord e) {
         return e != null;
+    }
+
+    @Override
+    public boolean canGrade(ExtractedSpreadsheetContents contents) {
+        return contents != null;
     }
 }

@@ -9,9 +9,8 @@ import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
  * exports.
  * 
  * @author Matt Crow
- * @param <T> the type of spreadsheet contents this will grade
  */
-public interface AbstractGradingCriteria<T extends ExtractedSpreadsheetContents> {
+public interface AbstractGradingCriteria {
     /**
      * This method should compare the given ExtractedSpreadsheetContents to each other, and
      * return a double between 0.0 and 1.0. A value of 1.0 denotes the student's
@@ -20,7 +19,7 @@ public interface AbstractGradingCriteria<T extends ExtractedSpreadsheetContents>
      * @param exp2 The student file to grade.
      * @return a double from 0.0 to 1.0.
      */
-    public abstract double computeScore(T exp1, T exp2);
+    public abstract double computeScore(ExtractedSpreadsheetContents exp1, ExtractedSpreadsheetContents exp2);
     
     /**
      * 
@@ -40,4 +39,12 @@ public interface AbstractGradingCriteria<T extends ExtractedSpreadsheetContents>
      * grading criteria.
      */
     public abstract String getDescription();
+    
+    /**
+     * Checks to see if this criteria can grade the given contents
+     * 
+     * @param contents the contents to check
+     * @return whether or not this can grade the given contents
+     */
+    public abstract boolean canGrade(ExtractedSpreadsheetContents contents);
 }

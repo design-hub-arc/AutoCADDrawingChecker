@@ -9,7 +9,7 @@ import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
  * 
  * @author Matt Crow
  */
-public class LineLength implements AbstractElementCriteria<AutoCADElement, AutoCADExport>, AbstractAutoCADElementCriteria {
+public class LineLength implements AbstractElementCriteria<AutoCADElement>, AbstractAutoCADElementCriteria {
     
     @Override
     public double getMatchScore(AutoCADElement r1, AutoCADElement r2){

@@ -1,6 +1,5 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
 import autocadDrawingChecker.data.core.SpreadsheetRecord;
 
 /**
@@ -10,7 +9,7 @@ import autocadDrawingChecker.data.core.SpreadsheetRecord;
  * 
  * @author Matt Crow
  */
-public interface AbstractVectorCriteria<T extends SpreadsheetRecord, U extends ExtractedSpreadsheetContents> extends AbstractElementCriteria<T, U> {
+public interface AbstractVectorCriteria<T extends SpreadsheetRecord> extends AbstractElementCriteria<T> {
     @Override
     public default double getMatchScore(T e1, T e2){
         double score = 0.0;

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * 
  * @author Matt Crow
  */
-public interface AbstractElementCriteria<T extends SpreadsheetRecord, U extends ExtractedSpreadsheetContents> extends AbstractGradingCriteria<U> {
+public interface AbstractElementCriteria<T extends SpreadsheetRecord> extends AbstractGradingCriteria {
     public abstract double getMatchScore(T e1, T e2);
     
     /**
@@ -24,7 +24,7 @@ public interface AbstractElementCriteria<T extends SpreadsheetRecord, U extends 
      * @return the student's net score for this criteria. Ranges from 0.0 to 1.0
      */
     @Override
-    public default double computeScore(U exp1, U exp2){
+    public default double computeScore(ExtractedSpreadsheetContents exp1, ExtractedSpreadsheetContents exp2){
         List<T> l1 = exp1.stream().map(this::tryCast).collect(Collectors.toList());
         List<T> l2 = exp2.stream().map(this::tryCast).collect(Collectors.toList());
         List<MatchingElements<T>> matches = new ElementMatcher<>(l1, l2, this::canAccept, this::getMatchScore).findMatches();

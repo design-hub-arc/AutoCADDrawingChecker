@@ -2,13 +2,12 @@ package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.grading.criteria.AbstractVectorCriteria;
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 
 /**
  *
  * @author Matt
  */
-public class LineEnd implements AbstractVectorCriteria<AutoCADElement, AutoCADExport>, AbstractAutoCADElementCriteria {
+public class LineEnd implements AbstractVectorCriteria<AutoCADElement>, AbstractAutoCADElementCriteria {
     @Override
     public String getDescription() {
         return "Grades based on how closesly the student's line end points match up with those of the instructor's";
