@@ -1,13 +1,13 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.data.core.Record;
 
 /**
  *
  * @author Matt
  */
-public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord> {
+public class CompareColumn implements AbstractElementCriteria<Record> {
     private final String column;
     
     /**
@@ -19,7 +19,7 @@ public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord>
     }
 
     @Override
-    public double getMatchScore(SpreadsheetRecord e1, SpreadsheetRecord e2) {
+    public double getMatchScore(Record e1, Record e2) {
         double ret = 0.0;
         if(e1.hasAttribute(column) && e2.hasAttribute(column)){
             ret = (e1.getAttribute(column).equals(e2.getAttribute(column))) ? 1.0 : 0.0;
@@ -39,17 +39,17 @@ public class CompareColumn implements AbstractElementCriteria<SpreadsheetRecord>
     }
 
     @Override
-    public SpreadsheetRecord tryCast(SpreadsheetRecord rec) {
+    public Record tryCast(Record rec) {
         return rec;
     }
 
     @Override
-    public boolean canAccept(SpreadsheetRecord e) {
+    public boolean canAccept(Record e) {
         return e != null;
     }
 
     @Override
-    public boolean canGrade(ExtractedSpreadsheetContents contents) {
+    public boolean canGrade(DataSet contents) {
         return contents != null;
     }
 }

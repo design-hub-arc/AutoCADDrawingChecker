@@ -7,8 +7,8 @@ package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 import java.util.Arrays;
 
@@ -49,17 +49,17 @@ public interface AbstractAutoCADElementCriteria extends AbstractElementCriteria<
     public abstract String[] getAllowedTypes();
     
     @Override
-    public default AutoCADElement tryCast(SpreadsheetRecord rec){
+    public default AutoCADElement tryCast(Record rec){
         return (rec instanceof AutoCADElement) ? (AutoCADElement)rec : null;
     }
     
     @Override
-    public default boolean canGrade(ExtractedSpreadsheetContents contents){
+    public default boolean canGrade(DataSet contents){
         return contents != null && contents instanceof AutoCADExport;
     }
     
     @Override
-    public default double computeScore(ExtractedSpreadsheetContents exp1, ExtractedSpreadsheetContents exp2){
+    public default double computeScore(DataSet exp1, DataSet exp2){
         return computeScore((AutoCADExport)exp1, (AutoCADExport)exp2);
     }
     

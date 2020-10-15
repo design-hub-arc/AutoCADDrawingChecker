@@ -9,10 +9,10 @@ import java.util.Set;
  *
  * @author Matt
  */
-public class ExtractedSpreadsheetContents extends LinkedList<SpreadsheetRecord> {
+public class DataSet extends LinkedList<Record> {
     private final String fileName;
     
-    public ExtractedSpreadsheetContents(String fileName){
+    public DataSet(String fileName){
         super();
         this.fileName = fileName;
     }
@@ -21,8 +21,8 @@ public class ExtractedSpreadsheetContents extends LinkedList<SpreadsheetRecord> 
         return fileName;
     }
     
-    public final HashMap<Object, LinkedList<SpreadsheetRecord>> sortRecordsByColumn(String column){
-        HashMap<Object, LinkedList<SpreadsheetRecord>> valueToRecords = new HashMap<>();
+    public final HashMap<Object, LinkedList<Record>> sortRecordsByColumn(String column){
+        HashMap<Object, LinkedList<Record>> valueToRecords = new HashMap<>();
         forEach((record)->{
             Object value = record.getAttribute(column);
             if(!valueToRecords.containsKey(value)){
@@ -33,7 +33,7 @@ public class ExtractedSpreadsheetContents extends LinkedList<SpreadsheetRecord> 
         return valueToRecords;
     }
     public final HashMap<Object, Integer> getCountsPerColumnValue(String column){
-        HashMap<Object, LinkedList<SpreadsheetRecord>> sorted = sortRecordsByColumn(column);
+        HashMap<Object, LinkedList<Record>> sorted = sortRecordsByColumn(column);
         HashMap<Object, Integer> counts = new HashMap<>();
         sorted.forEach((key, list)->{
             counts.put(key, list.size());
@@ -43,7 +43,7 @@ public class ExtractedSpreadsheetContents extends LinkedList<SpreadsheetRecord> 
     
     public final Set<String> getColumns(){
         Set<String> cols = new HashSet<>();
-        forEach((SpreadsheetRecord e)->{
+        forEach((Record e)->{
             cols.addAll(e.getAttributes());
         });
         return cols;
@@ -53,7 +53,7 @@ public class ExtractedSpreadsheetContents extends LinkedList<SpreadsheetRecord> 
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Extracted Spreadsheet Contents:");
-        forEach((SpreadsheetRecord row)->sb.append("\n").append(row.toString()));
+        forEach((Record row)->sb.append("\n").append(row.toString()));
         sb.append("\nEnd of Extracted Spreadsheet Contents");
         return sb.toString();
     }

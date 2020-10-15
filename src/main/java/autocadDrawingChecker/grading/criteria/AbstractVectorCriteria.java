@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.Record;
 
 /**
  * AbstractVectorCriteria is used grading based on some multi-element grading
@@ -9,7 +9,7 @@ import autocadDrawingChecker.data.core.SpreadsheetRecord;
  * 
  * @author Matt Crow
  */
-public interface AbstractVectorCriteria<T extends SpreadsheetRecord> extends AbstractElementCriteria<T> {
+public interface AbstractVectorCriteria<T extends Record> extends AbstractElementCriteria<T> {
     @Override
     public default double getMatchScore(T e1, T e2){
         double score = 0.0;

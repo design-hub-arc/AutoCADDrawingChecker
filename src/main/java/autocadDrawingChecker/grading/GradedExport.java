@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Set;
  * @author Matt Crow.
  * @param <T> The type of export being graded
  */
-public class GradedExport<T extends ExtractedSpreadsheetContents> {
+public class GradedExport<T extends DataSet> {
     private final T instructorExport;
     private final T studentExport;
     private final Set<AbstractGradingCriteria<T>> gradedCriteria;

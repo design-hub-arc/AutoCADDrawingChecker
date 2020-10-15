@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.logging.Logger;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * @author Matt Crow 
  * @param <T> the type of record this will match
  */
-public class ElementMatcher<T extends SpreadsheetRecord> {
+public class ElementMatcher<T extends Record> {
     private final List<T> exp1;
     private final List<T> exp2;
     private final Predicate<T> accepter;

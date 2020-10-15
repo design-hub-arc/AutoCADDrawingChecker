@@ -14,8 +14,8 @@ public class GenericExcelDataType implements AbstractGradeableDataType {
     }
 
     @Override
-    public ExtractedSpreadsheetContents createExtractionHolder(String fileName) {
-        return new ExtractedSpreadsheetContents(fileName);
+    public DataSet createExtractionHolder(String fileName) {
+        return new DataSet(fileName);
     }
 
     @Override

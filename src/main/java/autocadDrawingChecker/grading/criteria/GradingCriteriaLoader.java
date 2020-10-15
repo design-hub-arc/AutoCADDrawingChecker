@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LinesPerLayer;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineStart;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineLength;

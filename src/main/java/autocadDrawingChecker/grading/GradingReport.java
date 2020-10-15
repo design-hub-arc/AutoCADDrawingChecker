@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +28,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 
  * @author Matt Crow
  */
-public class GradingReport extends LinkedList<GradedExport<? extends ExtractedSpreadsheetContents>> {
+public class GradingReport extends LinkedList<GradedExport<? extends DataSet>> {
     private final HashMap<String, Integer> headerToCol;
     private final ArrayList<String> headers;
-    private final HashMap<String, AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> gradedCriteria;
+    private final HashMap<String, AbstractGradingCriteria<? extends DataSet>> gradedCriteria;
     
     private static final String SRC_FILE_HEADER = "Instructor File";
     private static final String CMP_FILE_HEADER = "Student File";
@@ -65,7 +65,7 @@ public class GradingReport extends LinkedList<GradedExport<? extends ExtractedSp
      * 
      * @param criteria the criteria to include in this' output.
      */
-    public final void addCriteria(AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> criteria){
+    public final void addCriteria(AbstractGradingCriteria<? extends DataSet> criteria){
         gradedCriteria.put(criteria.getName(), criteria);
         addHeader(criteria.getName());
     }

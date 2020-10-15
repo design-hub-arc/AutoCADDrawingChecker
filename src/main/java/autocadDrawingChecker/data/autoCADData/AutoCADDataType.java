@@ -1,7 +1,7 @@
 package autocadDrawingChecker.data.autoCADData;
 
 import autocadDrawingChecker.data.AbstractGradeableDataType;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
 
 /**
@@ -16,7 +16,7 @@ public class AutoCADDataType implements AbstractGradeableDataType {
     }
 
     @Override
-    public ExtractedSpreadsheetContents createExtractionHolder(String fileName) {
+    public DataSet createExtractionHolder(String fileName) {
         return new AutoCADExport(fileName);
     }
 

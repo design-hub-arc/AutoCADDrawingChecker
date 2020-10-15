@@ -2,7 +2,7 @@ package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 
 /**
@@ -17,7 +17,7 @@ public class LineLength implements AbstractElementCriteria<AutoCADElement>, Abst
     }
     
     private double getTotalLineLength(AutoCADExport exp){
-        return exp.stream().filter((SpreadsheetRecord e)->{
+        return exp.stream().filter((Record e)->{
             return e instanceof AutoCADElement; 
         }).map((rec)->{
             return (AutoCADElement)rec;

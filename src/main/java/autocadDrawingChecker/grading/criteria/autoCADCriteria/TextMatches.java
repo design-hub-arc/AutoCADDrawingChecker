@@ -2,7 +2,7 @@ package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 
 /**

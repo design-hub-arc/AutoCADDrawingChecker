@@ -1,6 +1,6 @@
 package autocadDrawingChecker.data.autoCADData;
 
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.Record;
 
 /**
  * An AutoCADElement represents
@@ -8,7 +8,7 @@ import autocadDrawingChecker.data.core.SpreadsheetRecord;
  * 
  * @author Matt Crow
  */
-public class AutoCADElement extends SpreadsheetRecord {
+public class AutoCADElement extends Record {
     
     public static final String NAME_COL = "Name";
     public static final String LAYER_COL = "Layer";

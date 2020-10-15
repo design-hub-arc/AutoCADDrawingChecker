@@ -1,7 +1,7 @@
 package autocadDrawingChecker.data.autoCADData;
 
 import autocadDrawingChecker.data.core.ExcelParser;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class AutoCADExcelParser extends ExcelParser {
     }
     
     @Override
-    protected ExtractedSpreadsheetContents createExtractionHolder(){
+    protected DataSet createExtractionHolder(){
         return new AutoCADExport(this.getFileName());
     }
     

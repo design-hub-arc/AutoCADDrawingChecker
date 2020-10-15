@@ -1,7 +1,7 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.data.AbstractGradeableDataType;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.AutoCADGrader;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.GradingReport;
@@ -23,7 +23,7 @@ public class Application {
     private final DrawingCheckerData data;
     private ViewController window;
     
-    private List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> criteria;
+    private List<AbstractGradingCriteria<? extends DataSet>> criteria;
     
     private static Application instance;
     public static final String APP_NAME = "AutoCAD Drawing Checker";
@@ -43,16 +43,16 @@ public class Application {
         return instance;
     }
     
-    public final Application setLoadedCriteria(List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> criteria){
+    public final Application setLoadedCriteria(List<AbstractGradingCriteria<? extends DataSet>> criteria){
         this.criteria = criteria;
         data.clearCriteria();
-        for(AbstractGradingCriteria<? extends ExtractedSpreadsheetContents> crit : criteria){
+        for(AbstractGradingCriteria<? extends DataSet> crit : criteria){
             data.addCriteria(crit);
         }
         return this;
     }
     
-    public final List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> getGradedCriteria(){
+    public final List<AbstractGradingCriteria<? extends DataSet>> getGradedCriteria(){
         return criteria;
     }
     

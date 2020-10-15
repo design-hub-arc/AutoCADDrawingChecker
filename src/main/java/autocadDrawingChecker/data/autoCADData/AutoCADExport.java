@@ -1,6 +1,6 @@
 package autocadDrawingChecker.data.autoCADData;
 
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ import java.util.Set;
  * 
  * @author Matt Crow
  */
-public class AutoCADExport extends ExtractedSpreadsheetContents {
+public class AutoCADExport extends DataSet {
      
     public AutoCADExport(String fileName){
         super(fileName);

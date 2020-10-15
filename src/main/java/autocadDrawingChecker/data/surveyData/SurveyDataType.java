@@ -1,7 +1,7 @@
 package autocadDrawingChecker.data.surveyData;
 
 import autocadDrawingChecker.data.AbstractGradeableDataType;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
 
 /**
@@ -16,7 +16,7 @@ public class SurveyDataType implements AbstractGradeableDataType {
     }
 
     @Override
-    public ExtractedSpreadsheetContents createExtractionHolder(String fileName) {
+    public DataSet createExtractionHolder(String fileName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

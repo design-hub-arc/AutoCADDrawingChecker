@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Set;
 
 /**
- * SpreadsheetRecord represents a single row in a spreadsheet.
+ * Record represents a single row in a spreadsheet.
  * This class can be extended to provide more specific behavior,
  * or can be used as is: it is not abstract.
  * 
  * @author Matt Crow
  */
-public class SpreadsheetRecord {
+public class Record {
     private final HashMap<String, Object> attributes;
     
-    protected SpreadsheetRecord(){
+    protected Record(){
         this.attributes = new HashMap<>();
     }
     

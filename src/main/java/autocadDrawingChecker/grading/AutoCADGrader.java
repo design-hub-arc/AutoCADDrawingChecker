@@ -2,7 +2,7 @@ package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADExcelParser;
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class AutoCADGrader extends Grader<AutoCADExport> {
 
-    public AutoCADGrader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> gradeThese) {
+    public AutoCADGrader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends DataSet>> gradeThese) {
         super(pathToInstructorFile, pathsToStudentFiles, gradeThese);
     }
 

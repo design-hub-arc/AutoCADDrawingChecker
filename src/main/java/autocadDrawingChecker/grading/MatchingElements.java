@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.data.core.SpreadsheetRecord;
+import autocadDrawingChecker.data.core.Record;
 
 /**
  * The MatchingElements class is 
@@ -14,9 +14,9 @@ import autocadDrawingChecker.data.core.SpreadsheetRecord;
  * other.
  * 
  * @author Matt Crow
- * @param <T> the subclass of SpreadsheetRecord this should hold
+ * @param <T> the subclass of Record this should hold
  */
-public class MatchingElements<T extends SpreadsheetRecord> {
+public class MatchingElements<T extends Record> {
     private final T element1;
     private final T element2;
     

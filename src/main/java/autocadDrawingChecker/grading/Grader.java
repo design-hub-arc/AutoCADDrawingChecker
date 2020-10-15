@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
  * @author Matt Crow
  * @param <T> the type of export to grade
  */
-public abstract class Grader<T extends ExtractedSpreadsheetContents> {
+public abstract class Grader<T extends DataSet> {
     private final String instrFilePath;
     private final String[] studentFilePaths;
-    private final List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> criteria;
+    private final List<AbstractGradingCriteria<? extends DataSet>> criteria;
     
     /**
      * 
@@ -34,7 +34,7 @@ public abstract class Grader<T extends ExtractedSpreadsheetContents> {
      * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> gradeThese){
+    public Grader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends DataSet>> gradeThese){
         instrFilePath = pathToInstructorFile;
         studentFilePaths = pathsToStudentFiles;
         criteria = gradeThese;
@@ -95,12 +95,12 @@ public abstract class Grader<T extends ExtractedSpreadsheetContents> {
         though, as that could cause problems
         */
         Set<String> colsToGrade = (src == null) ? new HashSet<>() : src.getColumns();
-        LinkedList<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> colCriteria = new LinkedList<>();
+        LinkedList<AbstractGradingCriteria<? extends DataSet>> colCriteria = new LinkedList<>();
         for(String column : colsToGrade){
             colCriteria.add(new CompareColumn(column));
         }
         
-        List<AbstractGradingCriteria<? extends ExtractedSpreadsheetContents>> finalGradedCriteria = new ArrayList<>();
+        List<AbstractGradingCriteria<? extends DataSet>> finalGradedCriteria = new ArrayList<>();
         finalGradedCriteria.addAll(criteria);
         finalGradedCriteria.addAll(colCriteria);
         finalGradedCriteria.forEach((c)->report.addCriteria(c));

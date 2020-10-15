@@ -80,21 +80,21 @@ public class ExcelParser {
         return b.toString();
     }
     
-    protected ExtractedSpreadsheetContents createExtractionHolder(){
-        return new ExtractedSpreadsheetContents(this.fileName);
+    protected DataSet createExtractionHolder(){
+        return new DataSet(this.fileName);
     }
     
     protected RecordExtractor createExtractor(){
         return new RecordExtractor();
     }
     
-    public final ExtractedSpreadsheetContents parse() throws IOException {
+    public final DataSet parse() throws IOException {
         InputStream in = new FileInputStream(fileName);
         //                                                new Excel format       old Excel format
         Workbook workbook = (fileName.endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         Sheet sheet = workbook.getSheetAt(0);
         
-        ExtractedSpreadsheetContents containedTherein = createExtractionHolder();
+        DataSet containedTherein = createExtractionHolder();
         
         locateColumns(sheet.getRow(0));
         
@@ -114,7 +114,7 @@ public class ExcelParser {
         """
         */
         
-        SpreadsheetRecord rec = null;
+        Record rec = null;
         
         //               skip headers
         for(int rowNum = 1; rowNum < numRows; rowNum++){

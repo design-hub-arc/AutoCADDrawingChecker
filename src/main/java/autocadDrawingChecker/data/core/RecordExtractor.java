@@ -67,18 +67,18 @@ public class RecordExtractor {
      * @param currentRow the row to extract data from
      * @return the extracted AutoCADElement.
      */
-    public synchronized final SpreadsheetRecord extract(HashMap<String, Integer> columns, Row currentRow){
+    public synchronized final Record extract(HashMap<String, Integer> columns, Row currentRow){
         // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues
         this.currentCols = columns;
         this.currentRow = currentRow;
-        SpreadsheetRecord ret = doExtract();
+        Record ret = doExtract();
         this.currentCols = null;
         this.currentRow = null;
         return ret;
     }
     
-    private SpreadsheetRecord doExtract(){
-        SpreadsheetRecord ret = createNew();
+    private Record doExtract(){
+        Record ret = createNew();
         currentCols.keySet().forEach((header)->{
             if(this.currentRowHasCell(header)){
                 ret.setAttribute(header, getCell(header));
@@ -87,7 +87,7 @@ public class RecordExtractor {
         return ret;
     }
     
-    protected SpreadsheetRecord createNew(){
-        return new SpreadsheetRecord();
+    protected Record createNew(){
+        return new Record();
     }
 }

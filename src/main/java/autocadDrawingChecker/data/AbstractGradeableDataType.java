@@ -5,7 +5,7 @@
  */
 package autocadDrawingChecker.data;
 
-import autocadDrawingChecker.data.core.ExtractedSpreadsheetContents;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
 
 /**
@@ -16,5 +16,5 @@ public interface AbstractGradeableDataType {
     public String getName();
     public String getDescription();
     public RecordExtractor createExtractor();
-    public ExtractedSpreadsheetContents createExtractionHolder(String fileName);
+    public DataSet createExtractionHolder(String fileName);
 }
