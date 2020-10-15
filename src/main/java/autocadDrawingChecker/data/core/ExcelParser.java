@@ -34,6 +34,9 @@ public class ExcelParser {
         return fileName;
     }
     
+    protected synchronized Row locateHeaderRow(Sheet sheet){
+        return sheet.getRow(0);
+    }
     /**
      * Locates headers within the given
      * row, and populates headerToCol appropriately.
@@ -96,7 +99,8 @@ public class ExcelParser {
         
         DataSet containedTherein = createExtractionHolder();
         
-        locateColumns(sheet.getRow(0));
+        Row headerRow = locateHeaderRow(sheet);
+        locateColumns(headerRow);
         
         RecordExtractor recExtr = createExtractor();
         
@@ -117,7 +121,7 @@ public class ExcelParser {
         Record rec = null;
         
         //               skip headers
-        for(int rowNum = 1; rowNum < numRows; rowNum++){
+        for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
             if(isValidRow(currRow)){
                 try {

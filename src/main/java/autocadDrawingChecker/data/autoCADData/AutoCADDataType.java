@@ -33,6 +33,6 @@ public class AutoCADDataType implements AbstractGradeableDataType {
 
     @Override
     public DataSet parseFile(String fileName) throws IOException {
-        return AutoCADExcelParser.parse(fileName);
+        return new AutoCADExcelParser(fileName).parse();
     }
 }
