@@ -28,7 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 
  * @author Matt Crow
  */
-public class GradingReport extends LinkedList<GradedExport<? extends DataSet>> {
+public class GradingReport extends LinkedList<GradedExport> {
     private final HashMap<String, Integer> headerToCol;
     private final ArrayList<String> headers;
     private final HashMap<String, AbstractGradingCriteria<? extends DataSet>> gradedCriteria;

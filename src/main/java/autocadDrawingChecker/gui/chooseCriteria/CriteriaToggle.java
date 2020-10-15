@@ -11,7 +11,7 @@ import javax.swing.JTextArea;
 
 /**
  * A CriteriaToggle allow the user to choose whether 
- or not they want to gradeAutoCAD a student's submission
+ or not they want to grade a student's submission
  based on a given criteria.
  * 
  * @author Matt Crow

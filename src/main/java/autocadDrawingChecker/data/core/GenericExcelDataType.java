@@ -1,6 +1,7 @@
 package autocadDrawingChecker.data.core;
 
 import autocadDrawingChecker.data.AbstractGradeableDataType;
+import java.io.IOException;
 
 /**
  *
@@ -26,5 +27,10 @@ public class GenericExcelDataType implements AbstractGradeableDataType {
     @Override
     public String getDescription() {
         return "Any Excel file with headers in the first row";
+    }
+
+    @Override
+    public DataSet parseFile(String fileName) throws IOException {
+        return new ExcelParser(fileName).parse();
     }
 }

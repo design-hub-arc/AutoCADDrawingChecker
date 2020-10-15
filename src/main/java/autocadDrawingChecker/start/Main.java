@@ -47,7 +47,7 @@ public class Main {
             main.app.getData()
             .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
             .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
-            System.out.println(main.app.gradeAutoCAD().toString());
+            System.out.println(main.app.grade().toString());
         } else {
             main.app.createGui();
         }

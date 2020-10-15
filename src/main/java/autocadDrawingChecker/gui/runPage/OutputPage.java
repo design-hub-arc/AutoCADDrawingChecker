@@ -42,7 +42,7 @@ public class OutputPage extends AbstractPage {
         new Thread(){
             @Override
             public void run(){
-                GradingReport report = Application.getInstance().gradeAutoCAD();
+                GradingReport report = Application.getInstance().grade();
                 Logger.log(report.toString());
         
                 GradingReportSaver.saveReport(report, (savedTo)->{

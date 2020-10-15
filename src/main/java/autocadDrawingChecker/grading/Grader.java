@@ -1,5 +1,6 @@
 package autocadDrawingChecker.grading;
 
+import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.CompareColumn;
@@ -21,33 +22,37 @@ import java.util.stream.Collectors;
  * of everyone's grade.
  * 
  * @author Matt Crow
- * @param <T> the type of export to grade
  */
-public abstract class Grader<T extends DataSet> {
+public class Grader {
+    private final AbstractGradeableDataType dataType;
     private final String instrFilePath;
     private final String[] studentFilePaths;
     private final List<AbstractGradingCriteria<? extends DataSet>> criteria;
     
     /**
      * 
+     * @param dataType the data type the given files are in
      * @param pathToInstructorFile the complete path to the instructor file to compare to.
      * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends DataSet>> gradeThese){
+    public Grader(AbstractGradeableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends DataSet>> gradeThese){
+        this.dataType = dataType;
         instrFilePath = pathToInstructorFile;
         studentFilePaths = pathsToStudentFiles;
         criteria = gradeThese;
     }
     
-    protected abstract T parseFile(String path) throws IOException;
+    private DataSet parseFile(String path) throws IOException {
+        return dataType.parseFile(path);
+    };
     
-    private List<T> getStudentFiles(){
+    private List<DataSet> getStudentFiles(){
         return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{
             // locate all Excel files in all given paths...
             return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream();
         }).map((fileName)->{
-            T r = null;
+            DataSet r = null;
             try {
                 r = parseFile(fileName);
             } catch (IOException ex) {
@@ -74,8 +79,8 @@ public abstract class Grader<T extends DataSet> {
     public final GradingReport grade(){
         GradingReport report = new GradingReport();
         
-        T trySrc = null;
-        List<T> cmp = null;
+        DataSet trySrc = null;
+        List<DataSet> cmp = null;
         
         try {
             trySrc = parseFile(this.instrFilePath);
@@ -84,7 +89,7 @@ public abstract class Grader<T extends DataSet> {
             Logger.logError(ex);
         }
         
-        T src = trySrc; // need this to be effectively final for lambda
+        DataSet src = trySrc; // need this to be effectively final for lambda
         
         cmp = getStudentFiles();
         

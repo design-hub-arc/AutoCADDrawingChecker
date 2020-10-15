@@ -3,6 +3,7 @@ package autocadDrawingChecker.data.autoCADData;
 import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
+import java.io.IOException;
 
 /**
  *
@@ -28,5 +29,10 @@ public class AutoCADDataType implements AbstractGradeableDataType {
     @Override
     public String getDescription() {
         return "Data extracted from an AutoCAD file into Excel";
+    }
+
+    @Override
+    public DataSet parseFile(String fileName) throws IOException {
+        return AutoCADExcelParser.parse(fileName);
     }
 }

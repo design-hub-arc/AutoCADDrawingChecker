@@ -42,4 +42,14 @@ public interface AbstractGradingCriteria<DataSetType extends DataSet> {
     public abstract String getDescription();
     
     public abstract DataSetType tryCastDataSet(DataSet contents);
+    
+    public default double castThenGrade(DataSet s1, DataSet s2){
+        double ret = 0.0;
+        DataSetType casted1 = tryCastDataSet(s1);
+        DataSetType casted2 = tryCastDataSet(s2);
+        if(casted1 != null && casted2 != null){
+            ret = this.computeScore(casted1, casted2);
+        }
+        return ret;
+    }
 }

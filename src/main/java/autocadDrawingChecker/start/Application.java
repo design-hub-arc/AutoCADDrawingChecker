@@ -2,7 +2,7 @@ package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.grading.AutoCADGrader;
+import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.PageRenderer;
@@ -96,13 +96,15 @@ public class Application {
     
     public final boolean isReadyToGrade(){
         return 
+            data.isDataTypeSelected() &&
             data.isInstructorFilePathSet() && 
             data.isStudentFilePathsSet() && 
             data.isAnyCriteriaSelected();
     }
     
-    public final GradingReport gradeAutoCAD(){
-        AutoCADGrader g = new AutoCADGrader(
+    public final GradingReport grade(){
+        Grader g = new Grader(
+            data.getSelectedDataType(),
             data.getInstructorFilePath(),
             data.getStudentFilePaths(),
             data.getSelectedCriteria()

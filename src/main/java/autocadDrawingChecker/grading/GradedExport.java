@@ -16,14 +16,13 @@ import java.util.Set;
  * <pre>GradedExport(x, y) != GradedExport(y, x)</pre>
  * 
  * @author Matt Crow.
- * @param <DataSetType> The type of export being graded
  */
-public class GradedExport<DataSetType extends DataSet> {
-    private final DataSetType instructorExport;
-    private final DataSetType studentExport;
+public class GradedExport {
+    private final DataSet instructorExport;
+    private final DataSet studentExport;
     //                                        may have to change this to allow lower classes, such as DataSet
-    private final Set<AbstractGradingCriteria<DataSetType>> gradedCriteria;
-    private final HashMap<AbstractGradingCriteria<DataSetType>, Double> grades;
+    private final Set<AbstractGradingCriteria<? extends DataSet>> gradedCriteria;
+    private final HashMap<AbstractGradingCriteria<? extends DataSet>, Double> grades;
     private final double finalGrade;
     
     /**
@@ -35,7 +34,7 @@ public class GradedExport<DataSetType extends DataSet> {
      * @param studentsExport the student's export
      * @param gradeOnThese the criteria to grade on. 
      */
-    GradedExport(DataSetType instructorsExport, DataSetType studentsExport, List<AbstractGradingCriteria<DataSetType>> gradeOnThese){
+    GradedExport(DataSet instructorsExport, DataSet studentsExport, List<AbstractGradingCriteria<? extends DataSet>> gradeOnThese){
         instructorExport = instructorsExport;
         studentExport = studentsExport;
         gradedCriteria = new HashSet<>(gradeOnThese);
@@ -55,8 +54,8 @@ public class GradedExport<DataSetType extends DataSet> {
     private double runComparison(){
         double similarityScore = 0.0;
         double newScore = 0.0;
-        for(AbstractGradingCriteria<DataSetType> attr : gradedCriteria){
-            newScore = attr.computeScore(instructorExport, studentExport);
+        for(AbstractGradingCriteria<? extends DataSet> attr : gradedCriteria){
+            newScore = attr.castThenGrade(instructorExport, studentExport);
             grades.put(attr, newScore);
             similarityScore += newScore;
         }
@@ -68,7 +67,7 @@ public class GradedExport<DataSetType extends DataSet> {
      * 
      * @return the instructor file this grades based on. 
      */
-    public final DataSetType getInstructorFile(){
+    public final DataSet getInstructorFile(){
         return instructorExport;
     }
     
@@ -76,7 +75,7 @@ public class GradedExport<DataSetType extends DataSet> {
      * 
      * @return the student file this grades.
      */
-    public final DataSetType getStudentFile(){
+    public final DataSet getStudentFile(){
         return studentExport;
     }
     
@@ -98,7 +97,7 @@ public class GradedExport<DataSetType extends DataSet> {
      * @return the grade the student got for the given criteria,
      * or null if this didn't grade on the given criteria.
      */
-    public final double getGradeFor(AbstractGradingCriteria<DataSetType> criteria){
+    public final double getGradeFor(AbstractGradingCriteria<? extends DataSet> criteria){
         return grades.get(criteria);
     }
     
