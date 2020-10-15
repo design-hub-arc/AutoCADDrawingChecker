@@ -1,6 +1,7 @@
 package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.util.HashMap;
 import java.util.Objects;
@@ -41,4 +42,8 @@ public class LinesPerLayer implements AbstractGradingCriteria<AutoCADExport> {
         return "Lines per layer";
     }
 
+    @Override
+    public AutoCADExport tryCastDataSet(DataSet contents) {
+        return (contents != null && contents instanceof AutoCADExport) ? (AutoCADExport)contents : null;
+    }
 }

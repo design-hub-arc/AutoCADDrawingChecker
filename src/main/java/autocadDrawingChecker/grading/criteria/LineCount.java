@@ -5,7 +5,7 @@ import autocadDrawingChecker.data.core.DataSet;
 /**
  * @author Matt Crow
  */
-public class LineCount implements AbstractGradingCriteria {
+public class LineCount implements AbstractGradingCriteria<DataSet> {
 
     @Override
     public double computeScore(DataSet exp1, DataSet exp2) {
@@ -23,8 +23,7 @@ public class LineCount implements AbstractGradingCriteria {
     }
 
     @Override
-    public boolean canGrade(DataSet contents) {
-        return contents != null;
+    public DataSet tryCastDataSet(DataSet contents) {
+        return (contents != null) ? contents : null;
     }
-
 }

@@ -51,10 +51,10 @@ public class CriteriaSelectionList extends JComponent {
         add(scroll, BorderLayout.CENTER);
     }
     
-    public final void setCriteriaSelected(AbstractGradingCriteria crit, boolean isSelected){
+    public final void setCriteriaSelected(AbstractGradingCriteria<? extends DataSet> crit, boolean isSelected){
         criteriaList.get(crit.getName()).setSelected(isSelected);
     }
-    public final List<AbstractGradingCriteria> getSelectedCriteria(){
+    public final List<AbstractGradingCriteria<? extends DataSet>> getSelectedCriteria(){
         return criteriaList.values().stream().filter((ct)->ct.isSelected()).map((ct)->ct.getCriteria()).collect(Collectors.toList());
     }
 }

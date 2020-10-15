@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * 
  * @author Matt Crow
  */
-public interface AbstractElementCriteria<T extends Record> extends AbstractGradingCriteria {
+public interface AbstractElementCriteria<DataSetType extends DataSet, T extends Record> extends AbstractGradingCriteria<DataSetType> {
     public abstract double getMatchScore(T e1, T e2);
     
     /**
@@ -24,12 +24,12 @@ public interface AbstractElementCriteria<T extends Record> extends AbstractGradi
      * @return the student's net score for this criteria. Ranges from 0.0 to 1.0
      */
     @Override
-    public default double computeScore(DataSet exp1, DataSet exp2){
-        List<T> l1 = exp1.stream().map(this::tryCast).collect(Collectors.toList());
-        List<T> l2 = exp2.stream().map(this::tryCast).collect(Collectors.toList());
+    public default double computeScore(DataSetType exp1, DataSetType exp2){
+        List<T> l1 = exp1.stream().map(this::tryCastRecord).collect(Collectors.toList());
+        List<T> l2 = exp2.stream().map(this::tryCastRecord).collect(Collectors.toList());
         List<MatchingElements<T>> matches = new ElementMatcher<>(l1, l2, this::canAccept, this::getMatchScore).findMatches();
         double netScore = matches.stream().map((MatchingElements<T> match)->{
-            return getMatchScore(tryCast(match.getElement1()), tryCast(match.getElement2()));
+            return getMatchScore(tryCastRecord(match.getElement1()), tryCastRecord(match.getElement2()));
         }).reduce(0.0, Double::sum);
         
         if(!matches.isEmpty()){
@@ -38,7 +38,7 @@ public interface AbstractElementCriteria<T extends Record> extends AbstractGradi
         return netScore;
     }
     
-    public abstract T tryCast(Record rec);
+    public abstract T tryCastRecord(Record rec);
     public abstract boolean canAccept(T e);
     
     

@@ -17,10 +17,10 @@ import java.util.List;
  * 
  * @author Matt Crow
  */
-public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteria>{
+public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteria<? extends DataSet>>{
     @Override
-    public final List<AbstractGradingCriteria> getAll(){
-        ArrayList<AbstractGradingCriteria> ret = new ArrayList<>();
+    public final List<AbstractGradingCriteria<? extends DataSet>> getAll(){
+        ArrayList<AbstractGradingCriteria<? extends DataSet>> ret = new ArrayList<>();
         ret.add(new LineCount());
         ret.add(new LinesPerLayer());
         ret.add(new LineLength());

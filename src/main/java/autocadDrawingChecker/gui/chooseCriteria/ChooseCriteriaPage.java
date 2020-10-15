@@ -1,5 +1,6 @@
 package autocadDrawingChecker.gui.chooseCriteria;
 
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.gui.AbstractPage;
 import java.awt.GridLayout;
@@ -21,11 +22,11 @@ public class ChooseCriteriaPage extends AbstractPage {
         add(critList);
     }
     
-    public final void setCriteriaSelected(AbstractGradingCriteria crit, boolean isSelected){
+    public final void setCriteriaSelected(AbstractGradingCriteria<? extends DataSet> crit, boolean isSelected){
         critList.setCriteriaSelected(crit, isSelected);
     }
     
-    public final List<AbstractGradingCriteria> getSelectedCriteria(){
+    public final List<AbstractGradingCriteria<? extends DataSet>> getSelectedCriteria(){
         return critList.getSelectedCriteria();
     }
 

@@ -16,13 +16,14 @@ import java.util.Set;
  * <pre>GradedExport(x, y) != GradedExport(y, x)</pre>
  * 
  * @author Matt Crow.
- * @param <T> The type of export being graded
+ * @param <DataSetType> The type of export being graded
  */
-public class GradedExport<T extends DataSet> {
-    private final T instructorExport;
-    private final T studentExport;
-    private final Set<AbstractGradingCriteria<T>> gradedCriteria;
-    private final HashMap<AbstractGradingCriteria<T>, Double> grades;
+public class GradedExport<DataSetType extends DataSet> {
+    private final DataSetType instructorExport;
+    private final DataSetType studentExport;
+    //                                        may have to change this to allow lower classes, such as DataSet
+    private final Set<AbstractGradingCriteria<DataSetType>> gradedCriteria;
+    private final HashMap<AbstractGradingCriteria<DataSetType>, Double> grades;
     private final double finalGrade;
     
     /**
@@ -34,7 +35,7 @@ public class GradedExport<T extends DataSet> {
      * @param studentsExport the student's export
      * @param gradeOnThese the criteria to grade on. 
      */
-    GradedExport(T instructorsExport, T studentsExport, List<AbstractGradingCriteria<T>> gradeOnThese){
+    GradedExport(DataSetType instructorsExport, DataSetType studentsExport, List<AbstractGradingCriteria<DataSetType>> gradeOnThese){
         instructorExport = instructorsExport;
         studentExport = studentsExport;
         gradedCriteria = new HashSet<>(gradeOnThese);
@@ -54,7 +55,7 @@ public class GradedExport<T extends DataSet> {
     private double runComparison(){
         double similarityScore = 0.0;
         double newScore = 0.0;
-        for(AbstractGradingCriteria<T> attr : gradedCriteria){
+        for(AbstractGradingCriteria<DataSetType> attr : gradedCriteria){
             newScore = attr.computeScore(instructorExport, studentExport);
             grades.put(attr, newScore);
             similarityScore += newScore;
@@ -67,7 +68,7 @@ public class GradedExport<T extends DataSet> {
      * 
      * @return the instructor file this grades based on. 
      */
-    public final T getInstructorFile(){
+    public final DataSetType getInstructorFile(){
         return instructorExport;
     }
     
@@ -75,7 +76,7 @@ public class GradedExport<T extends DataSet> {
      * 
      * @return the student file this grades.
      */
-    public final T getStudentFile(){
+    public final DataSetType getStudentFile(){
         return studentExport;
     }
     
@@ -97,7 +98,7 @@ public class GradedExport<T extends DataSet> {
      * @return the grade the student got for the given criteria,
      * or null if this didn't grade on the given criteria.
      */
-    public final double getGradeFor(AbstractGradingCriteria<T> criteria){
+    public final double getGradeFor(AbstractGradingCriteria<DataSetType> criteria){
         return grades.get(criteria);
     }
     
