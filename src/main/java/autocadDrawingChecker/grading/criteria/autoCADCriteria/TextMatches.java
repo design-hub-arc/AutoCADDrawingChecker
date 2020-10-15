@@ -1,15 +1,12 @@
 package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
-import autocadDrawingChecker.data.core.Record;
-import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 
 /**
  *
  * @author Matt
  */
-public class TextMatches implements AbstractElementCriteria<AutoCADElement, AutoCADExport>, AbstractAutoCADElementCriteria {
+public class TextMatches implements AbstractAutoCADElementCriteria {
     
     @Override
     public double getMatchScore(AutoCADElement row1, AutoCADElement row2){

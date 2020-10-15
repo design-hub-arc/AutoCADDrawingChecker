@@ -16,7 +16,7 @@ import java.util.Arrays;
  *
  * @author Matt
  */
-public interface AbstractAutoCADElementCriteria extends AbstractElementCriteria<AutoCADElement> {
+public interface AbstractAutoCADElementCriteria extends AbstractElementCriteria<AutoCADExport, AutoCADElement> {
     public static final String[] ANY_TYPE = new String[0];
     /**
      * Checks to see if the given AutoCADElement can -or should-
@@ -26,7 +26,6 @@ public interface AbstractAutoCADElementCriteria extends AbstractElementCriteria<
      * @param e the AutoCADElement to check
      * @return whether or not this criteria can grade e
      */
-    @Override
     public default boolean canAccept(AutoCADElement e){
         String[] types = getAllowedTypes();
         String eType = e.getName();
@@ -49,20 +48,18 @@ public interface AbstractAutoCADElementCriteria extends AbstractElementCriteria<
     public abstract String[] getAllowedTypes();
     
     @Override
-    public default AutoCADElement tryCast(Record rec){
-        return (rec instanceof AutoCADElement) ? (AutoCADElement)rec : null;
+    public default AutoCADElement tryCastRecord(Record rec){
+        AutoCADElement ret = null;
+        //                                                 only cast elements this can accept
+        if(rec != null && rec instanceof AutoCADElement && canAccept((AutoCADElement)rec)){
+            ret = (AutoCADElement)rec;
+        }
+        return ret;
     }
     
     @Override
-    public default boolean canGrade(DataSet contents){
-        return contents != null && contents instanceof AutoCADExport;
+    public default AutoCADExport tryCastDataSet(DataSet contents){
+        return (contents != null && contents instanceof AutoCADExport) ? (AutoCADExport)contents : null;
     }
-    
-    @Override
-    public default double computeScore(DataSet exp1, DataSet exp2){
-        return computeScore((AutoCADExport)exp1, (AutoCADExport)exp2);
-    }
-    
-    public abstract double computeScore(AutoCADExport exp1, AutoCADExport exp2);
     
 }

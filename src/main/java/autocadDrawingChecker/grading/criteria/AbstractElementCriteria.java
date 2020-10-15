@@ -5,7 +5,6 @@ import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.grading.ElementMatcher;
 import autocadDrawingChecker.grading.MatchingElements;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * AbstractElementCriteria adds behavior to AbstractGradingCriteria to add
@@ -25,9 +24,7 @@ public interface AbstractElementCriteria<DataSetType extends DataSet, T extends 
      */
     @Override
     public default double computeScore(DataSetType exp1, DataSetType exp2){
-        List<T> l1 = exp1.stream().map(this::tryCastRecord).collect(Collectors.toList());
-        List<T> l2 = exp2.stream().map(this::tryCastRecord).collect(Collectors.toList());
-        List<MatchingElements<T>> matches = new ElementMatcher<>(l1, l2, this::canAccept, this::getMatchScore).findMatches();
+        List<MatchingElements<T>> matches = new ElementMatcher<>(exp1, exp2, this::tryCastRecord, this::getMatchScore).findMatches();
         double netScore = matches.stream().map((MatchingElements<T> match)->{
             return getMatchScore(tryCastRecord(match.getElement1()), tryCastRecord(match.getElement2()));
         }).reduce(0.0, Double::sum);
@@ -39,7 +36,4 @@ public interface AbstractElementCriteria<DataSetType extends DataSet, T extends 
     }
     
     public abstract T tryCastRecord(Record rec);
-    public abstract boolean canAccept(T e);
-    
-    
 }

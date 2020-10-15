@@ -5,7 +5,7 @@ import autocadDrawingChecker.logging.Logger;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -33,24 +33,24 @@ import java.util.stream.Collectors;
  * @param <T> the type of record this will match
  */
 public class ElementMatcher<T extends Record> {
-    private final List<T> exp1;
-    private final List<T> exp2;
-    private final Predicate<T> accepter;
+    private final List<? extends Record> exp1;
+    private final List<? extends Record> exp2;
+    private final Function<Record, T> recordCaster;
     private final BiFunction<T, T, Double> score;
     
     /**
      * 
      * @param src the instructor AutoCADExport the student's file should conform to
      * @param cmp the student's file
-     * @param accepter a function which accepts an AutoCADElement, and returns true iff the element should be included in matching.
+     * @param recordCaster a function which accepts a Record, and attempts to cast it to T. Returns null if it fails
     * @param scoringFunction a function which returns a double between 0.0 and 1.0. When given an instructor and student file, it should return a number
      * within this range, with higher scores meaning the student's export is similar to the instructor export, and lower ones meaning the two exports are 
      * different. Essentially, this acts as a grader assigning a score based on how well the student did by some metric.
      */
-    public ElementMatcher(List<T> src, List<T> cmp, Predicate<T> accepter, BiFunction<T, T, Double> scoringFunction){
+    public ElementMatcher(List<? extends Record> src, List<? extends Record> cmp, Function<Record, T> recordCaster, BiFunction<T, T, Double> scoringFunction){
         exp1 = src;
         exp2 = cmp;
-        this.accepter = accepter;
+        this.recordCaster = recordCaster;
         score = scoringFunction;
     }
     
@@ -71,9 +71,9 @@ public class ElementMatcher<T extends Record> {
         List<MatchingElements<T>> matches = new LinkedList<>();
         
         // pool of unmatched elements
-        List<T> pool = exp2.stream().filter(accepter).collect(Collectors.toList());
+        List<T> pool = exp2.stream().map(recordCaster).filter((casted)->casted != null).collect(Collectors.toList());
         
-        exp1.stream().filter(accepter).forEach((T srcRow)->{
+        exp1.stream().map(recordCaster).filter((casted)->casted != null).forEach((T srcRow)->{
             // find the closest match to srcRow
             double bestScore = 0.0;
             double currScore = 0.0;

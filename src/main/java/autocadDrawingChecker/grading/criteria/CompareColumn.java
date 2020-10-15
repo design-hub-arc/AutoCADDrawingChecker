@@ -7,7 +7,7 @@ import autocadDrawingChecker.data.core.Record;
  *
  * @author Matt
  */
-public class CompareColumn implements AbstractElementCriteria<Record> {
+public class CompareColumn implements AbstractElementCriteria<DataSet, Record> {
     private final String column;
     
     /**
@@ -39,17 +39,12 @@ public class CompareColumn implements AbstractElementCriteria<Record> {
     }
 
     @Override
-    public Record tryCast(Record rec) {
-        return rec;
+    public Record tryCastRecord(Record rec) {
+        return (rec != null) ? rec : null;
     }
 
     @Override
-    public boolean canAccept(Record e) {
-        return e != null;
-    }
-
-    @Override
-    public boolean canGrade(DataSet contents) {
-        return contents != null;
+    public DataSet tryCastDataSet(DataSet contents) {
+        return (contents != null) ? contents : null;
     }
 }

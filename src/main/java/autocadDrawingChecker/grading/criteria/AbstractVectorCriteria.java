@@ -1,5 +1,6 @@
 package autocadDrawingChecker.grading.criteria;
 
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.Record;
 
 /**
@@ -9,9 +10,9 @@ import autocadDrawingChecker.data.core.Record;
  * 
  * @author Matt Crow
  */
-public interface AbstractVectorCriteria<T extends Record> extends AbstractElementCriteria<T> {
+public interface AbstractVectorCriteria<DataSetType extends DataSet, RecordType extends Record> extends AbstractElementCriteria<DataSetType, RecordType> {
     @Override
-    public default double getMatchScore(T e1, T e2){
+    public default double getMatchScore(RecordType e1, RecordType e2){
         double score = 0.0;
         double[] v1 = extractVector(e1);
         double[] v2 = extractVector(e2);
@@ -31,5 +32,5 @@ public interface AbstractVectorCriteria<T extends Record> extends AbstractElemen
      * @return the vector interpretation of the given element,
      * which this will grade on
      */
-    public abstract double[] extractVector(T e);
+    public abstract double[] extractVector(RecordType e);
 }

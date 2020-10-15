@@ -3,13 +3,12 @@ package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
 import autocadDrawingChecker.data.core.Record;
-import autocadDrawingChecker.grading.criteria.AbstractElementCriteria;
 
 /**
  * 
  * @author Matt Crow
  */
-public class LineLength implements AbstractElementCriteria<AutoCADElement>, AbstractAutoCADElementCriteria {
+public class LineLength implements AbstractAutoCADElementCriteria {
     
     @Override
     public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
