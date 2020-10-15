@@ -8,7 +8,7 @@ import autocadDrawingChecker.data.autoCADData.AutoCADExport;
  *
  * @author Matt Crow
  */
-public class LineStart implements AbstractVectorCriteria<AutoCADElement, AutoCADExport>, AbstractAutoCADElementCriteria {
+public class LineStart implements AbstractVectorCriteria<AutoCADExport, AutoCADElement>, AbstractAutoCADElementCriteria {
     @Override
     public String getDescription() {
         return "Grades based on how closesly the student's line start points match up with those of the instructor's";
