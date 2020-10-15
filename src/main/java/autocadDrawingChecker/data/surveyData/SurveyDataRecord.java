@@ -10,7 +10,7 @@ public class SurveyDataRecord extends Record {
     public static final String POINT_ID_HEADER = "POINT";
     public static final String X_HEADER = "X (E-W)";
     public static final String Y_HEADER = "Y (N-S)";
-    public static final String Z_HEADER = "Elev";
+    public static final String Z_HEADER = "Z (Elev)";
     
     SurveyDataRecord(){
         super();

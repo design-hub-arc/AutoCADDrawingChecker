@@ -7,6 +7,7 @@ import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineLength;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineEnd;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineAngle;
 import autocadDrawingChecker.grading.criteria.autoCADCriteria.TextMatches;
+import autocadDrawingChecker.grading.criteria.surveyCriteria.GradeCoords;
 import autocadDrawingChecker.util.AbstractLoader;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteri
         ret.add(new LineStart());
         ret.add(new LineEnd());
         ret.add(new TextMatches());
+        ret.add(new GradeCoords());
         return ret;
     }
 }
