@@ -13,12 +13,12 @@ public class SurveyDataType implements AbstractGradeableDataType {
 
     @Override
     public RecordExtractor createExtractor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new SurveyDataExtractor();
     }
 
     @Override
     public DataSet createExtractionHolder(String fileName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new SurveyDataSet(fileName);
     }
 
     @Override
@@ -33,7 +33,6 @@ public class SurveyDataType implements AbstractGradeableDataType {
 
     @Override
     public DataSet parseFile(String fileName) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new SurveyDataParser(fileName).parse();
     }
-
 }
