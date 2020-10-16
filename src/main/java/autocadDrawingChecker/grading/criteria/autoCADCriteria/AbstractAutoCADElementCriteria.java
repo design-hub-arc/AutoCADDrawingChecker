@@ -20,9 +20,8 @@ public interface AbstractAutoCADElementCriteria extends AbstractElementCriteria<
     public static final String[] ANY_TYPE = new String[0];
     /**
      * Checks to see if the given AutoCADElement can -or should-
-     * be graded by this criteria. This is used by the ElementMatcher
+     * be graded by this criteria. This is used by tryCastRecord
  to decide if the given element should be graded.
-     * @see ElementMatcher
      * @param e the AutoCADElement to check
      * @return whether or not this criteria can grade e
      */
