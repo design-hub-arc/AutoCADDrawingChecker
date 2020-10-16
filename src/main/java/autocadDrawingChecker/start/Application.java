@@ -1,19 +1,12 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
-import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.grading.Grader;
-import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
 import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
 import autocadDrawingChecker.gui.chooseDataType.ChooseDataTypePage;
 import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  *
@@ -23,8 +16,6 @@ public class Application {
     private final DrawingCheckerData data;
     private ViewController window;
     
-    private List<AbstractGradingCriteria<? extends DataSet>> criteria;
-    
     private static Application instance;
     public static final String APP_NAME = "AutoCAD Drawing Checker";
     
@@ -33,7 +24,6 @@ public class Application {
             throw new ExceptionInInitializerError("Application is supposed to be a singleton: No more than one instance!");
         }
         data = new DrawingCheckerData();
-        criteria = new ArrayList<>();
     }
     
     public static final Application getInstance(){
@@ -41,23 +31,6 @@ public class Application {
             instance = new Application();
         }
         return instance;
-    }
-    
-    public final Application setLoadedCriteria(List<AbstractGradingCriteria<? extends DataSet>> criteria){
-        this.criteria = criteria;
-        data.clearCriteria();
-        for(AbstractGradingCriteria<? extends DataSet> crit : criteria){
-            data.addCriteria(crit);
-        }
-        return this;
-    }
-    
-    public final List<AbstractGradingCriteria<? extends DataSet>> getGradedCriteria(){
-        return criteria;
-    }
-    
-    public final void addGradeableDataType(AbstractGradeableDataType t){
-        data.addGradeableDataType(t);
     }
     
     public final Application createGui(){
@@ -92,24 +65,5 @@ public class Application {
     
     public final DrawingCheckerData getData(){
         return data;
-    }    
-    
-    public final boolean isReadyToGrade(){
-        return 
-            data.isDataTypeSelected() &&
-            data.isInstructorFilePathSet() && 
-            data.isStudentFilePathsSet() && 
-            data.isAnyCriteriaSelected();
-    }
-    
-    public final GradingReport grade(){
-        Grader g = new Grader(
-            data.getSelectedDataType(),
-            data.getInstructorFilePath(),
-            data.getStudentFilePaths(),
-            data.getSelectedCriteria()
-        );
-        
-        return g.grade();
     }
 }

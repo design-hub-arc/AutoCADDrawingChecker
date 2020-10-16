@@ -20,7 +20,6 @@ import java.util.Set;
 public class GradedExport {
     private final DataSet instructorExport;
     private final DataSet studentExport;
-    //                                        may have to change this to allow lower classes, such as DataSet
     private final Set<AbstractGradingCriteria<? extends DataSet>> gradedCriteria;
     private final HashMap<AbstractGradingCriteria<? extends DataSet>, Double> grades;
     private final double finalGrade;

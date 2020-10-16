@@ -38,7 +38,7 @@ public class CriteriaSelectionList extends JComponent {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.PAGE_START;
         
-        Application.getInstance().getGradedCriteria().stream().map((AbstractGradingCriteria<? extends DataSet> criteria)->{
+        Application.getInstance().getData().getGradingCriteria().keySet().stream().map((AbstractGradingCriteria<? extends DataSet> criteria)->{
             return new CriteriaToggle(criteria);
         }).forEach((CriteriaToggle component)->{
             criteriaList.put(component.getCriteria().getName(), component);

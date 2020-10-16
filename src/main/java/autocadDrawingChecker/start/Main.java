@@ -30,8 +30,8 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
         DrawingCheckerData data = main.app.getData();
-        main.app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
-        new GradeableDataTypeLoader().getAll().forEach(main.app::addGradeableDataType);
+        new GradingCriteriaLoader().getAll().forEach(data::addCriteria);
+        new GradeableDataTypeLoader().getAll().forEach(data::addGradeableDataType);
         
         data.setSelectedDataType(data.getGradeableDataTypes().get(1));
         
@@ -47,7 +47,7 @@ public class Main {
             main.app.getData()
             .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
             .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
-            System.out.println(main.app.grade().toString());
+            System.out.println(data.grade().toString());
         } else {
             main.app.createGui();
         }

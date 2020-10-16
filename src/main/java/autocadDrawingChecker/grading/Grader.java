@@ -27,7 +27,7 @@ public class Grader {
     private final AbstractGradeableDataType dataType;
     private final String instrFilePath;
     private final String[] studentFilePaths;
-    private final List<AbstractGradingCriteria<? extends DataSet>> criteria;
+    private final HashSet<AbstractGradingCriteria<? extends DataSet>> criteria;
     
     /**
      * 
@@ -36,7 +36,7 @@ public class Grader {
      * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(AbstractGradeableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria<? extends DataSet>> gradeThese){
+    public Grader(AbstractGradeableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, HashSet<AbstractGradingCriteria<? extends DataSet>> gradeThese){
         this.dataType = dataType;
         instrFilePath = pathToInstructorFile;
         studentFilePaths = pathsToStudentFiles;
