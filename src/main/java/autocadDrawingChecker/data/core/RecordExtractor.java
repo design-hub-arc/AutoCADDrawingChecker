@@ -50,14 +50,36 @@ public class RecordExtractor {
         return ret;
     }
     
-    protected boolean currentRowHasCell(String col){
+    protected boolean rowHasCell(Row row, String col){
         int colIdx = currentCols.get(col);
         boolean hasCol = 
             colIdx != -1 && 
-            currentRow.getCell(colIdx) != null && currentRow.getCell(colIdx).getCellType() != CellType.BLANK;
+            row.getCell(colIdx) != null && row.getCell(colIdx).getCellType() != CellType.BLANK;
         // getCell doesn't throw an exception if it doesn't have a cell for the given column: it just returns null
         
         return hasCol;
+    }
+    protected boolean currentRowHasCell(String col){
+        return rowHasCell(currentRow, col);
+    }
+    
+    protected String[] getRequiredColumns(){
+        return new String[0];
+    }
+    
+    protected boolean hasRequiredColumns(Row currentRow){
+        boolean ret = true;
+        String[] reqCols = getRequiredColumns();
+        for(int i = 0; i < reqCols.length && ret; i++){
+            if(!rowHasCell(currentRow, reqCols[i])){
+                ret = false;
+            }
+        }
+        return ret;
+    }
+    
+    boolean canExtractRow(Row currentRow){
+        return hasRequiredColumns(currentRow);
     }
     
     /**

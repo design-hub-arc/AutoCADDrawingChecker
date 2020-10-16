@@ -9,6 +9,11 @@ import autocadDrawingChecker.data.core.RecordExtractor;
  */
 public class SurveyDataExtractor extends RecordExtractor {
     @Override
+    protected String[] getRequiredColumns(){
+        return SurveyDataRecord.REQ_COLS;
+    }
+    
+    @Override
     protected Record createNew(){
         return new SurveyDataRecord();
     }

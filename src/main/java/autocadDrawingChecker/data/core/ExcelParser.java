@@ -37,6 +37,7 @@ public class ExcelParser {
     protected synchronized Row locateHeaderRow(Sheet sheet){
         return sheet.getRow(0);
     }
+    
     /**
      * Locates headers within the given
      * row, and populates headerToCol appropriately.
@@ -65,7 +66,7 @@ public class ExcelParser {
         }
         return couldBeEmpty;
     }
-    private boolean isValidRow(Row row){
+    protected boolean isValidRow(Row row){
         return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);
     }
     
@@ -91,6 +92,10 @@ public class ExcelParser {
         return new RecordExtractor();
     }
     
+    protected int locateLastRow(Sheet sheet){
+        return sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
+    }
+    
     public final DataSet parse() throws IOException {
         InputStream in = new FileInputStream(fileName);
         //                                                new Excel format       old Excel format
@@ -104,7 +109,7 @@ public class ExcelParser {
         
         RecordExtractor recExtr = createExtractor();
         
-        int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
+        int numRows = locateLastRow(sheet);
         /*
         Note that numRows will be greater than or
         equal to the last row with data, but not
@@ -123,7 +128,7 @@ public class ExcelParser {
         //               skip headers
         for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
-            if(isValidRow(currRow)){
+            if(isValidRow(currRow) && recExtr.canExtractRow(currRow)){
                 try {
                     rec = recExtr.extract(headerToCol, currRow);
                     containedTherein.add(rec);
