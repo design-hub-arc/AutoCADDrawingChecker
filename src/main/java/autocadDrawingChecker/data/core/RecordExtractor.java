@@ -11,12 +11,16 @@ import org.apache.poi.ss.usermodel.Row;
  * @author Matt
  */
 public class RecordExtractor {
-    private HashMap<String, Integer> currentCols;
+    private final HashMap<String, Integer> columns;
     private Row currentRow;
+    
+    public RecordExtractor(HashMap<String, Integer> columns){
+        this.columns = columns;
+    }
     
     private Object getCell(String col){
         Object ret = null;
-        int colIdx = currentCols.get(col);
+        int colIdx = columns.get(col);
         if(colIdx == -1){
             throw new RuntimeException(String.format("Missing column: %s", col));
         }
@@ -51,7 +55,7 @@ public class RecordExtractor {
     }
     
     protected boolean rowHasCell(Row row, String col){
-        int colIdx = currentCols.get(col);
+        int colIdx = columns.get(col);
         boolean hasCol = 
             colIdx != -1 && 
             row.getCell(colIdx) != null && row.getCell(colIdx).getCellType() != CellType.BLANK;
@@ -84,24 +88,20 @@ public class RecordExtractor {
     
     /**
      * Extracts data from the given row, and converts it to an AutoCAD element.
-     * @param columns the mapping of columns to the index of the column
-     * in the given row.
      * @param currentRow the row to extract data from
      * @return the extracted AutoCADElement.
      */
-    public synchronized final Record extract(HashMap<String, Integer> columns, Row currentRow){
-        // temporarily set the columns and row. Note this method is synchronized to prevent multithreading issues
-        this.currentCols = columns;
+    public synchronized final Record extract(Row currentRow){
+        // temporarily set the row. Note this method is synchronized to prevent multithreading issues
         this.currentRow = currentRow;
         Record ret = doExtract();
-        this.currentCols = null;
         this.currentRow = null;
         return ret;
     }
     
     private Record doExtract(){
         Record ret = createNew();
-        currentCols.keySet().forEach((header)->{
+        columns.keySet().forEach((header)->{
             if(this.currentRowHasCell(header)){
                 ret.setAttribute(header, getCell(header));
             }

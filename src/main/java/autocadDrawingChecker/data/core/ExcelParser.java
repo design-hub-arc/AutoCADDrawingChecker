@@ -21,12 +21,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelParser {
     private final String fileName;
-    private final HashMap<String, Integer> headerToCol;
     private Row currRow;
     
     public ExcelParser(String fileName){
         this.fileName = fileName;
-        this.headerToCol = new HashMap<>();
         this.currRow = null;
     }
     
@@ -45,8 +43,9 @@ public class ExcelParser {
      * @param headerRow the first row of the spreadsheet,
      * containing headers.
      */
-    private synchronized void locateColumns(Row headerRow){
-        headerToCol.clear();
+    private synchronized HashMap<String, Integer> locateColumns(Row headerRow){
+        HashMap<String, Integer> headerToCol = new HashMap<>();
+        
         ArrayList<String> headers = new ArrayList<>();
         headerRow.cellIterator().forEachRemaining((Cell c)->{
             headers.add(c.toString().toUpperCase());
@@ -54,6 +53,7 @@ public class ExcelParser {
         for(int i = 0; i < headers.size(); i++){
             headerToCol.put(headers.get(i), i);
         }
+        return headerToCol;
     }
     
     private boolean isRowEmpty(Row row){
@@ -88,8 +88,8 @@ public class ExcelParser {
         return new DataSet(this.fileName);
     }
     
-    protected RecordExtractor createExtractor(){
-        return new RecordExtractor();
+    protected RecordExtractor createExtractor(HashMap<String, Integer> columns){
+        return new RecordExtractor(columns);
     }
     
     protected int locateLastRow(Sheet sheet){
@@ -105,9 +105,9 @@ public class ExcelParser {
         DataSet containedTherein = createExtractionHolder();
         
         Row headerRow = locateHeaderRow(sheet);
-        locateColumns(headerRow);
         
-        RecordExtractor recExtr = createExtractor();
+        
+        RecordExtractor recExtr = createExtractor(locateColumns(headerRow));
         
         int numRows = locateLastRow(sheet);
         /*
@@ -130,7 +130,7 @@ public class ExcelParser {
             currRow = sheet.getRow(rowNum);
             if(isValidRow(currRow) && recExtr.canExtractRow(currRow)){
                 try {
-                    rec = recExtr.extract(headerToCol, currRow);
+                    rec = recExtr.extract(currRow);
                     containedTherein.add(rec);
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));

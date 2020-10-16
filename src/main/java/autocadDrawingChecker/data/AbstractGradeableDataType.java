@@ -8,6 +8,7 @@ package autocadDrawingChecker.data;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  *
@@ -16,7 +17,7 @@ import java.io.IOException;
 public interface AbstractGradeableDataType {
     public String getName();
     public String getDescription();
-    public RecordExtractor createExtractor();
+    public RecordExtractor createExtractor(HashMap<String, Integer> columns);
     public DataSet createExtractionHolder(String fileName);
     public DataSet parseFile(String fileName) throws IOException;
 }

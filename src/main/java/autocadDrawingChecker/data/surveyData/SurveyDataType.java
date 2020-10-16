@@ -4,6 +4,7 @@ import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  *
@@ -12,8 +13,8 @@ import java.io.IOException;
 public class SurveyDataType implements AbstractGradeableDataType {
 
     @Override
-    public RecordExtractor createExtractor() {
-        return new SurveyDataExtractor();
+    public RecordExtractor createExtractor(HashMap<String, Integer> columns) {
+        return new SurveyDataExtractor(columns);
     }
 
     @Override
