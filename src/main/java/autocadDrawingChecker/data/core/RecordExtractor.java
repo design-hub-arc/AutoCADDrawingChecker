@@ -15,10 +15,18 @@ public class RecordExtractor {
     private Row currentRow;
     
     public RecordExtractor(HashMap<String, Integer> columns){
+        if(columns == null){
+            throw new NullPointerException("Columns cannot be null");
+        }
         this.columns = columns;
     }
     
+    private String sanitize(String s){
+        return s.trim().toUpperCase();
+    }
+    
     private Object getCell(String col){
+        col = sanitize(col);
         Object ret = null;
         int colIdx = columns.get(col);
         if(colIdx == -1){
@@ -55,7 +63,8 @@ public class RecordExtractor {
     }
     
     protected boolean rowHasCell(Row row, String col){
-        int colIdx = columns.get(col);
+        col = sanitize(col);
+        int colIdx = (columns.containsKey(col)) ? columns.get(col) : -1;
         boolean hasCol = 
             colIdx != -1 && 
             row.getCell(colIdx) != null && row.getCell(colIdx).getCellType() != CellType.BLANK;
@@ -71,29 +80,29 @@ public class RecordExtractor {
         return new String[0];
     }
     
-    protected boolean hasRequiredColumns(Row currentRow){
+    protected boolean hasRequiredColumns(Row row){
         boolean ret = true;
         String[] reqCols = getRequiredColumns();
         for(int i = 0; i < reqCols.length && ret; i++){
-            if(!rowHasCell(currentRow, reqCols[i])){
+            if(!rowHasCell(row, reqCols[i])){
                 ret = false;
             }
         }
         return ret;
     }
     
-    boolean canExtractRow(Row currentRow){
-        return hasRequiredColumns(currentRow);
+    boolean canExtractRow(Row row){
+        return hasRequiredColumns(row);
     }
     
     /**
      * Extracts data from the given row, and converts it to an AutoCAD element.
-     * @param currentRow the row to extract data from
+     * @param row the row to extract data from
      * @return the extracted AutoCADElement.
      */
-    public synchronized final Record extract(Row currentRow){
+    public synchronized final Record extract(Row row){
         // temporarily set the row. Note this method is synchronized to prevent multithreading issues
-        this.currentRow = currentRow;
+        this.currentRow = row;
         Record ret = doExtract();
         this.currentRow = null;
         return ret;

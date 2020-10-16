@@ -38,7 +38,7 @@ public class ExcelParser {
     
     /**
      * Locates headers within the given
-     * row, and populates headerToCol appropriately.
+     * row
      * 
      * @param headerRow the first row of the spreadsheet,
      * containing headers.
@@ -92,10 +92,6 @@ public class ExcelParser {
         return new RecordExtractor(columns);
     }
     
-    protected int locateLastRow(Sheet sheet){
-        return sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
-    }
-    
     public final DataSet parse() throws IOException {
         InputStream in = new FileInputStream(fileName);
         //                                                new Excel format       old Excel format
@@ -109,7 +105,7 @@ public class ExcelParser {
         
         RecordExtractor recExtr = createExtractor(locateColumns(headerRow));
         
-        int numRows = locateLastRow(sheet);
+        int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*
         Note that numRows will be greater than or
         equal to the last row with data, but not
