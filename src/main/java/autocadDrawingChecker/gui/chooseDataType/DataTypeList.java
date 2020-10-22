@@ -19,10 +19,10 @@ import javax.swing.ScrollPaneConstants;
 public class DataTypeList extends JComponent {
     private final JPanel content;
     private final ButtonGroup buttons;
-    private GridBagConstraints gbc;
+    private final GridBagConstraints gbc;
     private final HashMap<AbstractGradeableDataType, DataTypeSelector> typeToSel;
     
-    public DataTypeList(List<AbstractGradeableDataType> dataTypes){
+    public DataTypeList(){
         super();
         buttons = new ButtonGroup();
         typeToSel = new HashMap<>();
@@ -40,16 +40,7 @@ public class DataTypeList extends JComponent {
         gbc.weighty = 0.0; // this make things "stick" together
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.PAGE_START;
-        setDataTypeOptions(dataTypes);
-        /*
-        dataTypes.stream().map((type)->{
-            typeToSel.put(type, new DataTypeSelector(type));
-            return typeToSel.get(type);
-        }).forEach((sel)->{
-            content.add(sel, gbc.clone());
-            buttons.add(sel.getButton());
-        });
-        */
+        
         JScrollPane scroll = new JScrollPane(content);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

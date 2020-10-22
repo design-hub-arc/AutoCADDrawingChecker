@@ -42,13 +42,16 @@ public class Main {
             argSet.add(arg.toLowerCase());
         }
         boolean debug = argSet.contains("--debug");
+        boolean noGui = argSet.contains("--no-gui");
         
         if(debug){
             main.app.getData()
             .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
             .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
             System.out.println(data.grade().toString());
-        } else {
+        } 
+        
+        if(!noGui){
             main.app.createGui();
         }
     }

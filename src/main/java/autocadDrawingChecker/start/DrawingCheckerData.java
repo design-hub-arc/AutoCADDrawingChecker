@@ -95,10 +95,23 @@ public class DrawingCheckerData {
     }
     public final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> getGradingCriteria(){
         HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = new HashMap<>();
+        // need this to filter based on if the current set is gradeable for crit
         selectedCriteria.entrySet().forEach((entry)->{
             critToIsSel.put(nameToCriteria.get(entry.getKey()), entry.getValue());
         });
         return critToIsSel;
+    }
+    public final List<AbstractGradingCriteria<? extends DataSet>> getGradeableCriteria(){
+        LinkedList<AbstractGradingCriteria<? extends DataSet>> crit = new LinkedList<>();
+        if(isDataTypeSelected()){
+            this.nameToCriteria.values().forEach((availableCrit)->{
+                // need to change this to checking the instructor file
+                if(availableCrit.tryCastDataSet(null) != null){
+                    crit.add(availableCrit);
+                }
+            });
+        }
+        return crit;
     }
     
     public final DrawingCheckerData setInstructorFilePath(String path){

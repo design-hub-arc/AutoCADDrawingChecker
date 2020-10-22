@@ -5,6 +5,7 @@ import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.gui.AbstractPage;
 import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.GridLayout;
+import java.util.HashSet;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -42,7 +43,11 @@ public class ChooseCriteriaPage extends AbstractPage {
 
     @Override
     protected void dataUpdated(DrawingCheckerData newData) {
-        // do nothing yet
-        System.out.println("run");
+        List<AbstractGradingCriteria<? extends DataSet>> criteriaOptions = newData.getGradeableCriteria();
+        
+        critList.setCriteriaOptions(criteriaOptions);
+        newData.getGradingCriteria().entrySet().forEach((entry)->{
+            critList.setCriteriaSelected(entry.getKey(), entry.getValue());
+        });
     }
 }

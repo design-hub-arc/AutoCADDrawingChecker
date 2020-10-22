@@ -39,26 +39,11 @@ public class Application {
         }
         window = new ViewController();
         PageRenderer pane = window.getAppPane();
-        
-        ChooseDataTypePage chooseDataType = (ChooseDataTypePage)pane.getPage(PageRenderer.CHOOSE_DATA_TYPE);
-        if(data.isDataTypeSelected()){
-            chooseDataType.setSelectedDataType(data.getSelectedDataType());
-        }
-        
-        ChooseFilesPage chooseFiles = (ChooseFilesPage)pane.getPage(PageRenderer.CHOOSE_FILES);
-        if(data.isInstructorFilePathSet()){
-            chooseFiles.setSrcFile(new File(data.getInstructorFilePath()));
-        }
-        if(data.isStudentFilePathsSet()){
-            chooseFiles.setCmpFiles(Arrays.stream(data.getStudentFilePaths()).map((path)->{
-                return new File(path);
-            }).toArray((size)->new File[size]));
-        }
-        
+        /*
         ChooseCriteriaPage chooseCriteria = (ChooseCriteriaPage)pane.getPage(PageRenderer.CHOOSE_CRITERIA);
         data.getGradingCriteria().forEach((criteria, isSel)->{
             chooseCriteria.setCriteriaSelected(criteria, isSel);
-        });
+        });*/
         
         return this;
     }
