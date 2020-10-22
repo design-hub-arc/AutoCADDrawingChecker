@@ -2,7 +2,9 @@ package autocadDrawingChecker.gui.chooseDataType;
 
 import autocadDrawingChecker.data.AbstractGradeableDataType;
 import autocadDrawingChecker.gui.AbstractPage;
+import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
 import autocadDrawingChecker.start.Application;
+import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.GridLayout;
 import javax.swing.JOptionPane;
 
@@ -30,6 +32,11 @@ public class ChooseDataTypePage extends AbstractPage {
             JOptionPane.showMessageDialog(this, "Please choose a data type to grade");
         }
         return ready;
+    }
+
+    @Override
+    protected void dataUpdated(DrawingCheckerData newData) {
+        typeList.setDataTypeOptions(newData.getGradeableDataTypes());
     }
 
 }

@@ -3,6 +3,7 @@ package autocadDrawingChecker.gui.chooseCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.gui.AbstractPage;
+import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -37,5 +38,11 @@ public class ChooseCriteriaPage extends AbstractPage {
             JOptionPane.showMessageDialog(this, "Please select at least 1 criteria to grade on");
         }
         return ready;
+    }
+
+    @Override
+    protected void dataUpdated(DrawingCheckerData newData) {
+        // do nothing yet
+        System.out.println("run");
     }
 }

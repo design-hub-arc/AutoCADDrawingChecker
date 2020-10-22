@@ -4,6 +4,7 @@ import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.gui.AbstractPage;
 import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.start.Application;
+import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -62,5 +63,10 @@ public class OutputPage extends AbstractPage {
             JOptionPane.showMessageDialog(this, "Please wait for the program to finish");
         }
         return ready;
+    }
+
+    @Override
+    protected void dataUpdated(DrawingCheckerData newData) {
+        runAsync();
     }
 }
