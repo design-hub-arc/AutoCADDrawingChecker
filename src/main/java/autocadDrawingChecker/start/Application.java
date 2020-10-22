@@ -41,7 +41,7 @@ public class Application {
         PageRenderer pane = window.getAppPane();
         /*
         ChooseCriteriaPage chooseCriteria = (ChooseCriteriaPage)pane.getPage(PageRenderer.CHOOSE_CRITERIA);
-        data.getGradingCriteria().forEach((criteria, isSel)->{
+        data.getGradeableCriteriaToIsSelected().forEach((criteria, isSel)->{
             chooseCriteria.setCriteriaSelected(criteria, isSel);
         });*/
         

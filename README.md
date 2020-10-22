@@ -43,7 +43,8 @@ You can contact Matt if you need help, and you provide him with the Log file you
     * https://www.section508.gov/
     * https://www.section508.gov/create
     * https://www.access-board.gov/guidelines-and-standards/communications-and-it/about-the-ict-refresh/final-rule/text-of-the-standards-and-guidelines
-
+* maybe just add a check for AbstractGradingCriteria.canGradeDataType(...)
+* bug: need to reselect file to update gradeable criteria
 
 ## Helpful Links
 * [Apache CLI](https://commons.apache.org/proper/commons-cli/javadocs/api-release/index.html)

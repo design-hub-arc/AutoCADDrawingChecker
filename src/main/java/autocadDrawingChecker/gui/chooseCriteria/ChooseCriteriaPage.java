@@ -5,7 +5,9 @@ import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.gui.AbstractPage;
 import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.GridLayout;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -34,7 +36,7 @@ public class ChooseCriteriaPage extends AbstractPage {
 
     @Override
     protected boolean checkIfReadyForNextPage() {
-        boolean ready = !critList.getSelectedCriteria().isEmpty();
+        boolean ready = true || !critList.getSelectedCriteria().isEmpty();
         if(!ready){
             JOptionPane.showMessageDialog(this, "Please select at least 1 criteria to grade on");
         }
@@ -43,10 +45,9 @@ public class ChooseCriteriaPage extends AbstractPage {
 
     @Override
     protected void dataUpdated(DrawingCheckerData newData) {
-        List<AbstractGradingCriteria<? extends DataSet>> criteriaOptions = newData.getGradeableCriteria();
-        
-        critList.setCriteriaOptions(criteriaOptions);
-        newData.getGradingCriteria().entrySet().forEach((entry)->{
+        HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = newData.getGradeableCriteriaToIsSelected();
+        critList.setCriteriaOptions(new LinkedList<>(critToIsSel.keySet()));
+        critToIsSel.entrySet().forEach((entry)->{
             critList.setCriteriaSelected(entry.getKey(), entry.getValue());
         });
     }

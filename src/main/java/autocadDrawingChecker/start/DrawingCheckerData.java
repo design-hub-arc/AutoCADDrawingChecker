@@ -5,6 +5,8 @@ import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
+import autocadDrawingChecker.logging.Logger;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -17,15 +19,17 @@ import java.util.stream.Collectors;
  * @author Matt
  */
 public class DrawingCheckerData {
-    private String instructorFilePath;
-    private String[] studentFilePaths;
     private AbstractGradeableDataType selectedDataType;
+    private String instructorFilePath;
+    private DataSet instructorFile;
+    private String[] studentFilePaths;
     private final List<AbstractGradeableDataType> gradeableDataTypes; 
     private final HashMap<String, Boolean> selectedCriteria;
     private final HashMap<String, AbstractGradingCriteria<? extends DataSet>> nameToCriteria;
     
     public DrawingCheckerData(){
         instructorFilePath = null;
+        instructorFile = null;
         studentFilePaths = new String[0];
         selectedDataType = null;
         gradeableDataTypes = new LinkedList<>();
@@ -84,29 +88,17 @@ public class DrawingCheckerData {
         nameToCriteria.put(crit.getName(), crit);
     }
     
-    public final HashSet<AbstractGradingCriteria<? extends DataSet>> getSelectedCriteria(){
-        return new HashSet<>(selectedCriteria.entrySet().stream().filter((Entry<String, Boolean> nameToIsSelected)->{
-            return nameToIsSelected.getValue(); // the "isSelected" part of the entry
-        }).map((Entry<String, Boolean> nameToIsSelected)->{
-            return nameToCriteria.get(nameToIsSelected.getKey());
-        }).filter((AbstractGradingCriteria<? extends DataSet> criteria)->{
-            return criteria != null;
-        }).collect(Collectors.toList()));
-    }
-    public final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> getGradingCriteria(){
-        HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = new HashMap<>();
-        // need this to filter based on if the current set is gradeable for crit
-        selectedCriteria.entrySet().forEach((entry)->{
-            critToIsSel.put(nameToCriteria.get(entry.getKey()), entry.getValue());
-        });
-        return critToIsSel;
-    }
-    public final List<AbstractGradingCriteria<? extends DataSet>> getGradeableCriteria(){
+    
+    /**
+     * 
+     * @return the list of criteria this has which can grade the current data type 
+     */
+    private List<AbstractGradingCriteria<? extends DataSet>> getGradeableCriteria(){
         LinkedList<AbstractGradingCriteria<? extends DataSet>> crit = new LinkedList<>();
-        if(isDataTypeSelected()){
+        if(isDataTypeSelected() && isInstructorFilePathSet()){
             this.nameToCriteria.values().forEach((availableCrit)->{
-                // need to change this to checking the instructor file
-                if(availableCrit.tryCastDataSet(null) != null){
+                // maybe just add a check for AbstractGradingCriteria.canGradeDataType(...)
+                if(availableCrit.tryCastDataSet(this.instructorFile) != null){
                     crit.add(availableCrit);
                 }
             });
@@ -114,8 +106,43 @@ public class DrawingCheckerData {
         return crit;
     }
     
+    public final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> getGradeableCriteriaToIsSelected(){
+        HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = new HashMap<>();
+        // filters based on if the current set is gradeable by the criteria
+        getGradeableCriteria().forEach((crit)->{
+            critToIsSel.put(crit, this.isCriteriaSelected(crit));
+        });
+        return critToIsSel;
+    }
+    
+    /**
+     * This method determines which criteria the user has chosen to grade on, and the
+     * instructor file provided is gradeable on.
+     * 
+     * @return the criteria this can and should grade based on
+     */
+    private HashSet<AbstractGradingCriteria<? extends DataSet>> getCriteriaToGradeOn(){
+        HashSet<AbstractGradingCriteria<? extends DataSet>> criteriaToGradeOn = new HashSet<>();
+        getGradeableCriteriaToIsSelected().entrySet().stream().filter((entry)->{
+            return entry.getValue();
+        }).map((entry)->entry.getKey()).forEach(criteriaToGradeOn::add);
+        return criteriaToGradeOn;
+    }
+    
+    
+    
+    
     public final DrawingCheckerData setInstructorFilePath(String path){
         instructorFilePath = path;
+        if(this.isDataTypeSelected()){
+            try {
+                instructorFile = selectedDataType.parseFile(path);
+            } catch(IOException ex){
+                Logger.logError(ex);
+                instructorFile = null;
+                instructorFilePath = null;
+            }
+        }
         return this;
     }
     public final DrawingCheckerData setStudentFilePaths(String... paths){
@@ -131,8 +158,8 @@ public class DrawingCheckerData {
         return 
             isDataTypeSelected() &&
             isInstructorFilePathSet() && 
-            isStudentFilePathsSet() && 
-            isAnyCriteriaSelected();
+            isStudentFilePathsSet();// && 
+            //isAnyCriteriaSelected();
     }
     
     public final GradingReport grade(){
@@ -140,7 +167,7 @@ public class DrawingCheckerData {
             getSelectedDataType(),
             getInstructorFilePath(),
             getStudentFilePaths(),
-            getSelectedCriteria()
+            getCriteriaToGradeOn()
         );
         
         return g.grade();

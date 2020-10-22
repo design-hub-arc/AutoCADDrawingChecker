@@ -39,14 +39,7 @@ public class CriteriaSelectionList extends JComponent {
         gbc.weighty = 0.0; // this make things "stick" together
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.PAGE_START;
-        /*
-        Application.getInstance().getData().getGradingCriteria().keySet().stream().map((AbstractGradingCriteria<? extends DataSet> criteria)->{
-            return new CriteriaToggle(criteria);
-        }).forEach((CriteriaToggle component)->{
-            criteriaList.put(component.getCriteria().getName(), component);
-            content.add(component, gbc.clone());
-        });
-        */
+        
         JScrollPane scroll = new JScrollPane(content);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
