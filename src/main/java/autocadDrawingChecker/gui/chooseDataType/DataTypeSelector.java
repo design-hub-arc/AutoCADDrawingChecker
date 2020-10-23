@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui.chooseDataType;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
+import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.start.Application;
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
@@ -16,9 +16,9 @@ import javax.swing.JTextArea;
  */
 public class DataTypeSelector extends JComponent implements MouseListener {
     private final JRadioButton button;
-    private final AbstractGradeableDataType dataType;
+    private final AbstractGradableDataType dataType;
     
-    DataTypeSelector(AbstractGradeableDataType dataType){
+    DataTypeSelector(AbstractGradableDataType dataType){
         super();
         this.dataType = dataType;
         setLayout(new BorderLayout());

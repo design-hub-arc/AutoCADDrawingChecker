@@ -1,6 +1,6 @@
 package autocadDrawingChecker.data.autoCADData;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
+import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.RecordExtractor;
 import java.io.IOException;
@@ -10,18 +10,7 @@ import java.util.HashMap;
  *
  * @author Matt
  */
-public class AutoCADDataType implements AbstractGradeableDataType {
-
-    @Override
-    public RecordExtractor createExtractor(HashMap<String, Integer> columns) {
-        return new AutoCADElementExtractor(columns);
-    }
-
-    @Override
-    public DataSet createExtractionHolder(String fileName) {
-        return new AutoCADExport(fileName);
-    }
-
+public class AutoCADDataType implements AbstractGradableDataType {
     @Override
     public String getName() {
         return "AutoCAD";

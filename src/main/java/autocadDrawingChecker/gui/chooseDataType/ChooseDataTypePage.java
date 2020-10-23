@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui.chooseDataType;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
+import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.gui.AbstractPage;
 import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.GridLayout;
@@ -19,7 +19,7 @@ public class ChooseDataTypePage extends AbstractPage {
         add(typeList);
     }
     
-    public final void setSelectedDataType(AbstractGradeableDataType type){
+    public final void setSelectedDataType(AbstractGradableDataType type){
         typeList.setDataTypeSelected(type);
     }
 
@@ -34,7 +34,7 @@ public class ChooseDataTypePage extends AbstractPage {
 
     @Override
     protected void dataUpdated(DrawingCheckerData newData) {
-        typeList.setDataTypeOptions(newData.getGradeableDataTypes());
+        typeList.setDataTypeOptions(newData.getGradableDataTypes());
         if(newData.isDataTypeSelected()){
             typeList.setDataTypeSelected(newData.getSelectedDataType());
         }

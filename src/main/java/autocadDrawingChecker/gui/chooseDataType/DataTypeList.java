@@ -1,6 +1,6 @@
 package autocadDrawingChecker.gui.chooseDataType;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
+import autocadDrawingChecker.data.AbstractGradableDataType;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,7 +20,7 @@ public class DataTypeList extends JComponent {
     private final JPanel content;
     private final ButtonGroup buttons;
     private final GridBagConstraints gbc;
-    private final HashMap<AbstractGradeableDataType, DataTypeSelector> typeToSel;
+    private final HashMap<AbstractGradableDataType, DataTypeSelector> typeToSel;
     
     public DataTypeList(){
         super();
@@ -47,7 +47,7 @@ public class DataTypeList extends JComponent {
         add(scroll, BorderLayout.CENTER);
     }
     
-    final void setDataTypeOptions(List<AbstractGradeableDataType> dataTypes){
+    final void setDataTypeOptions(List<AbstractGradableDataType> dataTypes){
         typeToSel.values().stream().map((sel)->sel.getButton()).forEach(buttons::remove);
         typeToSel.clear();
         content.removeAll();
@@ -61,7 +61,7 @@ public class DataTypeList extends JComponent {
         });
     }
     
-    public final void setDataTypeSelected(AbstractGradeableDataType type){
+    public final void setDataTypeSelected(AbstractGradableDataType type){
         typeToSel.get(type).getButton().setSelected(true);
     }
     

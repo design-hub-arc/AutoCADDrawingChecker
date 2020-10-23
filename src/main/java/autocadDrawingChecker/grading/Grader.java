@@ -1,6 +1,6 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
+import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.CompareColumn;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @author Matt Crow
  */
 public class Grader {
-    private final AbstractGradeableDataType dataType;
+    private final AbstractGradableDataType dataType;
     private final String instrFilePath;
     private final String[] studentFilePaths;
     private final HashSet<AbstractGradingCriteria<? extends DataSet>> criteria;
@@ -36,7 +36,7 @@ public class Grader {
      * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(AbstractGradeableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, HashSet<AbstractGradingCriteria<? extends DataSet>> gradeThese){
+    public Grader(AbstractGradableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, HashSet<AbstractGradingCriteria<? extends DataSet>> gradeThese){
         this.dataType = dataType;
         instrFilePath = pathToInstructorFile;
         studentFilePaths = pathsToStudentFiles;

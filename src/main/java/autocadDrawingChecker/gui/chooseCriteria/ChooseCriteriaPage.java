@@ -45,7 +45,7 @@ public class ChooseCriteriaPage extends AbstractPage {
 
     @Override
     protected void dataUpdated(DrawingCheckerData newData) {
-        HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = newData.getGradeableCriteriaToIsSelected();
+        HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = newData.getGradableCriteriaToIsSelected();
         critList.setCriteriaOptions(new LinkedList<>(critToIsSel.keySet()));
         critToIsSel.entrySet().forEach((entry)->{
             critList.setCriteriaSelected(entry.getKey(), entry.getValue());

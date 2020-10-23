@@ -1,6 +1,6 @@
 package autocadDrawingChecker.data.core;
 
-import autocadDrawingChecker.data.AbstractGradeableDataType;
+import autocadDrawingChecker.data.AbstractGradableDataType;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -8,18 +8,7 @@ import java.util.HashMap;
  *
  * @author Matt
  */
-public class GenericExcelDataType implements AbstractGradeableDataType {
-
-    @Override
-    public RecordExtractor createExtractor(HashMap<String, Integer> columns) {
-        return new RecordExtractor(columns);
-    }
-
-    @Override
-    public DataSet createExtractionHolder(String fileName) {
-        return new DataSet(fileName);
-    }
-
+public class GenericExcelDataType implements AbstractGradableDataType {
     @Override
     public String getName() {
         return "Basic Excel";
