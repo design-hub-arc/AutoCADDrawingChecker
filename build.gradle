@@ -9,7 +9,7 @@ plugins { // Double quotes evaluate some expressions a-la backticks in JS. Sound
  * running and Jar-ing
 */
 mainClassName = 'autocadDrawingChecker.start.Main'
-version = '1.99'
+version = '2.01'
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
