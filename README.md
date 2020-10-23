@@ -10,6 +10,10 @@ Fortunately, computers are very good at doing tedious processes with objective s
 This program is meant to compare data exports from AutoCAD to each other, grading them based upon how similar they both are.
 These AutoCAD exports are in either XLS or XLSX format, which is easily parse-able by the Apache POI Library.
 
+This application is currently being extended to support a wider variety of Excel files, including:
+* any Excel file with headers in the first row
+* GPS data
+
 ## Required Software
 * Users need only ensure they have [Java](https://java.com/en/) installed on their computer to run the application.
 * Developers wishing to change this application for their own use will need [Gradle](https://gradle.org/) installed to build the application.
@@ -20,15 +24,19 @@ This file is a self-contained application, so you can move it wherever you want 
 it doesn't rely on the other project files to run. Simply double-click the JAR file to run it.
 
 ### Steps
-* Step 1: Choosing instructor and student files. The first page of the application has you choose at least 2 files: 
+* Step 1: choose the file format. This tells the program the format of the data you will provide, and determines which criteria it can grade.
+* Step 2: Choosing instructor and student files. You will choose at least 2 files: 
 the instructor file, and 1 or more student files. The instructor file is what the student files will be graded on: 
 The more similar their file is to the instructor file, the higher their grade will be. When selecting student files, you have several options:
     * Choose 1 or more Excel files
     * Choose 1 or more folders. Note that the program locates all Excel files under this folder, so it's OK if it has other files in there, the program will just ignore them.
     * A combination of the above.
 Also of interest: you can drag and drop files into the two selectors instead of clicking the button.
-* Step 2: Choosing Grading Criteria. You can choose what the program grades students on by toggling these check boxes on or off. Regardless of what you select, the program will still grade every column in the instructor file.
-* Step 3: Running the Autograder. (Don't forget to click 'Run'!) Once the program is done grading, it will ask you where you want to save the grading report. Simply choose a folder, and the program will automatically name the file for you.
+* Step 3: Choosing Grading Criteria. You can choose what the program grades students on by toggling these check boxes on or off. Regardless of what you select, the program will still grade every column in the instructor file.
+* Step 4: Running the Autograder. The program will automatically run the grader when you get to the last page.
+Once the program is done grading, it will ask you where you want to save the grading report. 
+Simply choose a folder, and the program will automatically name the file for you.
+If you forget to save the file, just click "Run" to rerun the autograder.
 
 ### Troubleshooting
 If anything goes wrong, and you are unsure what to do about it, you'll want to click Log -> Save Log in the program menu bar along the top.
