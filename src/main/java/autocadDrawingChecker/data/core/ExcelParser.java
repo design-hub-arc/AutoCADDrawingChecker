@@ -16,32 +16,107 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- *
- * @author Matt
+ * The ExcelParser is used to convert Excel files into DataSets usable by the program.
+ * Each GradableDataType should have an associated subclass of ExcelParser which accounts for any unique formatting the file may have.
+ * This class contains many methods which subclasses may wish to override to customize this class' behavior without having to rewrite
+ * an entirely new class:
+ * <ul>
+ * <li><b>createExtractionHolder</b> will always be overridden to return a different subclass of DataSet</li>
+ * <li><b>createExtractor</b> will always be overridden to return a different subclass of RecordExtractor</li>
+ * <li><b>locateHeaderRow</b> should be overridden iff the Excel file has headers anywhere except the first row</li>
+ * <li><b>isValidRow</b> should be overridden if you need to validate that the row contains specific formatting, such as requiring certain columns always contain a value</li>
+ * </ul>
+ * 
+ * @author Matt Crow
  */
 public class ExcelParser {
     private final String fileName;
     private Row currRow;
     
+    /**
+     * Creates a new parser, ready to convert the given file.
+     * Note that you must still invoke the parse method to read
+     * and convert the file to a DataSet.
+     * 
+     * @param fileName the complete path to the file this should parse. 
+     */
     public ExcelParser(String fileName){
         this.fileName = fileName;
         this.currRow = null;
     }
     
+    /**
+     * 
+     * @return the complete path to the file this should parse.
+     */
     protected final String getFileName(){
         return fileName;
     }
     
+    /**
+     * Creates the DataSet which will hold the contents
+     * of the file this is parsing. Subclasses will always
+     * override this method to return a DataSet for their
+     * own record type.
+     * 
+     * @return the DataSet this will store the parsed Excel file contents in 
+     */
+    protected DataSet createExtractionHolder(){
+        return new DataSet(this.fileName);
+    }
+    
+    /**
+     * Creates the RecordExtractor which will be used to convert rows in the Excel
+     * spreadsheet to Records in the output DataSet. Subclasses should always override
+     * this method to return an extractor for their own Record type.
+     * 
+     * I may move RecordExtractor behavior back into this class at a later time, 
+     * but I'll leave them separate for now.
+     * 
+     * @param columns a mapping of header name to column index, found from the 
+     * header row of the sheet this is parsing.
+     * 
+     * @return a RecordExtractor which will read rows from the Excel file, and
+     * output Records from it.
+     */
+    protected RecordExtractor createExtractor(HashMap<String, Integer> columns){
+        return new RecordExtractor(columns);
+    }
+    
+    /**
+     * Returns the row containing headers in the given sheet.
+     * By default, this method returns the first row of the
+     * given sheet. Subclasses should override this method iff
+     * their data is expected to have headers in another row.
+     * 
+     * @param sheet the sheet which this is currently parsing.
+     * @return the row of the given sheet that contains headers.
+     */
     protected synchronized Row locateHeaderRow(Sheet sheet){
         return sheet.getRow(0);
     }
     
     /**
-     * Locates headers within the given
-     * row
+     * Returns whether or not the given row is valid, and the program should
+     * attempt to convert it to a Record. By default, this method checks if
+     * the given row is empty of otherwise un-parse-able, so if you do override
+     * this method, it would be wise to include a call to {@code super.isValidRow(...)}
+     * in your subclass' method.
+     * 
+     * @param row the row to validate.
+     * @return whether or not the row is valid.
+     */
+    protected boolean isValidRow(Row row){
+        return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);
+    }
+    
+    
+    /**
+     * Locates headers within the given row
      * 
      * @param headerRow the first row of the spreadsheet,
      * containing headers.
+     * @return a HashMap of header names (converted to upper case) to the index of their column.
      */
     private synchronized HashMap<String, Integer> locateColumns(Row headerRow){
         HashMap<String, Integer> headerToCol = new HashMap<>();
@@ -56,6 +131,11 @@ public class ExcelParser {
         return headerToCol;
     }
     
+    /**
+     * 
+     * @param row the row to check
+     * @return whether or not the given row is empty
+     */
     private boolean isRowEmpty(Row row){
         boolean couldBeEmpty = true;
         Iterator<Cell> cellIter = row.cellIterator();
@@ -66,10 +146,13 @@ public class ExcelParser {
         }
         return couldBeEmpty;
     }
-    protected boolean isValidRow(Row row){
-        return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);
-    }
     
+    /**
+     * Converts the current row this is parsing to a string.
+     * This method is very helpful for debugging.
+     * 
+     * @return the current row as a string, formatted to look like an array.
+     */
     private String currRowToString(){
         StringBuilder b = new StringBuilder();
         b.append("[");
@@ -84,14 +167,17 @@ public class ExcelParser {
         return b.toString();
     }
     
-    protected DataSet createExtractionHolder(){
-        return new DataSet(this.fileName);
-    }
-    
-    protected RecordExtractor createExtractor(HashMap<String, Integer> columns){
-        return new RecordExtractor(columns);
-    }
-    
+    /**
+     * This method ties all the methods of this class together. Attempts to read and parse the Excel file
+     * located at the file path provided to the constructor, and returns its contents as extracted by the
+     * RecordExtractor. Subclasses should override other methods to customize the behavior of how this parses
+     * the data provided.
+     * 
+     * @return the contents of the Excel file passed to the constructor, converted to a DataSet so the program
+     * can more easily use it.
+     * 
+     * @throws IOException if bad things happen when reading the Excel file. 
+     */
     public final DataSet parse() throws IOException {
         InputStream in = new FileInputStream(fileName);
         //                                                new Excel format       old Excel format
