@@ -149,6 +149,7 @@ public class DrawingCheckerData {
             throw new IllegalArgumentException("criteria threshold must be non-negative");
         }
         this.criteriaThreshold = newValue;
+        System.out.println();
     }
     
     /**

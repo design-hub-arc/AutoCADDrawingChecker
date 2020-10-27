@@ -2,11 +2,6 @@ package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
-import autocadDrawingChecker.gui.chooseCriteria.ChooseCriteriaPage;
-import autocadDrawingChecker.gui.chooseDataType.ChooseDataTypePage;
-import autocadDrawingChecker.gui.chooseFiles.ChooseFilesPage;
-import java.io.File;
-import java.util.Arrays;
 
 /**
  *
