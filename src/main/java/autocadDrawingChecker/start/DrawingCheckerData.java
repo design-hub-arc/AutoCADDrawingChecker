@@ -5,7 +5,6 @@ import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +25,13 @@ public class DrawingCheckerData {
     
     private final HashMap<String, Boolean> selectedCriteria;
     
+    /**
+     * The maximum difference between
+     * student and instructor values
+     * that is considered correct.
+     */
+    private double criteriaThreshold;
+    
     public DrawingCheckerData(){
         instructorFilePath = null;
         studentFilePaths = new String[0];
@@ -33,6 +39,7 @@ public class DrawingCheckerData {
         gradableDataTypes = new LinkedList<>();
         selectedCriteria = new HashMap<>();
         nameToCriteria = new HashMap<>();
+        criteriaThreshold = 0.0;
     }
     
     public final boolean isInstructorFilePathSet(){
@@ -56,36 +63,6 @@ public class DrawingCheckerData {
         return studentFilePaths;
     }
     
-    public final void addGradableDataType(AbstractGradableDataType type){
-        gradableDataTypes.add(type);
-    }
-    
-    public final List<AbstractGradableDataType> getGradableDataTypes(){
-        return gradableDataTypes;
-    }
-    
-    public final void setSelectedDataType(AbstractGradableDataType type){
-        selectedDataType = type;
-    }
-    
-    public final boolean isDataTypeSelected(){
-        return selectedDataType != null;
-    }
-    
-    public final AbstractGradableDataType getSelectedDataType(){
-        return selectedDataType;
-    }
-    
-    public final void clearCriteria(){
-        selectedCriteria.clear();
-        nameToCriteria.clear();
-    }
-    
-    public final void addCriteria(AbstractGradingCriteria<? extends DataSet> crit){
-        selectedCriteria.put(crit.getName(), Boolean.TRUE);
-        nameToCriteria.put(crit.getName(), crit);
-    }
-    
     private DataSet parseInstructorFile(){
         DataSet ret = null;
         if(isInstructorFilePathSet() && isDataTypeSelected()){
@@ -98,7 +75,30 @@ public class DrawingCheckerData {
         return ret; 
     }
     
+    public final void addGradableDataType(AbstractGradableDataType type){
+        gradableDataTypes.add(type);
+    }
+    public final List<AbstractGradableDataType> getGradableDataTypes(){
+        return gradableDataTypes;
+    }
+    public final void setSelectedDataType(AbstractGradableDataType type){
+        selectedDataType = type;
+    }
+    public final boolean isDataTypeSelected(){
+        return selectedDataType != null;
+    }
+    public final AbstractGradableDataType getSelectedDataType(){
+        return selectedDataType;
+    }
     
+    public final void clearCriteria(){
+        selectedCriteria.clear();
+        nameToCriteria.clear();
+    }
+    public final void addCriteria(AbstractGradingCriteria<? extends DataSet> crit){
+        selectedCriteria.put(crit.getName(), Boolean.TRUE);
+        nameToCriteria.put(crit.getName(), crit);
+    }    
     /**
      * If their is not instructor file selected, or the data type is not set,
      * returns all criteria this can grade on.
@@ -115,7 +115,6 @@ public class DrawingCheckerData {
         });
         return crit;
     }
-    
     public final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> getGradableCriteriaToIsSelected(){
         HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = new HashMap<>();
         // filters based on if the current set is gradable by the criteria
@@ -139,6 +138,29 @@ public class DrawingCheckerData {
         return criteriaToGradeOn;
     }
     
+    /**
+     * Sets the maximum difference between student and instructor
+     * files which is considered a match.
+     * 
+     * @param newValue the new maximum difference. Must be non-negative.
+     */
+    public final void setCriteriaThreshold(double newValue){
+        if(newValue < 0){
+            throw new IllegalArgumentException("criteria threshold must be non-negative");
+        }
+        this.criteriaThreshold = newValue;
+    }
+    
+    /**
+     * 
+     * @return the maximum difference between
+     * numerical values in a student export and
+     * instructor export which the program should
+     * consider a match.
+     */
+    public final double getCriteriaThreshold(){
+        return this.criteriaThreshold;
+    }
     
     
     
@@ -159,8 +181,7 @@ public class DrawingCheckerData {
         return 
             isDataTypeSelected() &&
             isInstructorFilePathSet() && 
-            isStudentFilePathsSet();// && 
-            //isAnyCriteriaSelected();
+            isStudentFilePathsSet();
     }
     
     public final GradingReport grade(){

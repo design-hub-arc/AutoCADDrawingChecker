@@ -45,7 +45,13 @@ You can contact Matt if you need help, and you provide him with the Log file you
 ## Matt's To Do List
 * see AutoCADElementMatcher
 * Should we match rows for each comparison, or for the export as a whole? (wait on this)
+
+
+
 * Given double X and double Y, don't do "X == Y", instead do "Math.abs(X - Y) < threshold"
+
+
+
 * Look into Federal Section 508
     * https://www.epa.gov/accessibility/what-section-508
     * https://www.section508.gov/

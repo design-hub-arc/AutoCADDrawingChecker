@@ -1,6 +1,7 @@
 package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
+import autocadDrawingChecker.grading.MathUtil;
 
 /**
  *
@@ -24,7 +25,7 @@ public class TextMatches implements AbstractAutoCADElementCriteria {
             text2 = row2.getAttributeString("value");
         }
         
-        return (text1.equals(text2)) ? 1.0 : 0.0;
+        return MathUtil.gradeSimilarity(text1, text2);
     }
 
     @Override

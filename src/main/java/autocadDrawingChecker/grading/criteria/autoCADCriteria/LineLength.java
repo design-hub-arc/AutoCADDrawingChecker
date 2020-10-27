@@ -3,6 +3,7 @@ package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 import autocadDrawingChecker.data.autoCADData.AutoCADExport;
 import autocadDrawingChecker.data.autoCADData.AutoCADElement;
 import autocadDrawingChecker.data.core.Record;
+import autocadDrawingChecker.grading.MathUtil;
 
 /**
  * 
@@ -12,7 +13,7 @@ public class LineLength implements AbstractAutoCADElementCriteria {
     
     @Override
     public double getMatchScore(AutoCADElement r1, AutoCADElement r2){
-        return  (r1.getAttributeDouble("length") == r2.getAttributeDouble("length")) ? 1.0 : 0.0;
+        return  MathUtil.gradeSimilarity(r1.getAttributeDouble("length"), r2.getAttributeDouble("length"));
     }
     
     private double getTotalLineLength(AutoCADExport exp){
@@ -30,8 +31,8 @@ public class LineLength implements AbstractAutoCADElementCriteria {
         double srcTotalLength = getTotalLineLength(exp1);
         double cmpTotalLength = getTotalLineLength(exp2);
         double avgLenScore = AbstractAutoCADElementCriteria.super.computeScore(exp1, exp2);
-        double totalLengthScore = (srcTotalLength == cmpTotalLength) ? 1.0 : 0.0;
-        return (avgLenScore + totalLengthScore) / 2;//* (1.0 - MathUtil.percentError(srcTotalLength, cmpTotalLength));
+        double totalLengthScore = MathUtil.gradeSimilarity(srcTotalLength, cmpTotalLength);
+        return (avgLenScore + totalLengthScore) / 2;
     }
 
     @Override

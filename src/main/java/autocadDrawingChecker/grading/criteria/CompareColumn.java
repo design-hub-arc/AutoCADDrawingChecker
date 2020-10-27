@@ -2,6 +2,7 @@ package autocadDrawingChecker.grading.criteria;
 
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.Record;
+import autocadDrawingChecker.grading.MathUtil;
 
 /**
  *
@@ -22,7 +23,7 @@ public class CompareColumn implements AbstractElementCriteria<DataSet, Record> {
     public double getMatchScore(Record e1, Record e2) {
         double ret = 0.0;
         if(e1.hasAttribute(column) && e2.hasAttribute(column)){
-            ret = (e1.getAttribute(column).equals(e2.getAttribute(column))) ? 1.0 : 0.0;
+            ret = MathUtil.gradeSimilarity(e1.getAttribute(column), e2.getAttribute(column));
         }
         return ret;
     }
