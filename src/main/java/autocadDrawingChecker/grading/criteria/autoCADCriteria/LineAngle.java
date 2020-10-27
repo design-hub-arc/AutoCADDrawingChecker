@@ -18,8 +18,9 @@ public class LineAngle implements AbstractAutoCADElementCriteria {
         int r1Angle = r1.getAttributeInt("angle");
         int r2Angle = r2.getAttributeInt("angle");
         
-        return Math.max(MathUtil.gradeSimilarity(r1Angle, r2Angle), MathUtil.gradeSimilarity(r1Angle, MathUtil.rotate180(r2Angle))); 
+        double ret = Math.max(MathUtil.gradeSimilarity(r1Angle, r2Angle), MathUtil.gradeSimilarity(r1Angle, MathUtil.rotate180(r2Angle))); 
         //                                                          check if they got a line reversed
+        return ret;
     }
     
     @Override

@@ -38,7 +38,7 @@ public class RecordExtractor {
                 ret = c.getBooleanCellValue();
                 break;
             case NUMERIC:
-                ret = c.getNumericCellValue();
+                ret = (Double)c.getNumericCellValue();
                 break;
             case STRING:
                 ret = c.getStringCellValue();
