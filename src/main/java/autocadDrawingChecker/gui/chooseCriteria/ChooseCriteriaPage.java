@@ -3,6 +3,7 @@ package autocadDrawingChecker.gui.chooseCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.gui.AbstractPage;
+import autocadDrawingChecker.logging.Logger;
 import autocadDrawingChecker.start.Application;
 import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.BorderLayout;
@@ -18,6 +19,7 @@ import java.util.List;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
 /**
@@ -36,13 +38,16 @@ public class ChooseCriteriaPage extends AbstractPage {
         
         JPanel bottom = new JPanel();
         
+        /*
+        // https://stackoverflow.com/questions/11093326/restricting-jtextfield-input-to-integers
         NumberFormat format = DecimalFormat.getInstance();
         NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setAllowsInvalid(true);
         formatter.setValueClass(Double.class);
         formatter.setMinimum(0);
         formatter.setMaximum(Double.MAX_VALUE);
         formatter.setCommitsOnValidEdit(true);
-        JFormattedTextField threshInput = new JFormattedTextField(format);//formatter);
+        JFormattedTextField threshInput = new JFormattedTextField(formatter);
         threshInput.setValue(Application.getInstance().getData().getCriteriaThreshold());
         threshInput.setColumns(20);
         threshInput.addFocusListener(new FocusListener(){
@@ -51,12 +56,34 @@ public class ChooseCriteriaPage extends AbstractPage {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if(threshInput.isEditValid()){
+                the formatter ALWAYS says the input is wrong, and resets it to 0
+                try {
                     Application.getInstance().getData().setCriteriaThreshold((Double)threshInput.getValue());
+                } catch (Exception ex){
+                    Logger.logError(ex);
                 }
             }
         });
         bottom.add(threshInput);
+        for some reason, I cannot get this to work
+        */
+        
+        JTextField text = new JTextField();
+        text.setColumns(20);
+        text.addFocusListener(new FocusListener(){
+            @Override
+            public void focusGained(FocusEvent e) {}
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                try{
+                    Application.getInstance().getData().setCriteriaThreshold(Double.parseDouble(text.getText()));
+                } catch (Exception ex){
+                    Logger.logError(ex);
+                }
+            }
+        });
+        bottom.add(text);
         add(bottom, BorderLayout.PAGE_END);
     }
     
