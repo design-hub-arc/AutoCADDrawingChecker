@@ -2,6 +2,7 @@ package autocadDrawingChecker.data.core;
 
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,7 +19,14 @@ public class RecordExtractor {
         if(columns == null){
             throw new NullPointerException("Columns cannot be null");
         }
-        this.columns = columns;
+        this.columns = (HashMap<String, Integer>)columns.clone();
+        for(String reqCol : this.getRequiredColumns()){
+            for(String actualCol : columns.keySet()){
+                if(!reqCol.equals(actualCol) && Pattern.matches(reqCol, actualCol)){
+                    this.columns.put(reqCol, columns.get(actualCol));
+                }
+            }
+        }
     }
     
     private String sanitize(String s){

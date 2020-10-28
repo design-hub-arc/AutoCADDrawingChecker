@@ -110,6 +110,9 @@ public class ExcelParser {
         return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);
     }
     
+    private String sanitize(String s){
+        return s.trim(); // may not want to uppercase
+    }
     
     /**
      * Locates headers within the given row
@@ -123,7 +126,7 @@ public class ExcelParser {
         
         ArrayList<String> headers = new ArrayList<>();
         headerRow.cellIterator().forEachRemaining((Cell c)->{
-            headers.add(c.toString().toUpperCase());
+            headers.add(sanitize(c.toString()).toUpperCase());
         });
         for(int i = 0; i < headers.size(); i++){
             headerToCol.put(headers.get(i), i);
