@@ -24,8 +24,8 @@ public class AutoCADExcelParser extends ExcelParser {
     }
     
     @Override
-    protected DataSet createExtractionHolder(){
-        return new AutoCADExport(this.getFileName());
+    protected DataSet createExtractionHolder(String sheetName){
+        return new AutoCADExport(this.getFileName() + " - " + sheetName);
     }
     
     @Override

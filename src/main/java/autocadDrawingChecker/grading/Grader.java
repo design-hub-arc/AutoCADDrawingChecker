@@ -43,22 +43,24 @@ public class Grader {
         criteria = gradeThese;
     }
     
-    private DataSet parseFile(String path) throws IOException {
-        return dataType.parseFile(path);
+    private DataSet parseFileSingle(String path) throws IOException {
+        return dataType.createParser(path).parseFirstSheet();
     };
-    
+    private List<DataSet> parseFileMultiple(String path) throws IOException {
+        return dataType.createParser(path).parseAllSheets();
+    }
     private List<DataSet> getStudentFiles(){
         return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{
             // locate all Excel files in all given paths...
             return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream();
-        }).map((fileName)->{
-            DataSet r = null;
+        }).flatMap((fileName)->{
+            List<DataSet> r = new LinkedList<>();
             try {
-                r = parseFile(fileName);
+                r = parseFileMultiple(fileName);
             } catch (IOException ex) {
                 Logger.logError(ex);
             }
-            return r;
+            return r.stream();
         }).filter((e)->{
             // ignore any conversions that fail...
             return e != null;
@@ -83,7 +85,7 @@ public class Grader {
         List<DataSet> cmp = null;
         
         try {
-            trySrc = parseFile(this.instrFilePath);
+            trySrc = parseFileSingle(this.instrFilePath);
         } catch (IOException ex) {
             Logger.logError(String.format("Failed to locate source file %s", instrFilePath));
             Logger.logError(ex);

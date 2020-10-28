@@ -1,8 +1,6 @@
 package autocadDrawingChecker.data.core;
 
 import autocadDrawingChecker.data.AbstractGradableDataType;
-import java.io.IOException;
-import java.util.HashMap;
 
 /**
  *
@@ -20,7 +18,7 @@ public class GenericExcelDataType implements AbstractGradableDataType {
     }
 
     @Override
-    public DataSet parseFile(String fileName) throws IOException {
-        return new ExcelParser(fileName).parseFirstSheet();
+    public ExcelParser createParser(String fileName) {
+        return new ExcelParser(fileName);
     }
 }

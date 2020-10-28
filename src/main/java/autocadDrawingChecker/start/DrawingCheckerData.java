@@ -67,7 +67,7 @@ public class DrawingCheckerData {
         DataSet ret = null;
         if(isInstructorFilePathSet() && isDataTypeSelected()){
             try {
-                ret = this.selectedDataType.parseFile(instructorFilePath);
+                ret = this.selectedDataType.createParser(instructorFilePath).parseFirstSheet();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

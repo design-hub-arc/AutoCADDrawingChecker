@@ -61,10 +61,11 @@ public class ExcelParser {
      * override this method to return a DataSet for their
      * own record type.
      * 
+     * @param sheetName the name of the sheet this is parsing
      * @return the DataSet this will store the parsed Excel file contents in 
      */
-    protected DataSet createExtractionHolder(){
-        return new DataSet(this.fileName);
+    protected DataSet createExtractionHolder(String sheetName){
+        return new DataSet(this.fileName + " - " + sheetName);
     }
     
     /**
@@ -173,7 +174,7 @@ public class ExcelParser {
     }
     
     private DataSet parseSheet(Sheet sheet){
-        DataSet containedTherein = createExtractionHolder();
+        DataSet containedTherein = createExtractionHolder(sheet.getSheetName());
         
         Row headerRow = locateHeaderRow(sheet);
         

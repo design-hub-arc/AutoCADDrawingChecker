@@ -1,6 +1,7 @@
 package autocadDrawingChecker.data;
 
 import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.data.core.ExcelParser;
 import java.io.IOException;
 
 /**
@@ -25,16 +26,11 @@ public interface AbstractGradableDataType {
     public String getDescription();
     
     /**
-     * Use this method to read an Excel file, then return its contents,
-     * parsed using a subclass of ExcelParser. 
+     * Use this method to read an Excel file, then return a subclass of ExcelParser. 
      * 
      * @param fileName the complete path to the file to parse.
      * 
-     * @return the parsed contents of the file. Note that the value 
-     * returned will almost always be a subclass of DataSet, rather 
-     * than just an instance of DataSet.
-     * 
-     * @throws IOException if any errors occur when parsing the file
+     * @return a parser, ready to parse the given file
      */
-    public DataSet parseFile(String fileName) throws IOException;
+    public ExcelParser createParser(String fileName);
 }

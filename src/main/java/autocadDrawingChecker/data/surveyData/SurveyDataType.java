@@ -1,10 +1,7 @@
 package autocadDrawingChecker.data.surveyData;
 
 import autocadDrawingChecker.data.AbstractGradableDataType;
-import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.data.core.RecordExtractor;
-import java.io.IOException;
-import java.util.HashMap;
+import autocadDrawingChecker.data.core.ExcelParser;
 
 /**
  *
@@ -22,7 +19,7 @@ public class SurveyDataType implements AbstractGradableDataType {
     }
 
     @Override
-    public DataSet parseFile(String fileName) throws IOException {
-        return new SurveyDataParser(fileName).parseFirstSheet();
+    public ExcelParser createParser(String fileName) {
+        return new SurveyDataParser(fileName);
     }
 }

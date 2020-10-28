@@ -19,8 +19,8 @@ public class SurveyDataParser extends ExcelParser {
     }
     
     @Override
-    protected DataSet createExtractionHolder(){
-        return new SurveyDataSet(this.getFileName());
+    protected DataSet createExtractionHolder(String sheetName){
+        return new SurveyDataSet(this.getFileName() + " - " + sheetName);
     }
     
     @Override
