@@ -12,6 +12,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -38,13 +39,13 @@ public class ChooseCriteriaPage extends AbstractPage {
         
         JPanel bottom = new JPanel();
         
-        /*
+        
         // https://stackoverflow.com/questions/11093326/restricting-jtextfield-input-to-integers
         NumberFormat format = DecimalFormat.getInstance();
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setAllowsInvalid(true);
         formatter.setValueClass(Double.class);
-        formatter.setMinimum(0);
+        formatter.setMinimum(0.0);
         formatter.setMaximum(Double.MAX_VALUE);
         formatter.setCommitsOnValidEdit(true);
         JFormattedTextField threshInput = new JFormattedTextField(formatter);
@@ -56,34 +57,19 @@ public class ChooseCriteriaPage extends AbstractPage {
 
             @Override
             public void focusLost(FocusEvent e) {
-                the formatter ALWAYS says the input is wrong, and resets it to 0
                 try {
-                    Application.getInstance().getData().setCriteriaThreshold((Double)threshInput.getValue());
+                    if(threshInput.isEditValid()){
+                        Application.getInstance().getData().setCriteriaThreshold((Double)threshInput.getValue());
+                    } else {
+                        System.err.println("Not valid threshold input");
+                    }
                 } catch (Exception ex){
                     Logger.logError(ex);
                 }
             }
         });
         bottom.add(threshInput);
-        for some reason, I cannot get this to work
-        */
         
-        JTextField text = new JTextField();
-        text.setColumns(20);
-        text.addFocusListener(new FocusListener(){
-            @Override
-            public void focusGained(FocusEvent e) {}
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                try{
-                    Application.getInstance().getData().setCriteriaThreshold(Double.parseDouble(text.getText()));
-                } catch (Exception ex){
-                    Logger.logError(ex);
-                }
-            }
-        });
-        bottom.add(text);
         add(bottom, BorderLayout.PAGE_END);
     }
     
