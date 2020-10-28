@@ -45,10 +45,16 @@ public class Main {
         boolean noGui = argSet.contains("--no-gui");
         
         if(debug){
-            main.app.getData()
-            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
-            .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
-            System.out.println(data.grade().toString());
+            data
+            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\AutoCAD\\Acceptance Test Drawing 1\\Better Data Extracts\\instructor file.xls")
+              .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with");//\\AutoCAD\\Acceptance Test Drawing 1\\Better Data Extracts");
+            for(double d = 0.0; d < 1000.0; d += 100.0){
+                data.setCriteriaThreshold(d);
+                System.out.printf("\nWhen threshold is %f...\n", d);
+                data.grade().forEach((gradedExport)->{
+                    System.out.printf("%5.3f ", gradedExport.getFinalGrade());
+                });
+            }
         } 
         
         if(!noGui){
