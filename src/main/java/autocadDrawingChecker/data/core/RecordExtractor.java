@@ -15,10 +15,18 @@ public class RecordExtractor {
     private final HashMap<String, Integer> columns;
     private Row currentRow;
     
+    /**
+     * 
+     * @param columns the columns located by the ExcelParser.
+     * If any of this' required columns involve regex, this
+     * will automatically locate them as well.
+     */
+    @SuppressWarnings("unchecked")
     public RecordExtractor(HashMap<String, Integer> columns){
         if(columns == null){
             throw new NullPointerException("Columns cannot be null");
         }
+        
         this.columns = (HashMap<String, Integer>)columns.clone();
         for(String reqCol : this.getRequiredColumns()){
             for(String actualCol : columns.keySet()){

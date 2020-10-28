@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -35,10 +37,10 @@ public class ExcelParser {
     
     /**
      * Creates a new parser, ready to convert the given file.
-     * Note that you must still invoke the parse method to read
-     * and convert the file to a DataSet.
+     * Note that you must still invoke the parseFirstSheet method to read
+ and convert the file to a DataSet.
      * 
-     * @param fileName the complete path to the file this should parse. 
+     * @param fileName the complete path to the file this should parseFirstSheet. 
      */
     public ExcelParser(String fileName){
         this.fileName = fileName;
@@ -47,7 +49,7 @@ public class ExcelParser {
     
     /**
      * 
-     * @return the complete path to the file this should parse.
+     * @return the complete path to the file this should parseFirstSheet.
      */
     protected final String getFileName(){
         return fileName;
@@ -99,8 +101,8 @@ public class ExcelParser {
     /**
      * Returns whether or not the given row is valid, and the program should
      * attempt to convert it to a Record. By default, this method checks if
-     * the given row is empty of otherwise un-parse-able, so if you do override
-     * this method, it would be wise to include a call to {@code super.isValidRow(...)}
+ the given row is empty of otherwise un-parseFirstSheet-able, so if you do override
+ this method, it would be wise to include a call to {@code super.isValidRow(...)}
      * in your subclass' method.
      * 
      * @param row the row to validate.
@@ -170,23 +172,7 @@ public class ExcelParser {
         return b.toString();
     }
     
-    /**
-     * This method ties all the methods of this class together. Attempts to read and parse the Excel file
-     * located at the file path provided to the constructor, and returns its contents as extracted by the
-     * RecordExtractor. Subclasses should override other methods to customize the behavior of how this parses
-     * the data provided.
-     * 
-     * @return the contents of the Excel file passed to the constructor, converted to a DataSet so the program
-     * can more easily use it.
-     * 
-     * @throws IOException if bad things happen when reading the Excel file. 
-     */
-    public final DataSet parse() throws IOException {
-        InputStream in = new FileInputStream(fileName);
-        //                                                new Excel format       old Excel format
-        Workbook workbook = (fileName.endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
-        Sheet sheet = workbook.getSheetAt(0);
-        
+    private DataSet parseSheet(Sheet sheet){
         DataSet containedTherein = createExtractionHolder();
         
         Row headerRow = locateHeaderRow(sheet);
@@ -224,8 +210,52 @@ public class ExcelParser {
             }
         }
         
+        
+        
+        return containedTherein;
+    }
+    
+    /**
+     * This method ties all the methods of this class together. Attempts to read and parseFirstSheet the Excel file
+ located at the file path provided to the constructor, and returns its contents as extracted by the
+ RecordExtractor. Subclasses should override other methods to customize the behavior of how this parses
+ the data provided.
+     * 
+     * @return the contents of the Excel file passed to the constructor, converted to a DataSet so the program
+     * can more easily use it.
+     * 
+     * @throws IOException if bad things happen when reading the Excel file. 
+     */
+    public final DataSet parseFirstSheet() throws IOException {
+        InputStream in = new FileInputStream(fileName);
+        //                                                new Excel format       old Excel format
+        Workbook workbook = (fileName.endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        DataSet containedTherein = parseSheet(sheet);
+        
         workbook.close();
         
         return containedTherein;
+    }
+    
+    public final List<DataSet> parseAllSheets() throws IOException {
+        LinkedList<DataSet> allDataSets = new LinkedList<>();
+        
+        InputStream in = new FileInputStream(fileName);
+        //                                                new Excel format       old Excel format
+        Workbook workbook = (fileName.endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
+            try {
+                DataSet set = parseSheet(sheet);
+                if(set != null){
+                    allDataSets.add(set);
+                }
+            } catch(Exception ex){
+                Logger.logError(ex);
+            }
+        });
+        
+        return allDataSets;
     }
 }

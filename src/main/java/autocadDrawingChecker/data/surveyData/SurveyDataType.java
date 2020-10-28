@@ -23,6 +23,6 @@ public class SurveyDataType implements AbstractGradableDataType {
 
     @Override
     public DataSet parseFile(String fileName) throws IOException {
-        return new SurveyDataParser(fileName).parse();
+        return new SurveyDataParser(fileName).parseFirstSheet();
     }
 }

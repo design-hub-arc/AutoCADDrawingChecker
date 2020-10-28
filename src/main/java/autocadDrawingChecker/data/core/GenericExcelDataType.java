@@ -21,6 +21,6 @@ public class GenericExcelDataType implements AbstractGradableDataType {
 
     @Override
     public DataSet parseFile(String fileName) throws IOException {
-        return new ExcelParser(fileName).parse();
+        return new ExcelParser(fileName).parseFirstSheet();
     }
 }

@@ -17,7 +17,7 @@ public class AutoCADExcelParser extends ExcelParser {
     
     
     /**
-     * @param fileToParse a path to the Excel file this should parse.
+     * @param fileToParse a path to the Excel file this should parseFirstSheet.
      */
     public AutoCADExcelParser(String fileToParse){
         super(fileToParse);

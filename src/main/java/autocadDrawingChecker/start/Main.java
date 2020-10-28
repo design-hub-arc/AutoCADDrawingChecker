@@ -1,7 +1,10 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.data.GradableDataTypeLoader;
+import autocadDrawingChecker.data.core.ExcelParser;
+import autocadDrawingChecker.data.surveyData.SurveyDataParser;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -45,9 +48,15 @@ public class Main {
         boolean noGui = argSet.contains("--no-gui");
         
         if(debug){
+            try {
+                new SurveyDataParser("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\template\\GPS Style - Survey Field Notes - Template.xlsx").parseAllSheets().forEach(System.out::println);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            
             data
-            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\AutoCAD\\Acceptance Test Drawing 1\\Better Data Extracts\\instructor file.xls")
-              .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with");//\\AutoCAD\\Acceptance Test Drawing 1\\Better Data Extracts");
+            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\civil67\\67Civi-Student 1 - GPS Style Survey Simulation - Survey Field Notes.xlsx")
+              .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\civil67");
             for(double d = 0.0; d < 1000.0; d += 100.0){
                 data.setCriteriaThreshold(d);
                 System.out.printf("\nWhen threshold is %f...\n", d);
