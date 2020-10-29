@@ -58,8 +58,8 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
      * output Records from it.
      */
     @Override
-    protected RecordExtractor createExtractor(HashMap<String, Integer> columns){
-        return new RecordExtractor(columns);
+    protected ExcelRecordExtractor createExtractor(HashMap<String, Integer> columns){
+        return new ExcelRecordExtractor(columns);
     }
     
     /**
@@ -153,7 +153,7 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         Row headerRow = locateHeaderRow(sheet);
         
         
-        RecordExtractor recExtr = createExtractor(locateColumns(headerRow));
+        AbstractRecordExtractor recExtr = createExtractor(locateColumns(headerRow));
         
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*

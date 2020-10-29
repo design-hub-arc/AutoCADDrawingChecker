@@ -21,7 +21,7 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     }
 
     @Override
-    protected RecordExtractor createExtractor(HashMap<String, Integer> columns) {
+    protected AbstractRecordExtractor createExtractor(HashMap<String, Integer> columns) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

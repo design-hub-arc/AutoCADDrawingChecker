@@ -1,12 +1,12 @@
 package autocadDrawingChecker.data.autoCADData;
 
-import autocadDrawingChecker.data.core.RecordExtractor;
+import autocadDrawingChecker.data.core.ExcelRecordExtractor;
 import java.util.HashMap;
 
 /**
  * @author Matt
  */
-class AutoCADElementExtractor extends RecordExtractor {    
+class AutoCADElementExtractor extends ExcelRecordExtractor {    
 
     public AutoCADElementExtractor(HashMap<String, Integer> columns) {
         super(columns);
