@@ -1,7 +1,6 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.data.GradableDataTypeLoader;
-import autocadDrawingChecker.data.core.ExcelParser;
 import autocadDrawingChecker.data.surveyData.SurveyDataParser;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
 import java.io.IOException;
