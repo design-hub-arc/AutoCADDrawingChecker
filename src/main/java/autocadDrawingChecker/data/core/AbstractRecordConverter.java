@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * @author Matt
  * @param <RowType>
  */
-public abstract class AbstractRecordExtractor<RowType> {
+public abstract class AbstractRecordConverter<RowType> {
     private final HashMap<String, Integer> columns;
     private RowType currentRow;
     
@@ -20,7 +20,7 @@ public abstract class AbstractRecordExtractor<RowType> {
      * will automatically locate them as well.
      */
     @SuppressWarnings("unchecked")
-    public AbstractRecordExtractor(HashMap<String, Integer> columns){
+    public AbstractRecordConverter(HashMap<String, Integer> columns){
         if(columns == null){
             throw new NullPointerException("Columns cannot be null");
         }
@@ -90,7 +90,7 @@ public abstract class AbstractRecordExtractor<RowType> {
         return ret;
     }
     
-    boolean canExtractRow(RowType row){
+    public boolean canExtractRow(RowType row){
         return hasRequiredColumns(row);
     }
     

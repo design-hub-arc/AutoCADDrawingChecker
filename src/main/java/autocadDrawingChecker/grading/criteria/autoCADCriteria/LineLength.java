@@ -1,7 +1,7 @@
 package autocadDrawingChecker.grading.criteria.autoCADCriteria;
 
-import autocadDrawingChecker.data.autoCADData.AutoCADExport;
-import autocadDrawingChecker.data.autoCADData.AutoCADElement;
+import autocadDrawingChecker.data.excel.autoCADData.AutoCADExport;
+import autocadDrawingChecker.data.excel.autoCADData.AutoCADElement;
 import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.grading.MathUtil;
 

@@ -1,5 +1,9 @@
-package autocadDrawingChecker.data.core;
+package autocadDrawingChecker.data.excel;
 
+import autocadDrawingChecker.data.core.AbstractRecordConverter;
+import autocadDrawingChecker.data.core.AbstractTableParser;
+import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,8 +62,8 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
      * output Records from it.
      */
     @Override
-    protected ExcelRecordExtractor createExtractor(HashMap<String, Integer> columns){
-        return new ExcelRecordExtractor(columns);
+    protected ExcelRecordConverter createExtractor(HashMap<String, Integer> columns){
+        return new ExcelRecordConverter(columns);
     }
     
     /**
@@ -153,7 +157,7 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         Row headerRow = locateHeaderRow(sheet);
         
         
-        AbstractRecordExtractor recExtr = createExtractor(locateColumns(headerRow));
+        AbstractRecordConverter recExtr = createExtractor(locateColumns(headerRow));
         
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*

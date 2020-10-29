@@ -1,5 +1,6 @@
-package autocadDrawingChecker.data.core;
+package autocadDrawingChecker.data.excel;
 
+import autocadDrawingChecker.data.core.AbstractRecordConverter;
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,9 +11,9 @@ import org.apache.poi.ss.usermodel.Row;
  *
  * @author Matt
  */
-public class ExcelRecordExtractor extends AbstractRecordExtractor<Row> {
+public class ExcelRecordConverter extends AbstractRecordConverter<Row> {
 
-    public ExcelRecordExtractor(HashMap<String, Integer> columns) {
+    public ExcelRecordConverter(HashMap<String, Integer> columns) {
         super(columns);
     }
     

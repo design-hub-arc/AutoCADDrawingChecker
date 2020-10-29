@@ -1,7 +1,7 @@
 package autocadDrawingChecker.data;
 
 import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.data.core.ExcelParser;
+import autocadDrawingChecker.data.excel.ExcelParser;
 import java.io.IOException;
 
 /**

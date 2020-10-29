@@ -1,5 +1,8 @@
-package autocadDrawingChecker.data.core;
+package autocadDrawingChecker.data.csv;
 
+import autocadDrawingChecker.data.core.AbstractRecordConverter;
+import autocadDrawingChecker.data.core.AbstractTableParser;
+import autocadDrawingChecker.data.core.DataSet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,7 +24,7 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     }
 
     @Override
-    protected AbstractRecordExtractor createExtractor(HashMap<String, Integer> columns) {
+    protected AbstractRecordConverter createExtractor(HashMap<String, Integer> columns) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

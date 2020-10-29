@@ -1,8 +1,8 @@
-package autocadDrawingChecker.data.autoCADData;
+package autocadDrawingChecker.data.excel.autoCADData;
 
-import autocadDrawingChecker.data.core.ExcelParser;
+import autocadDrawingChecker.data.excel.ExcelParser;
 import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.data.core.ExcelRecordExtractor;
+import autocadDrawingChecker.data.excel.ExcelRecordConverter;
 import java.util.HashMap;
 
 /**
@@ -29,7 +29,7 @@ public class AutoCADExcelParser extends ExcelParser {
     }
     
     @Override
-    protected ExcelRecordExtractor createExtractor(HashMap<String, Integer> columns){
-        return new AutoCADElementExtractor(columns);
+    protected ExcelRecordConverter createExtractor(HashMap<String, Integer> columns){
+        return new AutoCADElementConverter(columns);
     }
 }

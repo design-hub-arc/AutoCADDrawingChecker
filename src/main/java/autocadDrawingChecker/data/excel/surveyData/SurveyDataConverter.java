@@ -1,16 +1,16 @@
-package autocadDrawingChecker.data.surveyData;
+package autocadDrawingChecker.data.excel.surveyData;
 
 import autocadDrawingChecker.data.core.Record;
-import autocadDrawingChecker.data.core.ExcelRecordExtractor;
+import autocadDrawingChecker.data.excel.ExcelRecordConverter;
 import java.util.HashMap;
 
 /**
  *
  * @author Matt
  */
-public class SurveyDataExtractor extends ExcelRecordExtractor {
+public class SurveyDataConverter extends ExcelRecordConverter {
 
-    public SurveyDataExtractor(HashMap<String, Integer> columns) {
+    public SurveyDataConverter(HashMap<String, Integer> columns) {
         super(columns);
     }
     @Override

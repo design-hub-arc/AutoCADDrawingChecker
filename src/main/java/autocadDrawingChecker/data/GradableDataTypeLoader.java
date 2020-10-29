@@ -1,8 +1,8 @@
 package autocadDrawingChecker.data;
 
-import autocadDrawingChecker.data.autoCADData.AutoCADDataType;
-import autocadDrawingChecker.data.core.GenericExcelDataType;
-import autocadDrawingChecker.data.surveyData.SurveyDataType;
+import autocadDrawingChecker.data.excel.autoCADData.AutoCADDataType;
+import autocadDrawingChecker.data.excel.GenericExcelDataType;
+import autocadDrawingChecker.data.excel.surveyData.SurveyDataType;
 import autocadDrawingChecker.util.AbstractLoader;
 import java.util.ArrayList;
 import java.util.List;

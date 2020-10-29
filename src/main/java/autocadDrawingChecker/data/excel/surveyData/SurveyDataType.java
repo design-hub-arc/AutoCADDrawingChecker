@@ -1,7 +1,7 @@
-package autocadDrawingChecker.data.surveyData;
+package autocadDrawingChecker.data.excel.surveyData;
 
 import autocadDrawingChecker.data.AbstractGradableDataType;
-import autocadDrawingChecker.data.core.ExcelParser;
+import autocadDrawingChecker.data.excel.ExcelParser;
 
 /**
  *

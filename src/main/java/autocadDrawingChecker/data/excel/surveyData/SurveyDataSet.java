@@ -1,4 +1,4 @@
-package autocadDrawingChecker.data.surveyData;
+package autocadDrawingChecker.data.excel.surveyData;
 
 import autocadDrawingChecker.data.core.DataSet;
 

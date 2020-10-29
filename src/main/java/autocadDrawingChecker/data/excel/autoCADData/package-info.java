@@ -11,4 +11,4 @@
  * <tr><td>AutoCADExport</td>          <td>Stores a list of all AutoCADElements stored in a file.</td>                     </tr>
  * </table>
  */
-package autocadDrawingChecker.data.autoCADData;
+package autocadDrawingChecker.data.excel.autoCADData;

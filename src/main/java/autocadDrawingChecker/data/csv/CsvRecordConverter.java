@@ -1,5 +1,6 @@
-package autocadDrawingChecker.data.core;
+package autocadDrawingChecker.data.csv;
 
+import autocadDrawingChecker.data.core.AbstractRecordConverter;
 import java.util.HashMap;
 import org.apache.commons.csv.CSVRecord;
 
@@ -7,9 +8,9 @@ import org.apache.commons.csv.CSVRecord;
  *
  * @author Matt
  */
-public class CsvRecordExtractor extends AbstractRecordExtractor<CSVRecord> {
+public class CsvRecordConverter extends AbstractRecordConverter<CSVRecord> {
 
-    public CsvRecordExtractor(HashMap<String, Integer> columns) {
+    public CsvRecordConverter(HashMap<String, Integer> columns) {
         super(columns);
     }
 

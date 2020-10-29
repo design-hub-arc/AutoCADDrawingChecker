@@ -2,8 +2,8 @@ package autocadDrawingChecker.grading.criteria.surveyCriteria;
 
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.Record;
-import autocadDrawingChecker.data.surveyData.SurveyDataRecord;
-import autocadDrawingChecker.data.surveyData.SurveyDataSet;
+import autocadDrawingChecker.data.excel.surveyData.SurveyDataRecord;
+import autocadDrawingChecker.data.excel.surveyData.SurveyDataSet;
 import autocadDrawingChecker.grading.criteria.AbstractVectorCriteria;
 
 /**

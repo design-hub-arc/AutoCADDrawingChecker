@@ -52,7 +52,7 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     }
     
     // will need to change this to a more generic return type
-    protected abstract AbstractRecordExtractor createExtractor(HashMap<String, Integer> columns);
+    protected abstract AbstractRecordConverter createExtractor(HashMap<String, Integer> columns);
     
     /**
      * Returns the row containing headers in the given sheet.

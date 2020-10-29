@@ -1,8 +1,8 @@
-package autocadDrawingChecker.data.surveyData;
+package autocadDrawingChecker.data.excel.surveyData;
 
 import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.data.core.ExcelParser;
-import autocadDrawingChecker.data.core.ExcelRecordExtractor;
+import autocadDrawingChecker.data.excel.ExcelParser;
+import autocadDrawingChecker.data.excel.ExcelRecordConverter;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,8 +24,8 @@ public class SurveyDataParser extends ExcelParser {
     }
     
     @Override
-    protected ExcelRecordExtractor createExtractor(HashMap<String, Integer> columns){
-        return new SurveyDataExtractor(columns);
+    protected ExcelRecordConverter createExtractor(HashMap<String, Integer> columns){
+        return new SurveyDataConverter(columns);
     }
     
     @Override
