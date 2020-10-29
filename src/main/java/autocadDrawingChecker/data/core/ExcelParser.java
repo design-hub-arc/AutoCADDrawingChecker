@@ -31,10 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 
  * @author Matt Crow
  */
-public class ExcelParser {
-    private final String fileName;
-    private Row currRow;
-    
+public class ExcelParser extends AbstractTableParser<Sheet, Row> {    
     /**
      * Creates a new parser, ready to convert the given file.
      * Note that you must still invoke the parseFirstSheet method to read
@@ -43,29 +40,7 @@ public class ExcelParser {
      * @param fileName the complete path to the file this should parseFirstSheet. 
      */
     public ExcelParser(String fileName){
-        this.fileName = fileName;
-        this.currRow = null;
-    }
-    
-    /**
-     * 
-     * @return the complete path to the file this should parseFirstSheet.
-     */
-    protected final String getFileName(){
-        return fileName;
-    }
-    
-    /**
-     * Creates the DataSet which will hold the contents
-     * of the file this is parsing. Subclasses will always
-     * override this method to return a DataSet for their
-     * own record type.
-     * 
-     * @param sheetName the name of the sheet this is parsing
-     * @return the DataSet this will store the parsed Excel file contents in 
-     */
-    protected DataSet createExtractionHolder(String sheetName){
-        return new DataSet(this.fileName + " - " + sheetName);
+        super(fileName);
     }
     
     /**
@@ -82,6 +57,7 @@ public class ExcelParser {
      * @return a RecordExtractor which will read rows from the Excel file, and
      * output Records from it.
      */
+    @Override
     protected RecordExtractor createExtractor(HashMap<String, Integer> columns){
         return new RecordExtractor(columns);
     }
@@ -95,6 +71,7 @@ public class ExcelParser {
      * @param sheet the sheet which this is currently parsing.
      * @return the row of the given sheet that contains headers.
      */
+    @Override
     protected synchronized Row locateHeaderRow(Sheet sheet){
         return sheet.getRow(0);
     }
@@ -109,12 +86,9 @@ public class ExcelParser {
      * @param row the row to validate.
      * @return whether or not the row is valid.
      */
+    @Override
     protected boolean isValidRow(Row row){
         return row != null && row.getLastCellNum() != -1 && !isRowEmpty(row);
-    }
-    
-    private String sanitize(String s){
-        return s.trim(); // may not want to uppercase
     }
     
     /**
@@ -162,7 +136,7 @@ public class ExcelParser {
     private String currRowToString(){
         StringBuilder b = new StringBuilder();
         b.append("[");
-        Iterator<Cell> iter = currRow.cellIterator();
+        Iterator<Cell> iter = getCurrRow().cellIterator();
         while(iter.hasNext()){
             b.append(iter.next().toString());
             if(iter.hasNext()){
@@ -199,10 +173,10 @@ public class ExcelParser {
         
         //               skip headers
         for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
-            currRow = sheet.getRow(rowNum);
-            if(isValidRow(currRow) && recExtr.canExtractRow(currRow)){
+            setCurrRow(sheet.getRow(rowNum));
+            if(isValidRow(getCurrRow()) && recExtr.canExtractRow(getCurrRow())){
                 try {
-                    rec = recExtr.extract(currRow);
+                    rec = recExtr.extract(getCurrRow());
                     containedTherein.add(rec);
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
@@ -228,9 +202,9 @@ public class ExcelParser {
      * @throws IOException if bad things happen when reading the Excel file. 
      */
     public final DataSet parseFirstSheet() throws IOException {
-        InputStream in = new FileInputStream(fileName);
+        InputStream in = new FileInputStream(getFileName());
         //                                                new Excel format       old Excel format
-        Workbook workbook = (fileName.endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        Workbook workbook = (getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         Sheet sheet = workbook.getSheetAt(0);
         
         DataSet containedTherein = parseSheet(sheet);
@@ -243,9 +217,9 @@ public class ExcelParser {
     public final List<DataSet> parseAllSheets() throws IOException {
         LinkedList<DataSet> allDataSets = new LinkedList<>();
         
-        InputStream in = new FileInputStream(fileName);
+        InputStream in = new FileInputStream(getFileName());
         //                                                new Excel format       old Excel format
-        Workbook workbook = (fileName.endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        Workbook workbook = (getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
             try {
                 DataSet set = parseSheet(sheet);
