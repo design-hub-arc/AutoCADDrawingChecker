@@ -54,16 +54,7 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     // will need to change this to a more generic return type
     protected abstract AbstractRecordConverter createExtractor(HashMap<String, Integer> columns);
     
-    /**
-     * Returns the row containing headers in the given sheet.
-     * By default, this method returns the first row of the
-     * given sheet. Subclasses should override this method iff
-     * their data is expected to have headers in another row.
-     * 
-     * @param sheet the sheet which this is currently parsing.
-     * @return the row of the given sheet that contains headers.
-     */
-    protected abstract RowType locateHeaderRow(SheetType sheet);
+    
     
     protected abstract boolean isValidRow(RowType row);
     
@@ -72,6 +63,24 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     }
     
     protected abstract List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException;
+    
+    protected abstract DataSet doParseSheet(SheetType sheet);
+    
+    protected abstract DataSet doParseFirstSheet(InputStream in) throws IOException;
+    
+    public final DataSet parseSheet(SheetType sheet){
+        return doParseSheet(sheet);
+    }
+    public final DataSet parseFirstSheet() throws IOException {
+        DataSet ret = null;
+        try (InputStream in = new FileInputStream(getFileName())) {
+            ret = doParseFirstSheet(in);
+        } catch(Exception ex){
+            Logger.logError(ex);
+            throw ex;
+        }
+        return ret;
+    }
     
     public final List<DataSet> parseAllSheets() throws IOException {
         List<DataSet> allDataSets = new LinkedList<>();

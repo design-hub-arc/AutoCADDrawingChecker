@@ -5,9 +5,14 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 /**
- *
- * @author Matt
- * @param <RowType>
+ * The AbstractRecordConverter class is used to convert records from a file into a more generic
+ * format usable by the program, essentially rendering the type of source a record came from irrelevant.
+ * In this way, subclasses of this class serve the Adapter design pattern.
+ * 
+ * This class may later be merged into AbstractTableParser, given how coupled their behaviors are. 
+ * 
+ * @author Matt Crow
+ * @param <RowType> the class this will convert to the generic Record class used by the program. 
  */
 public abstract class AbstractRecordConverter<RowType> {
     private final HashMap<String, Integer> columns;
@@ -19,13 +24,16 @@ public abstract class AbstractRecordConverter<RowType> {
      * If any of this' required columns involve regex, this
      * will automatically locate them as well.
      */
-    @SuppressWarnings("unchecked")
     public AbstractRecordConverter(HashMap<String, Integer> columns){
         if(columns == null){
             throw new NullPointerException("Columns cannot be null");
         }
         
-        this.columns = (HashMap<String, Integer>)columns.clone();
+        this.columns = new HashMap<>();
+        columns.forEach((k, v)->{
+            this.columns.put(sanitize(k), v);
+        });
+        
         for(String reqCol : this.getRequiredColumns()){
             for(String actualCol : columns.keySet()){
                 if(!reqCol.equals(actualCol) && Pattern.matches(reqCol, actualCol)){
@@ -50,7 +58,7 @@ public abstract class AbstractRecordConverter<RowType> {
         return doGetCell(currentRow, colIdx);
     }
     
-    protected String getCellString(String col){
+    protected final String getCellString(String col){
         String ret = null;
         try {
             ret = getCell(col).toString();
@@ -63,7 +71,7 @@ public abstract class AbstractRecordConverter<RowType> {
     
     protected abstract boolean doesRowHaveCell(RowType currRow, int idx);
     
-    protected boolean rowHasCell(RowType row, String col){
+    protected final boolean rowHasCell(RowType row, String col){
         col = sanitize(col);
         int colIdx = (columns.containsKey(col)) ? columns.get(col) : -1;
         boolean hasCol = 
@@ -71,7 +79,7 @@ public abstract class AbstractRecordConverter<RowType> {
             doesRowHaveCell(row, colIdx);
         return hasCol;
     }
-    protected boolean currentRowHasCell(String col){
+    protected final boolean currentRowHasCell(String col){
         return rowHasCell(currentRow, col);
     }
     
@@ -79,7 +87,7 @@ public abstract class AbstractRecordConverter<RowType> {
         return new String[0];
     }
     
-    protected boolean hasRequiredColumns(RowType row){
+    protected final boolean hasRequiredColumns(RowType row){
         boolean ret = true;
         String[] reqCols = getRequiredColumns();
         for(int i = 0; i < reqCols.length && ret; i++){
@@ -90,7 +98,7 @@ public abstract class AbstractRecordConverter<RowType> {
         return ret;
     }
     
-    public boolean canExtractRow(RowType row){
+    public final boolean canExtractRow(RowType row){
         return hasRequiredColumns(row);
     }
     

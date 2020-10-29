@@ -25,25 +25,45 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
 
     @Override
     protected AbstractRecordConverter createExtractor(HashMap<String, Integer> columns) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new CsvRecordConverter(columns);
     }
 
-    @Override
-    protected CSVRecord locateHeaderRow(List<CSVRecord> sheet) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     protected boolean isValidRow(CSVRecord row) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    @Override
+    protected DataSet doParseSheet(List<CSVRecord> sheet) {
+        DataSet ret = this.createExtractionHolder(this.getFileName());
+        AbstractRecordConverter converter = this.createExtractor(new HashMap<>()); // how to get headers?
+        sheet.stream().filter((CSVRecord rec)->{
+            return converter.canExtractRow(rec);
+        }).map((rec)->{
+            return converter.extract(rec);
+        }).filter((rec)->{
+            return rec != null;
+        }).forEach(ret::add);
+        return ret;
+    }
+    
     @Override
     protected List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException {
         List<DataSet> allSets = new LinkedList<>();
-        CSVParser parser = new CSVParser(new InputStreamReader(in), CSVFormat.DEFAULT);
-        parser.getRecords();
-        parser.close();
+        DataSet onlyDataSet = doParseFirstSheet(in);
+        if(onlyDataSet != null){
+            allSets.add(onlyDataSet);
+        }
+        
         return allSets;
+    }
+    
+    @Override
+    protected DataSet doParseFirstSheet(InputStream in) throws IOException {
+        CSVParser parser = new CSVParser(new InputStreamReader(in), CSVFormat.DEFAULT);
+        DataSet ret = doParseSheet(parser.getRecords());
+        parser.close();
+        return ret;
     }
 }

@@ -75,7 +75,6 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
      * @param sheet the sheet which this is currently parsing.
      * @return the row of the given sheet that contains headers.
      */
-    @Override
     protected synchronized Row locateHeaderRow(Sheet sheet){
         return sheet.getRow(0);
     }
@@ -151,7 +150,8 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         return b.toString();
     }
     
-    private DataSet parseSheet(Sheet sheet){
+    @Override
+    protected DataSet doParseSheet(Sheet sheet){
         DataSet containedTherein = createExtractionHolder(sheet.getSheetName());
         
         Row headerRow = locateHeaderRow(sheet);
@@ -189,8 +189,6 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
             }
         }
         
-        
-        
         return containedTherein;
     }
     
@@ -200,13 +198,14 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
  RecordExtractor. Subclasses should override other methods to customize the behavior of how this parses
  the data provided.
      * 
+     * @param in
      * @return the contents of the Excel file passed to the constructor, converted to a DataSet so the program
      * can more easily use it.
      * 
      * @throws IOException if bad things happen when reading the Excel file. 
      */
-    public final DataSet parseFirstSheet() throws IOException {
-        InputStream in = new FileInputStream(getFileName());
+    @Override
+    public final DataSet doParseFirstSheet(InputStream in) throws IOException {
         //                                                new Excel format       old Excel format
         Workbook workbook = (getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         Sheet sheet = workbook.getSheetAt(0);
@@ -236,25 +235,4 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         workbook.close();
         return allDataSets;
     }
-    
-    /*
-    public final List<DataSet> parseAllSheets() throws IOException {
-        LinkedList<DataSet> allDataSets = new LinkedList<>();
-        
-        InputStream in = new FileInputStream(getFileName());
-        //                                                new Excel format       old Excel format
-        Workbook workbook = (getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
-        workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
-            try {
-                DataSet set = parseSheet(sheet);
-                if(set != null){
-                    allDataSets.add(set);
-                }
-            } catch(Exception ex){
-                Logger.logError(ex);
-            }
-        });
-        
-        return allDataSets;
-    }*/
 }
