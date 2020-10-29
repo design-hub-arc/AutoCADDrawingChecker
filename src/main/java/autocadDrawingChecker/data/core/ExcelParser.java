@@ -214,6 +214,26 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         return containedTherein;
     }
     
+    @Override
+    protected final List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException{
+        LinkedList<DataSet> allDataSets = new LinkedList<>();
+        //                                                new Excel format       old Excel format
+        Workbook workbook = (getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
+            try {
+                DataSet set = parseSheet(sheet);
+                if(set != null){
+                    allDataSets.add(set);
+                }
+            } catch(Exception ex){
+                Logger.logError(ex);
+            }
+        });
+        workbook.close();
+        return allDataSets;
+    }
+    
+    /*
     public final List<DataSet> parseAllSheets() throws IOException {
         LinkedList<DataSet> allDataSets = new LinkedList<>();
         
@@ -232,5 +252,5 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         });
         
         return allDataSets;
-    }
+    }*/
 }

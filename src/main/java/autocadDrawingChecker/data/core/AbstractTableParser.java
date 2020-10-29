@@ -1,6 +1,12 @@
 package autocadDrawingChecker.data.core;
 
+import autocadDrawingChecker.logging.Logger;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -63,5 +69,18 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     
     protected final String sanitize(String s){
         return s.trim(); // may not want to uppercase
+    }
+    
+    protected abstract List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException;
+    
+    public final List<DataSet> parseAllSheets() throws IOException {
+        List<DataSet> allDataSets = new LinkedList<>();
+        try (InputStream in = new FileInputStream(getFileName())) {
+            allDataSets = extractAllDataSetsFrom(in);
+        } catch(Exception ex){
+            Logger.logError(ex);
+            throw ex;
+        }
+        return allDataSets;
     }
 }
