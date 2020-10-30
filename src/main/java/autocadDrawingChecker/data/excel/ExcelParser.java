@@ -170,43 +170,6 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
             if(isValidRow(getCurrRow()) && recExtr.canExtractRow(getCurrRow())){
                 try {
                     doThis.accept(recExtr, getCurrRow());
-                    //rec = recExtr.extract(getCurrRow());
-                    //containedTherein.add(rec);
-                } catch(Exception ex){
-                    Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
-                    Logger.logError(ex);
-                }
-            }
-        }
-    }
-    @Override
-    protected void doParseSheet(Sheet sheet, DataSet containedTherein){
-        Row headerRow = locateHeaderRow(sheet);        
-        AbstractRecordConverter recExtr = createExtractor(locateColumns(headerRow));
-        
-        int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
-        /*
-        Note that numRows will be greater than or
-        equal to the last row with data, but not
-        every row is guaranteed to contain data.
-        
-        From the Apache POI javadoc:
-        """
-        Gets the last row on the sheet 
-        Note: rows which had content before and were set to empty later might still be counted as rows by Excel and Apache POI, 
-        so the result of this method will include such rows and thus the returned value might be higher than expected!
-        """
-        */
-        
-        Record rec = null;
-        
-        //               skip headers
-        for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
-            setCurrRow(sheet.getRow(rowNum));
-            if(isValidRow(getCurrRow()) && recExtr.canExtractRow(getCurrRow())){
-                try {
-                    rec = recExtr.extract(getCurrRow());
-                    containedTherein.add(rec);
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
                     Logger.logError(ex);
@@ -221,20 +184,17 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
  RecordExtractor. Subclasses should override other methods to customize the behavior of how this parses
  the data provided.
      * 
-     * @param in
+     * @param path
      * @return the contents of the Excel file passed to the constructor, converted to a DataSet so the program
      * can more easily use it.
      * 
      * @throws IOException if bad things happen when reading the Excel file. 
      */
     @Override
-    public final DataSet doParseFirstSheet(InputStream in) throws IOException {
-        
-        //                                                new Excel format       old Excel format
-        Workbook workbook = WorkbookFactory.create(in);//getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+    public final DataSet doParseFirstSheet(String path) throws IOException {
+        Workbook workbook = WorkbookFactory.create(new FileInputStream(path));
         Sheet sheet = workbook.getSheetAt(0);
-        // need to get workbook name
-        DataSet containedTherein = parseSheet(sheet.getSheetName(), sheet);
+        DataSet containedTherein = parseSheet(path + " - " + sheet.getSheetName(), sheet);
         
         workbook.close();
         
@@ -242,14 +202,12 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     }
     
     @Override
-    protected final List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException{
+    protected final List<DataSet> extractAllDataSetsFrom(String path) throws IOException{
         LinkedList<DataSet> allDataSets = new LinkedList<>();
-        //                                                new Excel format       old Excel format
-        Workbook workbook = WorkbookFactory.create(in);//(getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        Workbook workbook = WorkbookFactory.create(new FileInputStream(path));
         workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
             try {
-                // need workbook name
-                DataSet set = parseSheet(sheet.getSheetName(), sheet);
+                DataSet set = parseSheet(path + " - " + sheet.getSheetName(), sheet);
                 if(set != null){
                     allDataSets.add(set);
                 }

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  *
@@ -53,21 +52,26 @@ public abstract class AbstractTableParser<SheetType, RowType> {
         return s.trim(); // may not want to uppercase
     }
     
-    protected abstract List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException;
     
     
-    protected abstract DataSet doParseFirstSheet(InputStream in) throws IOException;
+    protected abstract List<DataSet> extractAllDataSetsFrom(String path) throws IOException;
+    
+    
+    protected abstract DataSet doParseFirstSheet(String path) throws IOException;
     
     
     
+    
+    /**
+     * This method should be overridden to iterate over each row in the given sheet, 
+     * and pass both the row and converter to the given BiConsumer.
+     * 
+     * @param sheet the sheet to iterate over
+     * @param doThis the thing to do with each row in the given sheet
+     */
     protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter, RowType> doThis);
     
-    
-    
-    
-    protected abstract void doParseSheet(SheetType sheet, DataSet dumpContentsHere);
-    
-    public final DataSet parseSheet(String dataSetName, SheetType sheet){
+    protected final DataSet parseSheet(String dataSetName, SheetType sheet){
         DataSet containedTherein = this.createExtractionHolder(dataSetName);
         forEachRowIn(sheet, (AbstractRecordConverter converter, RowType row)->{
             if(isValidRow(row)){
@@ -82,7 +86,6 @@ public abstract class AbstractTableParser<SheetType, RowType> {
                 }
             }
         });
-        //doParseSheet(sheet, containedTherein);
         return containedTherein;
     }
     
@@ -93,8 +96,8 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     
     public synchronized final DataSet parseFirstSheet(String path) throws IOException {
         DataSet ret = null;
-        try (InputStream in = new FileInputStream(path)) {
-            ret = doParseFirstSheet(in);
+        try {
+            ret = doParseFirstSheet(path);
         } catch(Exception ex){
             Logger.logError(ex);
             throw ex;
@@ -104,8 +107,8 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     
     public synchronized final List<DataSet> parseAllSheets(String path) throws IOException {
         List<DataSet> allDataSets = new LinkedList<>();
-        try (InputStream in = new FileInputStream(path)) {
-            allDataSets = extractAllDataSetsFrom(in);
+        try {
+            allDataSets = extractAllDataSetsFrom(path);
         } catch(Exception ex){
             Logger.logError(ex);
             throw ex;
