@@ -1,26 +1,25 @@
-package autocadDrawingChecker.data.excel;
+package autocadDrawingChecker.data.csv;
 
-import autocadDrawingChecker.data.excel.ExcelParser;
 import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.data.core.AbstractTableParser;
-
 /**
  *
  * @author Matt
  */
-public class GenericExcelDataType implements AbstractGradableDataType {
+public class GenericCsvDataType implements AbstractGradableDataType {
+
     @Override
     public String getName() {
-        return "Basic Excel";
+        return "CSV";
     }
 
     @Override
     public String getDescription() {
-        return "Any Excel file with headers in the first row";
+        return "A generic Comma Separated Values file";
     }
 
     @Override
     public AbstractTableParser createParser(String fileName) {
-        return new ExcelParser(fileName);
+        return new CsvParser(fileName);
     }
 }

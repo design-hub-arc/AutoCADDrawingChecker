@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Matt
  */
-public class CompareExcelFileChooser extends AbstractExcelFileChooser<File[]> {
+public class CompareExcelFileChooser extends AbstractFileChooser<File[]> {
     
     public CompareExcelFileChooser(String title, String popupText) {
         super(title, popupText);
@@ -31,7 +31,7 @@ public class CompareExcelFileChooser extends AbstractExcelFileChooser<File[]> {
     
     @Override
     protected void selectButtonPressed() {
-        FileChooserUtil.askChooseFiles(getPopupTitle(), FileType.EXCEL_OR_FOLDER, (File[] fs)->{
+        FileChooserUtil.askChooseFiles(getPopupTitle(), FileType.ANYTHING, (File[] fs)->{
             userSelectedFile(fs);
         });
     }
@@ -50,6 +50,6 @@ public class CompareExcelFileChooser extends AbstractExcelFileChooser<File[]> {
 
     @Override
     protected boolean canAccept(File f) {
-        return f.isDirectory() || FileType.EXCEL.fileIsOfThisType(f);
+        return f.isDirectory() || FileType.ANYTHING.fileIsOfThisType(f);
     }
 }

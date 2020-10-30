@@ -1,6 +1,7 @@
 package autocadDrawingChecker.data.excel.surveyData;
 
 import autocadDrawingChecker.data.AbstractGradableDataType;
+import autocadDrawingChecker.data.core.AbstractTableParser;
 import autocadDrawingChecker.data.excel.ExcelParser;
 
 /**
@@ -19,7 +20,7 @@ public class SurveyDataType implements AbstractGradableDataType {
     }
 
     @Override
-    public ExcelParser createParser(String fileName) {
+    public AbstractTableParser createParser(String fileName) {
         return new SurveyDataParser(fileName);
     }
 }

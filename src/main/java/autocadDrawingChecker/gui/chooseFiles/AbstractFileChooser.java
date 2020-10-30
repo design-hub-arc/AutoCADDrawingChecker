@@ -24,14 +24,14 @@ import javax.swing.JTextArea;
 
 /**
  * @author Matt
- * @param <T> the type returned by AbstractExcelFileChooser::getSelected()
+ * @param <T> the type returned by AbstractFileChooser::getSelected()
  */
-public abstract class AbstractExcelFileChooser<T> extends JComponent implements ActionListener, DropTargetListener {
+public abstract class AbstractFileChooser<T> extends JComponent implements ActionListener, DropTargetListener {
     private T selected;
     private final JTextArea text;
     private final String popupTitle;
     
-    public AbstractExcelFileChooser(String title, String popupText){
+    public AbstractFileChooser(String title, String popupText){
         super();
         
         setLayout(new BorderLayout());

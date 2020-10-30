@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Matt
  */
-public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
+public class SourceExcelFileChooser extends AbstractFileChooser<File>{
     public SourceExcelFileChooser(String title, String popupText) {
         super(title, popupText);
     }
@@ -28,7 +28,7 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
 
     @Override
     protected void selectButtonPressed() {
-        FileChooserUtil.askChooseFile(getPopupTitle(), FileType.EXCEL, (File f)->{
+        FileChooserUtil.askChooseFile(getPopupTitle(), FileType.NON_FOLDER, (File f)->{
             userSelectedFile(f);
         });
     }
@@ -48,6 +48,6 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
 
     @Override
     protected boolean canAccept(File f) {
-        return FileType.EXCEL.fileIsOfThisType(f);
+        return FileType.NON_FOLDER.fileIsOfThisType(f);
     }
 }

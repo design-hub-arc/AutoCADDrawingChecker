@@ -1,5 +1,6 @@
 package autocadDrawingChecker.data;
 
+import autocadDrawingChecker.data.csv.GenericCsvDataType;
 import autocadDrawingChecker.data.excel.autoCADData.AutoCADDataType;
 import autocadDrawingChecker.data.excel.GenericExcelDataType;
 import autocadDrawingChecker.data.excel.surveyData.SurveyDataType;
@@ -19,8 +20,9 @@ public class GradableDataTypeLoader extends AbstractLoader<AbstractGradableDataT
     @Override
     public List<AbstractGradableDataType> getAll() {
         ArrayList<AbstractGradableDataType> ret = new ArrayList<>();
-        ret.add(new AutoCADDataType());
         ret.add(new GenericExcelDataType());
+        ret.add(new GenericCsvDataType());
+        ret.add(new AutoCADDataType());
         ret.add(new SurveyDataType());
         return ret;
     }

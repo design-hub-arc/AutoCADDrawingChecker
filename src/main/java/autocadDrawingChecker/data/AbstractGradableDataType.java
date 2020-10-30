@@ -1,5 +1,6 @@
 package autocadDrawingChecker.data;
 
+import autocadDrawingChecker.data.core.AbstractTableParser;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.excel.ExcelParser;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public interface AbstractGradableDataType {
      * 
      * @param fileName the complete path to the file to parse.
      * 
-     * @return a parser, ready to parse the given file
+     * @return the autocadDrawingChecker.data.core.AbstractTableParser
      */
-    public ExcelParser createParser(String fileName);
+    public AbstractTableParser createParser(String fileName);
 }
