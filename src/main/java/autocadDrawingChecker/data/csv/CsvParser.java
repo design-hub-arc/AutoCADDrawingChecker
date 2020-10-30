@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -31,8 +33,15 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     }
     
     @Override
+    protected void forEachRowIn(List<CSVRecord> sheet, BiConsumer<AbstractRecordConverter, CSVRecord> doThis) {
+        AbstractRecordConverter converter = this.createExtractor(new HashMap<>()); // how to get headers?
+        
+        sheet.stream().forEach((CSVRecord apacheRecord)->{
+            doThis.accept(converter, apacheRecord);
+        });
+    }
+    @Override
     protected void doParseSheet(List<CSVRecord> sheet, DataSet ret) {
-        //DataSet ret = this.createExtractionHolder("This csv file should have a name");
         AbstractRecordConverter converter = this.createExtractor(new HashMap<>()); // how to get headers?
         sheet.stream().filter((CSVRecord rec)->{
             return converter.canExtractRow(rec);
@@ -41,7 +50,6 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         }).filter((rec)->{
             return rec != null;
         }).forEach(ret::add);
-        //return ret;
     }
     
     @Override
@@ -51,7 +59,6 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         if(onlyDataSet != null){
             allSets.add(onlyDataSet);
         }
-        
         return allSets;
     }
     

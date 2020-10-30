@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  *
@@ -58,7 +60,7 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     
     
     
-    
+    protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter, RowType> doThis);
     
     
     
@@ -67,7 +69,20 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     
     public final DataSet parseSheet(String dataSetName, SheetType sheet){
         DataSet containedTherein = this.createExtractionHolder(dataSetName);
-        doParseSheet(sheet, containedTherein);
+        forEachRowIn(sheet, (AbstractRecordConverter converter, RowType row)->{
+            if(isValidRow(row)){
+                Record converted = null;
+                try {
+                    converted = converter.extract(row);
+                } catch (Exception ex){
+                    Logger.logError(ex);
+                }
+                if(converted != null){
+                    containedTherein.add(converted);
+                }
+            }
+        });
+        //doParseSheet(sheet, containedTherein);
         return containedTherein;
     }
     

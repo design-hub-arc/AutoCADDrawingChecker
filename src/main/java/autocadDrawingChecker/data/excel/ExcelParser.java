@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -142,12 +144,44 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     }
     
     @Override
+    protected void forEachRowIn(Sheet sheet, BiConsumer<AbstractRecordConverter, Row> doThis) {
+        Row headerRow = locateHeaderRow(sheet);        
+        AbstractRecordConverter recExtr = createExtractor(locateColumns(headerRow));
+        
+        int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
+        /*
+        Note that numRows will be greater than or
+        equal to the last row with data, but not
+        every row is guaranteed to contain data.
+        
+        From the Apache POI javadoc:
+        """
+        Gets the last row on the sheet 
+        Note: rows which had content before and were set to empty later might still be counted as rows by Excel and Apache POI, 
+        so the result of this method will include such rows and thus the returned value might be higher than expected!
+        """
+        */
+        
+        Record rec = null;
+        
+        //               skip headers
+        for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
+            setCurrRow(sheet.getRow(rowNum));
+            if(isValidRow(getCurrRow()) && recExtr.canExtractRow(getCurrRow())){
+                try {
+                    doThis.accept(recExtr, getCurrRow());
+                    //rec = recExtr.extract(getCurrRow());
+                    //containedTherein.add(rec);
+                } catch(Exception ex){
+                    Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
+                    Logger.logError(ex);
+                }
+            }
+        }
+    }
+    @Override
     protected void doParseSheet(Sheet sheet, DataSet containedTherein){
-        //DataSet containedTherein = createExtractionHolder(sheet.getSheetName());
-        
-        Row headerRow = locateHeaderRow(sheet);
-        
-        
+        Row headerRow = locateHeaderRow(sheet);        
         AbstractRecordConverter recExtr = createExtractor(locateColumns(headerRow));
         
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
@@ -179,8 +213,6 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
                 }
             }
         }
-        
-        //return containedTherein;
     }
     
     /**
