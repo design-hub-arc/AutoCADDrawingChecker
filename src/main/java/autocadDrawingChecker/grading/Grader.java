@@ -5,6 +5,7 @@ import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
+import autocadDrawingChecker.util.FileType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +53,8 @@ public class Grader {
     private List<DataSet> getStudentFiles(){
         return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{
             // locate all Excel files in all given paths...
-            return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream();
+            //                                                change this
+            return FileLocator.locateExcelFilesInDir(cmpPath, FileType.NON_FOLDER).stream();
         }).flatMap((fileName)->{
             List<DataSet> r = new LinkedList<>();
             try {

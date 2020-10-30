@@ -1,18 +1,19 @@
 package autocadDrawingChecker.grading;
 
+import autocadDrawingChecker.util.FileType;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * The ExcelFileLocator is a static helper class used to get all Excel files
- * within a given directory.
+ * The FileLocator is a static helper class used to get all files
+ with a given extension within a given directory.
  * 
  * @author Matt Crow
  */
-public class ExcelFileLocator {
+public class FileLocator {
     /**
-     * Returns every Excel file under the given file or directory.
+     * Returns every file with the given extension under the given file or directory.
      * Not sure if I want this to return files instead of Strings, same with it's parameter
      * <ul>
      * <li>If the given path is an Excel file, returns that file</li>
@@ -21,18 +22,19 @@ public class ExcelFileLocator {
      * or any folder contained within it recursively.</li>
      * </ul>
      * @param rootPath the path to the file or directory to scour for Excel files
+     * @param type the type of files to locate
      * @return a list of the complete path to each Excel file this locates
      */
-    public static final ArrayList<String> locateExcelFilesInDir(String rootPath){
+    public static final ArrayList<String> locateExcelFilesInDir(String rootPath, FileType type){ 
         ArrayList<String> xlFiles = new ArrayList<>();
         File root = Paths.get(rootPath).toFile();
         if(root.isDirectory()){
             for(String subFile : root.list()){
                 // root.list() does not give the full path, so need Paths.get() here
-                xlFiles.addAll(locateExcelFilesInDir(Paths.get(rootPath, subFile).toString()));
+                xlFiles.addAll(locateExcelFilesInDir(Paths.get(rootPath, subFile).toString(), type));
             }
         } else {
-            if(rootPath.endsWith("xlsx") || rootPath.endsWith("xls")){
+            if(type.fileIsOfThisType(root)){
                 xlFiles.add(rootPath);
             } else {
                 //Logger.log("Not an excel file: " + rootPath);
@@ -42,6 +44,6 @@ public class ExcelFileLocator {
     }
     
     public static void main(String[] args){
-        ExcelFileLocator.locateExcelFilesInDir("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker").forEach(System.out::println);
+        FileLocator.locateExcelFilesInDir("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker", FileType.NON_FOLDER).forEach(System.out::println);
     }
 }
