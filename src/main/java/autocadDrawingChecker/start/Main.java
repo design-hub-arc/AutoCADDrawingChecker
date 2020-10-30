@@ -1,6 +1,7 @@
 package autocadDrawingChecker.start;
 
 import autocadDrawingChecker.data.GradableDataTypeLoader;
+import autocadDrawingChecker.data.csv.CsvParser;
 import autocadDrawingChecker.data.excel.surveyData.SurveyDataParser;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
 import java.io.IOException;
@@ -49,10 +50,11 @@ public class Main {
         if(debug){
             try {
                 new SurveyDataParser().parseAllSheets("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\template\\GPS Style - Survey Field Notes - Template.xlsx").forEach(System.out::println);
+                new CsvParser().parseFirstSheet("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Csv Data\\nodeCoords.csv").forEach(System.out::println);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            
+            /*
             data
             .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\civil67\\67Civi-Student 1 - GPS Style Survey Simulation - Survey Field Notes.xlsx")
               .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\civil67");
@@ -62,7 +64,7 @@ public class Main {
                 data.grade().forEach((gradedExport)->{
                     System.out.printf("%5.3f ", gradedExport.getFinalGrade());
                 });
-            }
+            }*/
         } 
         
         if(!noGui){

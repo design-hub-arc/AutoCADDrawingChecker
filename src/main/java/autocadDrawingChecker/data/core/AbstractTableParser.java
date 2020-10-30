@@ -41,7 +41,6 @@ public abstract class AbstractTableParser<SheetType, RowType> {
         return new DataSet(name);
     }
     
-    // will need to change this to a more generic return type
     protected abstract AbstractRecordConverter createExtractor(HashMap<String, Integer> columns);
     
     
@@ -54,12 +53,22 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     
     protected abstract List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException;
     
-    protected abstract DataSet doParseSheet(SheetType sheet);
     
     protected abstract DataSet doParseFirstSheet(InputStream in) throws IOException;
     
-    public final DataSet parseSheet(SheetType sheet){
-        return doParseSheet(sheet);
+    
+    
+    
+    
+    
+    
+    
+    protected abstract void doParseSheet(SheetType sheet, DataSet dumpContentsHere);
+    
+    public final DataSet parseSheet(String dataSetName, SheetType sheet){
+        DataSet containedTherein = this.createExtractionHolder(dataSetName);
+        doParseSheet(sheet, containedTherein);
+        return containedTherein;
     }
     
     

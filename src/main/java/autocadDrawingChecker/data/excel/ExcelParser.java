@@ -142,8 +142,8 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     }
     
     @Override
-    protected DataSet doParseSheet(Sheet sheet){
-        DataSet containedTherein = createExtractionHolder(sheet.getSheetName());
+    protected void doParseSheet(Sheet sheet, DataSet containedTherein){
+        //DataSet containedTherein = createExtractionHolder(sheet.getSheetName());
         
         Row headerRow = locateHeaderRow(sheet);
         
@@ -180,7 +180,7 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
             }
         }
         
-        return containedTherein;
+        //return containedTherein;
     }
     
     /**
@@ -201,8 +201,8 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         //                                                new Excel format       old Excel format
         Workbook workbook = WorkbookFactory.create(in);//getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         Sheet sheet = workbook.getSheetAt(0);
-        
-        DataSet containedTherein = parseSheet(sheet);
+        // need to get workbook name
+        DataSet containedTherein = parseSheet(sheet.getSheetName(), sheet);
         
         workbook.close();
         
@@ -216,7 +216,8 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         Workbook workbook = WorkbookFactory.create(in);//(getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
             try {
-                DataSet set = parseSheet(sheet);
+                // need workbook name
+                DataSet set = parseSheet(sheet.getSheetName(), sheet);
                 if(set != null){
                     allDataSets.add(set);
                 }

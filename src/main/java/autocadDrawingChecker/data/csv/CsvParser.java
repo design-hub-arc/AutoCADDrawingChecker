@@ -31,8 +31,8 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     }
     
     @Override
-    protected DataSet doParseSheet(List<CSVRecord> sheet) {
-        DataSet ret = this.createExtractionHolder("This csv file should have a name");
+    protected void doParseSheet(List<CSVRecord> sheet, DataSet ret) {
+        //DataSet ret = this.createExtractionHolder("This csv file should have a name");
         AbstractRecordConverter converter = this.createExtractor(new HashMap<>()); // how to get headers?
         sheet.stream().filter((CSVRecord rec)->{
             return converter.canExtractRow(rec);
@@ -41,7 +41,7 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         }).filter((rec)->{
             return rec != null;
         }).forEach(ret::add);
-        return ret;
+        //return ret;
     }
     
     @Override
@@ -58,7 +58,8 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     @Override
     protected DataSet doParseFirstSheet(InputStream in) throws IOException {
         CSVParser parser = new CSVParser(new InputStreamReader(in), CSVFormat.DEFAULT);
-        DataSet ret = doParseSheet(parser.getRecords());
+        // need CSV name
+        DataSet ret = parseSheet("csv stuff", parser.getRecords());
         parser.close();
         return ret;
     }
