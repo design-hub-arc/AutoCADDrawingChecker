@@ -15,17 +15,9 @@ import java.util.HashMap;
  */
 public class AutoCADExcelParser extends ExcelParser {
     
-    
-    /**
-     * @param fileToParse a path to the Excel file this should parseFirstSheet.
-     */
-    public AutoCADExcelParser(String fileToParse){
-        super(fileToParse);
-    }
-    
     @Override
-    protected DataSet createExtractionHolder(String sheetName){
-        return new AutoCADExport(this.getFileName() + " - " + sheetName);
+    protected DataSet createExtractionHolder(String name){
+        return new AutoCADExport(name);
     }
     
     @Override

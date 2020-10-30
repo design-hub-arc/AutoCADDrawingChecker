@@ -1,6 +1,5 @@
 package autocadDrawingChecker.data.excel;
 
-import autocadDrawingChecker.data.excel.ExcelParser;
 import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.data.core.AbstractTableParser;
 
@@ -20,7 +19,7 @@ public class GenericExcelDataType implements AbstractGradableDataType {
     }
 
     @Override
-    public AbstractTableParser createParser(String fileName) {
-        return new ExcelParser(fileName);
+    public AbstractTableParser createParser() {
+        return new ExcelParser();
     }
 }

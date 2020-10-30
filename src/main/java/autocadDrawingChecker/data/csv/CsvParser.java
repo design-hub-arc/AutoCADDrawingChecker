@@ -18,10 +18,6 @@ import org.apache.commons.csv.CSVRecord;
  * @author Matt
  */
 public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
-    
-    public CsvParser(String fileName){
-        super(fileName);
-    }
 
     @Override
     protected AbstractRecordConverter createExtractor(HashMap<String, Integer> columns) {
@@ -36,7 +32,7 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     
     @Override
     protected DataSet doParseSheet(List<CSVRecord> sheet) {
-        DataSet ret = this.createExtractionHolder(this.getFileName());
+        DataSet ret = this.createExtractionHolder("This csv file should have a name");
         AbstractRecordConverter converter = this.createExtractor(new HashMap<>()); // how to get headers?
         sheet.stream().filter((CSVRecord rec)->{
             return converter.canExtractRow(rec);

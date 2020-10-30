@@ -19,7 +19,7 @@ public class GenericCsvDataType implements AbstractGradableDataType {
     }
 
     @Override
-    public AbstractTableParser createParser(String fileName) {
-        return new CsvParser(fileName);
+    public AbstractTableParser createParser() {
+        return new CsvParser();
     }
 }

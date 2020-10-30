@@ -27,11 +27,9 @@ public interface AbstractGradableDataType {
     public String getDescription();
     
     /**
-     * Use this method to read an Excel file, then return a subclass of ExcelParser. 
-     * 
-     * @param fileName the complete path to the file to parse.
+     * Use this method to read an Excel file, then return a subclass of ExcelParser
      * 
      * @return the autocadDrawingChecker.data.core.AbstractTableParser
      */
-    public AbstractTableParser createParser(String fileName);
+    public AbstractTableParser createParser();
 }

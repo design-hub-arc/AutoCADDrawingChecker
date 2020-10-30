@@ -45,10 +45,10 @@ public class Grader {
     }
     
     private DataSet parseFileSingle(String path) throws IOException {
-        return dataType.createParser(path).parseFirstSheet();
+        return dataType.createParser().parseFirstSheet(path);
     };
     private List<DataSet> parseFileMultiple(String path) throws IOException {
-        return dataType.createParser(path).parseAllSheets();
+        return dataType.createParser().parseAllSheets(path);
     }
     private List<DataSet> getStudentFiles(){
         return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{

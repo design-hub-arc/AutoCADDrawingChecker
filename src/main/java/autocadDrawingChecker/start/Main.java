@@ -48,7 +48,7 @@ public class Main {
         
         if(debug){
             try {
-                new SurveyDataParser("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\template\\GPS Style - Survey Field Notes - Template.xlsx").parseAllSheets().forEach(System.out::println);
+                new SurveyDataParser().parseAllSheets("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\template\\GPS Style - Survey Field Notes - Template.xlsx").forEach(System.out::println);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

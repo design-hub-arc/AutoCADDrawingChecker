@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -35,17 +36,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * 
  * @author Matt Crow
  */
-public class ExcelParser extends AbstractTableParser<Sheet, Row> {    
-    /**
-     * Creates a new parser, ready to convert the given file.
-     * Note that you must still invoke the parseFirstSheet method to read
- and convert the file to a DataSet.
-     * 
-     * @param fileName the complete path to the file this should parseFirstSheet. 
-     */
-    public ExcelParser(String fileName){
-        super(fileName);
-    }
+public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     
     /**
      * Creates the RecordExtractor which will be used to convert rows in the Excel
@@ -206,8 +197,9 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
      */
     @Override
     public final DataSet doParseFirstSheet(InputStream in) throws IOException {
+        
         //                                                new Excel format       old Excel format
-        Workbook workbook = (getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        Workbook workbook = WorkbookFactory.create(in);//getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         Sheet sheet = workbook.getSheetAt(0);
         
         DataSet containedTherein = parseSheet(sheet);
@@ -221,7 +213,7 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     protected final List<DataSet> extractAllDataSetsFrom(InputStream in) throws IOException{
         LinkedList<DataSet> allDataSets = new LinkedList<>();
         //                                                new Excel format       old Excel format
-        Workbook workbook = (getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
+        Workbook workbook = WorkbookFactory.create(in);//(getFileName().endsWith("xlsx")) ? new XSSFWorkbook(in) : new HSSFWorkbook(in);
         workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
             try {
                 DataSet set = parseSheet(sheet);

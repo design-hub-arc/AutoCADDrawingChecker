@@ -13,14 +13,10 @@ import org.apache.poi.ss.usermodel.Sheet;
  * @author Matt
  */
 public class SurveyDataParser extends ExcelParser {
-
-    public SurveyDataParser(String fileName) {
-        super(fileName);
-    }
     
     @Override
-    protected DataSet createExtractionHolder(String sheetName){
-        return new SurveyDataSet(this.getFileName() + " - " + sheetName);
+    protected DataSet createExtractionHolder(String name){
+        return new SurveyDataSet(name);
     }
     
     @Override
