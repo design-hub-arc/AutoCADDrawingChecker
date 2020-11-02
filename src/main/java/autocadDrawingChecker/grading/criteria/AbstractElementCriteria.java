@@ -5,6 +5,7 @@ import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.grading.ElementMatcher;
 import autocadDrawingChecker.grading.MatchingElements;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * AbstractElementCriteria adds behavior to AbstractGradingCriteria to add
@@ -14,6 +15,16 @@ import java.util.List;
  * @author Matt Crow
  */
 public interface AbstractElementCriteria<DataSetType extends DataSet, T extends Record> extends AbstractGradingCriteria<DataSetType> {
+    /**
+     * Calculates the grade for the two given elements.
+     * Returns a value between 0.0 and 1.0, with 1.0 meaning
+     * they match perfectly, and 0.0 meaning they don't match
+     * at all, or are ungradable by this criteria.
+     * 
+     * @param e1 the instructor element
+     * @param e2 the student element
+     * @return the student's score for the given element
+     */
     public abstract double getMatchScore(T e1, T e2);
     
     /**
@@ -24,13 +35,18 @@ public interface AbstractElementCriteria<DataSetType extends DataSet, T extends 
      */
     @Override
     public default double computeScore(DataSetType exp1, DataSetType exp2){
-        List<MatchingElements<T>> matches = new ElementMatcher<>(exp1, exp2, this::tryCastRecord, this::getMatchScore).findMatches();
+        List<T> gradableElements = exp1.stream().map(this::tryCastRecord).filter((T converted)->{
+            return converted != null;
+        }).filter((T nonNullConv)->{
+            return getMatchScore(nonNullConv, nonNullConv) != 0; // filter out non-gradable rows
+        }).collect(Collectors.toList());
+        List<MatchingElements<T>> matches = new ElementMatcher<>(gradableElements, exp2, this::tryCastRecord, this::getMatchScore).findMatches();
         double netScore = matches.stream().map((MatchingElements<T> match)->{
             return getMatchScore(tryCastRecord(match.getElement1()), tryCastRecord(match.getElement2()));
         }).reduce(0.0, Double::sum);
         
         if(!matches.isEmpty()){
-            netScore /= exp1.size();
+            netScore /= gradableElements.size();
         }
         return netScore;
     }
