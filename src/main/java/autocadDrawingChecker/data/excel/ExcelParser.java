@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -50,7 +51,7 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
      * output Records from it.
      */
     @Override
-    protected ExcelRecordConverter createExtractor(HashMap<String, Integer> columns){
+    protected ExcelRecordConverter createExtractor(Map<String, Integer> columns){
         return new ExcelRecordConverter(columns);
     }
     

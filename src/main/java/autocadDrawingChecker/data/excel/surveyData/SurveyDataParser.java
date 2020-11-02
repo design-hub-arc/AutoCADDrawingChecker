@@ -5,6 +5,7 @@ import autocadDrawingChecker.data.excel.ExcelParser;
 import autocadDrawingChecker.data.excel.ExcelRecordConverter;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -20,7 +21,7 @@ public class SurveyDataParser extends ExcelParser {
     }
     
     @Override
-    protected ExcelRecordConverter createExtractor(HashMap<String, Integer> columns){
+    protected ExcelRecordConverter createExtractor(Map<String, Integer> columns){
         return new SurveyDataConverter(columns);
     }
     

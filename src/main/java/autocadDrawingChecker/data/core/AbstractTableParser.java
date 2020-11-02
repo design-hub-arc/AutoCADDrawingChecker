@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -87,7 +88,7 @@ public abstract class AbstractTableParser<SheetType, RowType> {
         return new DataSet(name);
     }
     
-    protected abstract AbstractRecordConverter createExtractor(HashMap<String, Integer> columns);
+    protected abstract AbstractRecordConverter createExtractor(Map<String, Integer> columns);
     protected abstract boolean isValidRow(RowType row);
     /**
      * Subclasses should override this method to read the given file, run it through

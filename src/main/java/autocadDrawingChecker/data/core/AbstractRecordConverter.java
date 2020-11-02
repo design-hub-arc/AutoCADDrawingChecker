@@ -2,6 +2,7 @@ package autocadDrawingChecker.data.core;
 
 import autocadDrawingChecker.logging.Logger;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -24,7 +25,7 @@ public abstract class AbstractRecordConverter<RowType> {
      * If any of this' required columns involve regex, this
      * will automatically locate them as well.
      */
-    public AbstractRecordConverter(HashMap<String, Integer> columns){
+    public AbstractRecordConverter(Map<String, Integer> columns){
         if(columns == null){
             throw new NullPointerException("Columns cannot be null");
         }

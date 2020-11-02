@@ -59,6 +59,7 @@ public class DataTypeList extends JComponent {
             content.add(sel, gbc.clone());
             buttons.add(sel.getButton());
         });
+        setDataTypeSelected(dataTypes.get(0));
     }
     
     public final void setDataTypeSelected(AbstractGradableDataType type){

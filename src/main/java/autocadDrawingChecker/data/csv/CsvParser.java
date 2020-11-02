@@ -6,9 +6,9 @@ import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -21,7 +21,7 @@ import org.apache.commons.csv.CSVRecord;
 public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
 
     @Override
-    protected AbstractRecordConverter createExtractor(HashMap<String, Integer> columns) {
+    protected AbstractRecordConverter createExtractor(Map<String, Integer> columns) {
         return new CsvRecordConverter(columns);
     }
 
@@ -33,7 +33,10 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     
     @Override
     protected void forEachRowIn(List<CSVRecord> sheet, BiConsumer<AbstractRecordConverter, CSVRecord> doThis) {
-        AbstractRecordConverter converter = this.createExtractor(new HashMap<>()); // how to get headers?
+        CSVRecord rec = sheet.get(0);
+        CSVParser p = rec.getParser();
+        Map<String, Integer> cols = p.getHeaderMap();
+        AbstractRecordConverter converter = this.createExtractor(sheet.get(0).getParser().getHeaderMap());
         
         sheet.stream().forEach((CSVRecord apacheRecord)->{
             doThis.accept(converter, apacheRecord);

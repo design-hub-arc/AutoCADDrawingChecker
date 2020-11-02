@@ -1,14 +1,14 @@
 package autocadDrawingChecker.data.excel.autoCADData;
 
 import autocadDrawingChecker.data.excel.ExcelRecordConverter;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Matt
  */
 class AutoCADElementConverter extends ExcelRecordConverter {    
 
-    public AutoCADElementConverter(HashMap<String, Integer> columns) {
+    public AutoCADElementConverter(Map<String, Integer> columns) {
         super(columns);
     }
     @Override

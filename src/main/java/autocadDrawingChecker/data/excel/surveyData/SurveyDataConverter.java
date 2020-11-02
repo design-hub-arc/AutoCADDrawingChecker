@@ -2,7 +2,7 @@ package autocadDrawingChecker.data.excel.surveyData;
 
 import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.data.excel.ExcelRecordConverter;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class SurveyDataConverter extends ExcelRecordConverter {
 
-    public SurveyDataConverter(HashMap<String, Integer> columns) {
+    public SurveyDataConverter(Map<String, Integer> columns) {
         super(columns);
     }
     @Override
