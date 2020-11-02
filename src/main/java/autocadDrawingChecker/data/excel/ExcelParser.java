@@ -2,27 +2,22 @@ package autocadDrawingChecker.data.excel;
 
 import autocadDrawingChecker.data.core.AbstractRecordConverter;
 import autocadDrawingChecker.data.core.AbstractTableParser;
-import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * The ExcelParser is used to convert Excel files into DataSets usable by the program.
@@ -187,29 +182,6 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
             Logger.logError(ex);
         }
         return sheets;
-    }
-    
-    /**
-     * This method ties all the methods of this class together. Attempts to read and parseFirstSheet the Excel file
- located at the file path provided to the constructor, and returns its contents as extracted by the
- RecordExtractor. Subclasses should override other methods to customize the behavior of how this parses
- the data provided.
-     * 
-     * @param path
-     * @return the contents of the Excel file passed to the constructor, converted to a DataSet so the program
-     * can more easily use it.
-     * 
-     * @throws IOException if bad things happen when reading the Excel file. 
-     */
-    @Override
-    public final DataSet doParseFirstSheet(String path) throws IOException {
-        Workbook workbook = WorkbookFactory.create(new FileInputStream(path));
-        Sheet sheet = workbook.getSheetAt(0);
-        DataSet containedTherein = parseSheet(path + " - " + sheet.getSheetName(), sheet);
-        
-        workbook.close();
-        
-        return containedTherein;
     }
 
     @Override

@@ -1,9 +1,7 @@
 package autocadDrawingChecker.data.core;
 
 import autocadDrawingChecker.logging.Logger;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,40 +14,10 @@ import java.util.function.BiConsumer;
  * @param <RowType> the class each row from the table this parses is stored as
  */
 public abstract class AbstractTableParser<SheetType, RowType> {
-    /**
-     * Creates the DataSet which will hold the contents
-     * of the file this is parsing. Subclasses will always
-     * override this method to return a DataSet for their
-     * own record type.
-     * 
-     * @param name the name of the sheet this is parsing
-     * @return the DataSet this will store the parsed Excel file contents in 
-     */
-    protected DataSet createExtractionHolder(String name){
-        return new DataSet(name);
-    }
-    
-    protected abstract AbstractRecordConverter createExtractor(HashMap<String, Integer> columns);
-    
-    
-    
-    protected abstract boolean isValidRow(RowType row);
-    
+        
     protected final String sanitize(String s){
         return s.trim(); // may not want to uppercase
     }
-    
-    
-    
-    
-    /**
-     * This method should be overridden to iterate over each row in the given sheet, 
-     * and pass both the row and converter to the given BiConsumer.
-     * 
-     * @param sheet the sheet to iterate over
-     * @param doThis the thing to do with each row in the given sheet
-     */
-    protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter, RowType> doThis);
     
     /**
      * Converts the given sheet into a DataSet usable by the program.
@@ -76,25 +44,13 @@ public abstract class AbstractTableParser<SheetType, RowType> {
             }
         });
         return containedTherein;
-    }
-    
-    
-    /**
-     * Subclasses should override this method to read the given file, run it through
-     * some file reader, and return each spreadsheet contained therein.
-     * 
-     * @param path the complete file path to the file to parse.
-     * @return a list of sheets contained in the given file. Should never return null.
-     * @throws IOException if any errors occur when reading the file.
-     */
-    protected abstract List<SheetType> extractSheets(String path) throws IOException;
-    
-    protected abstract DataSet doParseFirstSheet(String path) throws IOException;
+    }    
     
     public synchronized final DataSet parseFirstSheet(String path) throws IOException {
         DataSet ret = null;
         try {
-            ret = doParseFirstSheet(path);
+            List<SheetType> allSheets = this.extractSheets(path);
+            ret = parseSheet(path, allSheets.get(0));
         } catch(Exception ex){
             Logger.logError(ex);
             throw ex;
@@ -102,8 +58,6 @@ public abstract class AbstractTableParser<SheetType, RowType> {
         return ret;
     }
     
-    protected abstract String getSheetName(SheetType sheet);
-     
     public synchronized final List<DataSet> parseAllSheets(String path) throws IOException {
         List<DataSet> allDataSets = new LinkedList<>();
         try {
@@ -119,4 +73,39 @@ public abstract class AbstractTableParser<SheetType, RowType> {
         }
         return allDataSets;
     }
+    
+    /**
+     * Creates the DataSet which will hold the contents
+     * of the file this is parsing. Subclasses will always
+     * override this method to return a DataSet for their
+     * own record type.
+     * 
+     * @param name the name of the sheet this is parsing
+     * @return the DataSet this will store the parsed Excel file contents in 
+     */
+    protected DataSet createExtractionHolder(String name){
+        return new DataSet(name);
+    }
+    
+    protected abstract AbstractRecordConverter createExtractor(HashMap<String, Integer> columns);
+    protected abstract boolean isValidRow(RowType row);
+    /**
+     * Subclasses should override this method to read the given file, run it through
+     * some file reader, and return each spreadsheet contained therein.
+     * 
+     * @param path the complete file path to the file to parse.
+     * @return a list of sheets contained in the given file. Should never return null.
+     * @throws IOException if any errors occur when reading the file.
+     */
+    protected abstract List<SheetType> extractSheets(String path) throws IOException;
+    /**
+     * This method should be overridden to iterate over each row in the given sheet, 
+     * and pass both the row and converter to the given BiConsumer.
+     * 
+     * @param sheet the sheet to iterate over
+     * @param doThis the thing to do with each row in the given sheet
+     */
+    protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter, RowType> doThis);
+    protected abstract String getSheetName(SheetType sheet);
+    
 }

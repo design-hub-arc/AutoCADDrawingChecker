@@ -2,7 +2,6 @@ package autocadDrawingChecker.data.csv;
 
 import autocadDrawingChecker.data.core.AbstractRecordConverter;
 import autocadDrawingChecker.data.core.AbstractTableParser;
-import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,14 +38,6 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         sheet.stream().forEach((CSVRecord apacheRecord)->{
             doThis.accept(converter, apacheRecord);
         });
-    }
-    
-    @Override
-    protected DataSet doParseFirstSheet(String path) throws IOException {
-        CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(path)), CSVFormat.DEFAULT);
-        DataSet ret = parseSheet(path, parser.getRecords());
-        parser.close();
-        return ret;
     }
 
     @Override
