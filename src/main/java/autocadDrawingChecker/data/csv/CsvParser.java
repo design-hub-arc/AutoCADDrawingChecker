@@ -21,7 +21,7 @@ import org.apache.commons.csv.CSVRecord;
 public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
 
     @Override
-    protected AbstractRecordConverter createExtractor(Map<String, Integer> columns) {
+    protected AbstractRecordConverter<CSVRecord> createExtractor(Map<String, Integer> columns) {
         return new CsvRecordConverter(columns);
     }
 
@@ -32,8 +32,8 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     }
     
     @Override
-    protected void forEachRowIn(List<CSVRecord> sheet, BiConsumer<AbstractRecordConverter, CSVRecord> doThis) {
-        AbstractRecordConverter converter = this.createExtractor(sheet.get(0).getParser().getHeaderMap());
+    protected void forEachRowIn(List<CSVRecord> sheet, BiConsumer<AbstractRecordConverter<CSVRecord>, CSVRecord> doThis) {
+        AbstractRecordConverter<CSVRecord> converter = this.createExtractor(sheet.get(0).getParser().getHeaderMap());
         
         sheet.stream().forEach((CSVRecord apacheRecord)->{
             doThis.accept(converter, apacheRecord);

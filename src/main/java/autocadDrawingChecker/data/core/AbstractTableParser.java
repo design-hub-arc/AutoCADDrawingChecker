@@ -2,7 +2,6 @@ package autocadDrawingChecker.data.core;
 
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ public abstract class AbstractTableParser<SheetType, RowType> {
      */
     protected final DataSet parseSheet(String dataSetName, SheetType sheet){
         DataSet containedTherein = this.createExtractionHolder(dataSetName);
-        forEachRowIn(sheet, (AbstractRecordConverter converter, RowType row)->{
+        forEachRowIn(sheet, (AbstractRecordConverter<RowType> converter, RowType row)->{
             if(isValidRow(row)){
                 Record converted = null;
                 try {
@@ -106,7 +105,7 @@ public abstract class AbstractTableParser<SheetType, RowType> {
      * @param sheet the sheet to iterate over
      * @param doThis the thing to do with each row in the given sheet
      */
-    protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter, RowType> doThis);
+    protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter<RowType>, RowType> doThis);
     protected abstract String getSheetName(SheetType sheet);
     
 }

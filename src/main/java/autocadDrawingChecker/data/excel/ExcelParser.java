@@ -140,9 +140,9 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     }
     
     @Override
-    protected void forEachRowIn(Sheet sheet, BiConsumer<AbstractRecordConverter, Row> doThis) {
+    protected void forEachRowIn(Sheet sheet, BiConsumer<AbstractRecordConverter<Row>, Row> doThis) {
         Row headerRow = locateHeaderRow(sheet);        
-        AbstractRecordConverter recExtr = createExtractor(locateColumns(headerRow));
+        AbstractRecordConverter<Row> recExtr = createExtractor(locateColumns(headerRow));
         
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*
@@ -158,7 +158,6 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         """
         */
         
-        Record rec = null;
         Row currRow = null;
         //               skip headers
         for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
