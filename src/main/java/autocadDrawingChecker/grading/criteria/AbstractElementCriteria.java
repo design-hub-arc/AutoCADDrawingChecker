@@ -30,7 +30,7 @@ public interface AbstractElementCriteria<DataSetType extends DataSet, T extends 
         }).reduce(0.0, Double::sum);
         
         if(!matches.isEmpty()){
-            netScore /= matches.size();
+            netScore /= exp1.size();
         }
         return netScore;
     }
