@@ -129,10 +129,10 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
      * 
      * @return the current row as a string, formatted to look like an array.
      */
-    private String currRowToString(){
+    private String rowToString(Row row){
         StringBuilder b = new StringBuilder();
         b.append("[");
-        Iterator<Cell> iter = getCurrRow().cellIterator();
+        Iterator<Cell> iter = row.cellIterator();
         while(iter.hasNext()){
             b.append(iter.next().toString());
             if(iter.hasNext()){
@@ -163,19 +163,30 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         */
         
         Record rec = null;
-        
+        Row currRow = null;
         //               skip headers
         for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
-            setCurrRow(sheet.getRow(rowNum));
-            if(isValidRow(getCurrRow()) && recExtr.canExtractRow(getCurrRow())){
+            currRow = sheet.getRow(rowNum);
+            if(isValidRow(currRow) && recExtr.canExtractRow(currRow)){
                 try {
-                    doThis.accept(recExtr, getCurrRow());
+                    doThis.accept(recExtr, currRow);
                 } catch(Exception ex){
-                    Logger.logError(String.format("Error while parsing row: %s", currRowToString()));
+                    Logger.logError(String.format("Error while parsing row: %s", rowToString(currRow)));
                     Logger.logError(ex);
                 }
             }
         }
+    }
+    
+    @Override
+    protected List<Sheet> extractSheets(String path) throws IOException {
+        List<Sheet> sheets = new LinkedList<>();
+        try (Workbook workbook = WorkbookFactory.create(new FileInputStream(path))) {
+            workbook.sheetIterator().forEachRemaining(sheets::add);
+        } catch(Exception ex){
+            Logger.logError(ex);
+        }
+        return sheets;
     }
     
     /**
@@ -200,22 +211,9 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         
         return containedTherein;
     }
-    
+
     @Override
-    protected final List<DataSet> extractAllDataSetsFrom(String path) throws IOException{
-        LinkedList<DataSet> allDataSets = new LinkedList<>();
-        Workbook workbook = WorkbookFactory.create(new FileInputStream(path));
-        workbook.sheetIterator().forEachRemaining((Sheet sheet)->{
-            try {
-                DataSet set = parseSheet(path + " - " + sheet.getSheetName(), sheet);
-                if(set != null){
-                    allDataSets.add(set);
-                }
-            } catch(Exception ex){
-                Logger.logError(ex);
-            }
-        });
-        workbook.close();
-        return allDataSets;
+    protected String getSheetName(Sheet sheet) {
+        return sheet.getSheetName();
     }
 }

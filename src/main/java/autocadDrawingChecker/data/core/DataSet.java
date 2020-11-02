@@ -52,7 +52,7 @@ public class DataSet extends LinkedList<Record> {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Extracted Spreadsheet Contents:");
+        sb.append(fileName).append(" Contents:");
         forEach((Record row)->sb.append("\n").append(row.toString()));
         sb.append("\nEnd of Extracted Spreadsheet Contents");
         return sb.toString();

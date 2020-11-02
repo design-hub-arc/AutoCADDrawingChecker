@@ -3,6 +3,7 @@ package autocadDrawingChecker.data.csv;
 import autocadDrawingChecker.data.core.AbstractRecordConverter;
 import autocadDrawingChecker.data.core.AbstractTableParser;
 import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,20 +42,26 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     }
     
     @Override
-    protected List<DataSet> extractAllDataSetsFrom(String path) throws IOException {
-        List<DataSet> allSets = new LinkedList<>();
-        DataSet onlyDataSet = doParseFirstSheet(path);
-        if(onlyDataSet != null){
-            allSets.add(onlyDataSet);
-        }
-        return allSets;
-    }
-    
-    @Override
     protected DataSet doParseFirstSheet(String path) throws IOException {
         CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(path)), CSVFormat.DEFAULT);
         DataSet ret = parseSheet(path, parser.getRecords());
         parser.close();
         return ret;
+    }
+
+    @Override
+    protected List<List<CSVRecord>> extractSheets(String path) throws IOException {
+        List<List<CSVRecord>> sheets = new LinkedList<>();
+        try (CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(path)), CSVFormat.DEFAULT)) {
+            sheets.add(parser.getRecords());
+        } catch (Exception ex){
+            Logger.logError(ex);
+        }
+        return sheets;
+    }
+
+    @Override
+    protected String getSheetName(List<CSVRecord> sheet) {
+        return "data";
     }
 }

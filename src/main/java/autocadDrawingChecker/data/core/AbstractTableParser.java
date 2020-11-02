@@ -16,19 +16,6 @@ import java.util.function.BiConsumer;
  * @param <RowType> the class each row from the table this parses is stored as
  */
 public abstract class AbstractTableParser<SheetType, RowType> {
-    private RowType currRow;
-    
-    public AbstractTableParser(){
-        this.currRow = null;
-    }
-        
-    protected final void setCurrRow(RowType newRow){
-        this.currRow = newRow;
-    }
-    protected final RowType getCurrRow(){
-        return this.currRow;
-    }
-    
     /**
      * Creates the DataSet which will hold the contents
      * of the file this is parsing. Subclasses will always
@@ -54,13 +41,6 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     
     
     
-    protected abstract List<DataSet> extractAllDataSetsFrom(String path) throws IOException;
-    
-    
-    protected abstract DataSet doParseFirstSheet(String path) throws IOException;
-    
-    
-    
     
     /**
      * This method should be overridden to iterate over each row in the given sheet, 
@@ -71,6 +51,15 @@ public abstract class AbstractTableParser<SheetType, RowType> {
      */
     protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter, RowType> doThis);
     
+    /**
+     * Converts the given sheet into a DataSet usable by the program.
+     * 
+     * @param dataSetName the name the program should give to the DataSet this returns.
+     * This will usually be in the format workbook_name - sheet_name.
+     * 
+     * @param sheet the sheet to convert
+     * @return the converted sheet
+     */
     protected final DataSet parseSheet(String dataSetName, SheetType sheet){
         DataSet containedTherein = this.createExtractionHolder(dataSetName);
         forEachRowIn(sheet, (AbstractRecordConverter converter, RowType row)->{
@@ -90,9 +79,17 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     }
     
     
+    /**
+     * Subclasses should override this method to read the given file, run it through
+     * some file reader, and return each spreadsheet contained therein.
+     * 
+     * @param path the complete file path to the file to parse.
+     * @return a list of sheets contained in the given file. Should never return null.
+     * @throws IOException if any errors occur when reading the file.
+     */
+    protected abstract List<SheetType> extractSheets(String path) throws IOException;
     
-    
-    
+    protected abstract DataSet doParseFirstSheet(String path) throws IOException;
     
     public synchronized final DataSet parseFirstSheet(String path) throws IOException {
         DataSet ret = null;
@@ -105,10 +102,17 @@ public abstract class AbstractTableParser<SheetType, RowType> {
         return ret;
     }
     
+    protected abstract String getSheetName(SheetType sheet);
+     
     public synchronized final List<DataSet> parseAllSheets(String path) throws IOException {
         List<DataSet> allDataSets = new LinkedList<>();
         try {
-            allDataSets = extractAllDataSetsFrom(path);
+            List<SheetType> allSheets = this.extractSheets(path);
+            allSheets.stream().map((SheetType sheet)->{
+                return this.parseSheet(String.format("%s - %s", path, getSheetName(sheet)), sheet);
+            }).filter((DataSet converted)->{
+                return converted != null;
+            }).forEach(allDataSets::add);
         } catch(Exception ex){
             Logger.logError(ex);
             throw ex;
