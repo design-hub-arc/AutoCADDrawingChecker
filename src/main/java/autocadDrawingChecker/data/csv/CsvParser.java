@@ -33,9 +33,6 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     
     @Override
     protected void forEachRowIn(List<CSVRecord> sheet, BiConsumer<AbstractRecordConverter, CSVRecord> doThis) {
-        CSVRecord rec = sheet.get(0);
-        CSVParser p = rec.getParser();
-        Map<String, Integer> cols = p.getHeaderMap();
         AbstractRecordConverter converter = this.createExtractor(sheet.get(0).getParser().getHeaderMap());
         
         sheet.stream().forEach((CSVRecord apacheRecord)->{
@@ -46,7 +43,8 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     @Override
     protected List<List<CSVRecord>> extractSheets(String path) throws IOException {
         List<List<CSVRecord>> sheets = new LinkedList<>();
-        try (CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(path)), CSVFormat.DEFAULT)) {
+        //                                                                                      need to specify that this has headers
+        try (CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(path)), CSVFormat.DEFAULT.withHeader())) {
             sheets.add(parser.getRecords());
         } catch (Exception ex){
             Logger.logError(ex);
