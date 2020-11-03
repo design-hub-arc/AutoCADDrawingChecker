@@ -21,7 +21,8 @@ public class GradableDataTypeLoader extends AbstractLoader<AbstractGradableDataT
     public List<AbstractGradableDataType> getAll() {
         ArrayList<AbstractGradableDataType> ret = new ArrayList<>();
         ret.add(new GenericExcelDataType());
-        ret.add(new GenericCsvDataType());
+        ret.add(new GenericCsvDataType(true));
+        ret.add(new GenericCsvDataType(false));
         ret.add(new AutoCADDataType());
         ret.add(new SurveyDataType());
         return ret;

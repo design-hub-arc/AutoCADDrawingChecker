@@ -50,7 +50,7 @@ public class Main {
         if(debug){
             try {
                 new SurveyDataParser().parseAllSheets("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\template\\GPS Style - Survey Field Notes - Template.xlsx").forEach(System.out::println);
-                new CsvParser().parseFirstSheet("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Csv Data\\nodeCoords.csv").forEach(System.out::println);
+                new CsvParser(true).parseFirstSheet("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Csv Data\\nodeCoords.csv").forEach(System.out::println);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
