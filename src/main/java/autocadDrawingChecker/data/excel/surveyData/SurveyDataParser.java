@@ -1,6 +1,7 @@
 package autocadDrawingChecker.data.excel.surveyData;
 
 import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.data.excel.ExcelParser;
 import autocadDrawingChecker.data.excel.ExcelRecordConverter;
 import java.util.HashMap;
@@ -20,10 +21,11 @@ public class SurveyDataParser extends ExcelParser {
         return new SurveyDataSet(name);
     }
     
+    /*
     @Override
     protected ExcelRecordConverter createExtractor(Map<String, Integer> columns){
         return new SurveyDataConverter(columns);
-    }
+    }*/
     
     @Override
     protected Row locateHeaderRow(Sheet sheet){
@@ -37,5 +39,15 @@ public class SurveyDataParser extends ExcelParser {
             }
         }
         return headers;
+    }
+    
+    @Override
+    protected String[] getRequiredColumns(){
+        return SurveyDataRecord.REQ_COLS;
+    }
+    
+    @Override
+    protected Record createNew(){
+        return new SurveyDataRecord();
     }
 }

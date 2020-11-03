@@ -9,10 +9,7 @@ import org.apache.commons.csv.CSVRecord;
  * @author Matt
  */
 public class CsvRecordConverter extends AbstractRecordConverter<CSVRecord> {
-
-    public CsvRecordConverter(Map<String, Integer> columns) {
-        super(columns);
-    }
+    /*
 
     @Override
     protected Object doGetCell(CSVRecord currRow, int idx) {
@@ -42,9 +39,6 @@ public class CsvRecordConverter extends AbstractRecordConverter<CSVRecord> {
         return ret;
     }
 
-    @Override
-    protected boolean doesRowHaveCell(CSVRecord currRow, int idx) {
-        return currRow.isSet(idx) && currRow.get(idx) != null;
-    }
+    */
 
 }

@@ -21,7 +21,13 @@ public class AutoCADExcelParser extends ExcelParser {
     }
     
     @Override
+    protected AutoCADElement createNew(){
+        return new AutoCADElement();
+    }
+    
+    /*
+    @Override
     protected ExcelRecordConverter createExtractor(Map<String, Integer> columns){
         return new AutoCADElementConverter(columns);
-    }
+    }*/
 }

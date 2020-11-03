@@ -13,10 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public class ExcelRecordConverter extends AbstractRecordConverter<Row> {
 
-    public ExcelRecordConverter(Map<String, Integer> columns) {
-        super(columns);
-    }
-    
+    /*
     @Override
     protected Object doGetCell(Row currRow, int idx){
         Object ret = null;
@@ -38,11 +35,6 @@ public class ExcelRecordConverter extends AbstractRecordConverter<Row> {
         }
         return ret;
     }
-
-    @Override
-    protected boolean doesRowHaveCell(Row currRow, int idx) {
-        Cell c = currRow.getCell(idx);
-        return c != null && c.getCellType() != CellType.BLANK;
-        // getCell doesn't throw an exception if it doesn't have a cell for the given column: it just returns null
-    }
+*/
+    
 }

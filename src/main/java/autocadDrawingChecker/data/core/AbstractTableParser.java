@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -16,8 +18,63 @@ import java.util.function.BiConsumer;
  */
 public abstract class AbstractTableParser<SheetType, RowType> {
     
+    protected abstract boolean doesRowHaveCell(RowType currRow, int idx);
+    
+    protected abstract Object doGetCell(RowType currRow, int idx);
+    /*
+    protected final boolean hasRequiredColumns(RowType row){
+        boolean ret = true;
+        String[] reqCols = getRequiredColumns();
+        for(int i = 0; i < reqCols.length && ret; i++){
+            if(!rowHasCell(row, reqCols[i])){
+                ret = false;
+            }
+        }
+        return ret;
+    }
+    
+    public final boolean canExtractRow(RowType row){
+        return hasRequiredColumns(row);
+    }*/
+    
+    /**
+     * Extracts data from the given row, and converts it to a Record.
+     * @param columns the columns for the file this row comes from
+     * @param row the row to extract data from
+     * @return the extracted Record.
+     */
+    private Record convertRecord(Map<String, Integer> columns, RowType row){
+        Record ret = createNew();
+        columns.forEach((header, index)->{
+            if(this.doesRowHaveCell(row, index)){
+                ret.setAttribute(header, doGetCell(row, index));
+            }
+        });
+        return ret;
+    }
+    
+    
+    
     protected final String sanitize(String s){
-        return s.trim(); // may not want to uppercase
+        return s.trim().toUpperCase(); // not sure if I want to uppercase
+    }
+    
+    protected abstract Map<String, Integer> getHeadersFrom(SheetType sheet);
+    
+    private Map<String, Integer> loadHeadersFrom(SheetType sheet){
+        HashMap<String, Integer> cleanedHeaders = new HashMap<>();
+        Map<String, Integer> raw = getHeadersFrom(sheet);
+        raw.forEach((k, v)->{
+            cleanedHeaders.put(sanitize(k), v);
+        });
+        for(String reqCol : this.getRequiredColumns()){
+            for(String actualCol : raw.keySet()){
+                if(!reqCol.equals(actualCol) && Pattern.matches(reqCol, actualCol)){
+                    cleanedHeaders.put(reqCol, raw.get(actualCol));
+                }
+            }
+        }
+        return cleanedHeaders;
     }
     
     /**
@@ -31,11 +88,12 @@ public abstract class AbstractTableParser<SheetType, RowType> {
      */
     protected final DataSet parseSheet(String dataSetName, SheetType sheet){
         DataSet containedTherein = this.createExtractionHolder(dataSetName);
-        forEachRowIn(sheet, (AbstractRecordConverter<RowType> converter, RowType row)->{
+        Map<String, Integer> headers = this.loadHeadersFrom(sheet);
+        forEachRowIn(sheet, (RowType row)->{
             if(isValidRow(row)){
                 Record converted = null;
                 try {
-                    converted = converter.extract(row);
+                    converted = this.convertRecord(headers, row);
                 } catch (Exception ex){
                     Logger.logError(ex);
                 }
@@ -86,9 +144,16 @@ public abstract class AbstractTableParser<SheetType, RowType> {
      */
     protected DataSet createExtractionHolder(String name){
         return new DataSet(name);
+    }    
+    
+    protected Record createNew(){
+        return new Record();
     }
     
-    protected abstract AbstractRecordConverter createExtractor(Map<String, Integer> columns);
+    protected String[] getRequiredColumns(){
+        return new String[0];
+    }
+    
     protected abstract boolean isValidRow(RowType row);
     /**
      * Subclasses should override this method to read the given file, run it through
@@ -101,12 +166,12 @@ public abstract class AbstractTableParser<SheetType, RowType> {
     protected abstract List<SheetType> extractSheets(String path) throws IOException;
     /**
      * This method should be overridden to iterate over each row in the given sheet, 
-     * and pass both the row and converter to the given BiConsumer.
+     * and pass both the row and converter to the given Consumer.
      * 
      * @param sheet the sheet to iterate over
      * @param doThis the thing to do with each row in the given sheet
      */
-    protected abstract void forEachRowIn(SheetType sheet, BiConsumer<AbstractRecordConverter<RowType>, RowType> doThis);
+    protected abstract void forEachRowIn(SheetType sheet, Consumer<RowType> doThis);
     protected abstract String getSheetName(SheetType sheet);
     
 }

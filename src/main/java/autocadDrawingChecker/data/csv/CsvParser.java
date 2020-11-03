@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -26,11 +27,6 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         super();
         this.hasHeaders = hasHeaders;
     }
-    
-    @Override
-    protected AbstractRecordConverter<CSVRecord> createExtractor(Map<String, Integer> columns) {
-        return new CsvRecordConverter(columns);
-    }
 
     
     @Override
@@ -38,8 +34,9 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         return row.isConsistent();
     }
     
+    
     @Override
-    protected void forEachRowIn(List<CSVRecord> sheet, BiConsumer<AbstractRecordConverter<CSVRecord>, CSVRecord> doThis) {
+    protected Map<String, Integer> getHeadersFrom(List<CSVRecord> sheet) {
         HashMap<String, Integer> headerMap = new HashMap<>();
         if(sheet.isEmpty()){
             // cannot parse, just ignore
@@ -55,10 +52,13 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
             } // make my own headers
             
         }
-        AbstractRecordConverter<CSVRecord> converter = this.createExtractor(headerMap);
-        
+        return headerMap;
+    }
+    
+    @Override
+    protected void forEachRowIn(List<CSVRecord> sheet, Consumer<CSVRecord> doThis) {
         sheet.stream().forEach((CSVRecord apacheRecord)->{
-            doThis.accept(converter, apacheRecord);
+            doThis.accept(apacheRecord);
         });
     }
 
@@ -77,5 +77,38 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     @Override
     protected String getSheetName(List<CSVRecord> sheet) {
         return "data";
+    }
+    
+    @Override
+    protected boolean doesRowHaveCell(CSVRecord currRow, int idx) {
+        return currRow.isSet(idx) && currRow.get(idx) != null;
+    }
+    
+    @Override
+    protected Object doGetCell(CSVRecord currRow, int idx) {
+        Object ret = currRow.get(idx);
+        boolean foundType = false;
+        // see if it's numeric
+        try {
+            ret = Double.parseDouble(ret.toString());
+            foundType = true;
+        } catch(NumberFormatException ex){
+            // not a number
+        }
+        
+        if(!foundType){
+            // first, convert to a string
+            ret = ret.toString();
+            if(ret.toString().equalsIgnoreCase("true")){
+                ret = Boolean.TRUE;
+                foundType = true; // it's a boolean
+            } else if(ret.toString().equalsIgnoreCase("false")){
+                ret = Boolean.FALSE;
+                foundType = true;
+            }
+            // don't use Boolean.parseString methods, as they don't account for values other than true or false
+            // this way, if it is neither true nor false, this method returns it as a string
+        }
+        return ret;
     }
 }

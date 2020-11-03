@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -34,27 +35,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  * 
  * @author Matt Crow
  */
-public class ExcelParser extends AbstractTableParser<Sheet, Row> {
-    
-    /**
-     * Creates the RecordExtractor which will be used to convert rows in the Excel
-     * spreadsheet to Records in the output DataSet. Subclasses should always override
-     * this method to return an extractor for their own Record type.
-     * 
-     * I may move RecordExtractor behavior back into this class at a later time, 
-     * but I'll leave them separate for now.
-     * 
-     * @param columns a mapping of header name to column index, found from the 
-     * header row of the sheet this is parsing.
-     * 
-     * @return a RecordExtractor which will read rows from the Excel file, and
-     * output Records from it.
-     */
-    @Override
-    protected ExcelRecordConverter createExtractor(Map<String, Integer> columns){
-        return new ExcelRecordConverter(columns);
-    }
-    
+public class ExcelParser extends AbstractTableParser<Sheet, Row> {    
     /**
      * Returns the row containing headers in the given sheet.
      * By default, this method returns the first row of the
@@ -140,10 +121,14 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     }
     
     @Override
-    protected void forEachRowIn(Sheet sheet, BiConsumer<AbstractRecordConverter<Row>, Row> doThis) {
-        Row headerRow = locateHeaderRow(sheet);        
-        AbstractRecordConverter<Row> recExtr = createExtractor(locateColumns(headerRow));
-        
+    protected Map<String, Integer> getHeadersFrom(Sheet sheet) {
+        Row headerRow = locateHeaderRow(sheet);
+        return this.locateColumns(headerRow);
+    }
+    
+    @Override
+    protected void forEachRowIn(Sheet sheet, Consumer<Row> doThis) {
+        Row headerRow = this.locateHeaderRow(sheet);        
         int numRows = sheet.getLastRowNum() + 1; // need the + 1, otherwise it sometimes doesn't get the last row
         /*
         Note that numRows will be greater than or
@@ -162,9 +147,9 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         //               skip headers
         for(int rowNum = headerRow.getRowNum() + 1; rowNum < numRows; rowNum++){
             currRow = sheet.getRow(rowNum);
-            if(isValidRow(currRow) && recExtr.canExtractRow(currRow)){
+            if(isValidRow(currRow)){// && recExtr.canExtractRow(currRow)){
                 try {
-                    doThis.accept(recExtr, currRow);
+                    doThis.accept(currRow);
                 } catch(Exception ex){
                     Logger.logError(String.format("Error while parsing row: %s", rowToString(currRow)));
                     Logger.logError(ex);
@@ -187,5 +172,34 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     @Override
     protected String getSheetName(Sheet sheet) {
         return sheet.getSheetName();
+    }
+    
+    @Override
+    protected boolean doesRowHaveCell(Row currRow, int idx) {
+        Cell c = currRow.getCell(idx);
+        return c != null && c.getCellType() != CellType.BLANK;
+        // getCell doesn't throw an exception if it doesn't have a cell for the given column: it just returns null
+    }
+    
+    @Override
+    protected Object doGetCell(Row currRow, int idx){
+        Object ret = null;
+        Cell c = currRow.getCell(idx);
+        switch(c.getCellType()){
+            case BOOLEAN:
+                ret = c.getBooleanCellValue();
+                break;
+            case NUMERIC:
+                ret = (Double)c.getNumericCellValue();
+                break;
+            case STRING:
+                ret = c.getStringCellValue();
+                break;
+            default:
+                Logger.logError(String.format("ExcelRecordExtractor encountered cell with type %s", c.getCellType().name()));
+                //ret = c.toString();
+                break;
+        }
+        return ret;
     }
 }
