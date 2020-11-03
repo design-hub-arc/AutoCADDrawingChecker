@@ -34,7 +34,7 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     
     
     @Override
-    protected Map<String, Integer> getHeadersFrom(List<CSVRecord> sheet) {
+    protected Map<String, Integer> doGetHeadersFrom(List<CSVRecord> sheet) {
         HashMap<String, Integer> headerMap = new HashMap<>();
         if(sheet.isEmpty()){
             // cannot parse, just ignore

@@ -73,7 +73,7 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
         
         ArrayList<String> headers = new ArrayList<>();
         headerRow.cellIterator().forEachRemaining((Cell c)->{
-            headers.add(sanitize(c.toString()).toUpperCase());
+            headers.add(c.toString());
         });
         for(int i = 0; i < headers.size(); i++){
             headerToCol.put(headers.get(i), i);
@@ -118,7 +118,7 @@ public class ExcelParser extends AbstractTableParser<Sheet, Row> {
     }
     
     @Override
-    protected Map<String, Integer> getHeadersFrom(Sheet sheet) {
+    protected Map<String, Integer> doGetHeadersFrom(Sheet sheet) {
         Row headerRow = locateHeaderRow(sheet);
         return this.locateColumns(headerRow);
     }
