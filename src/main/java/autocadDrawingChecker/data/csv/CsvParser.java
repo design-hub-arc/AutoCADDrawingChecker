@@ -1,6 +1,5 @@
 package autocadDrawingChecker.data.csv;
 
-import autocadDrawingChecker.data.core.AbstractRecordConverter;
 import autocadDrawingChecker.data.core.AbstractTableParser;
 import autocadDrawingChecker.logging.Logger;
 import java.io.FileInputStream;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

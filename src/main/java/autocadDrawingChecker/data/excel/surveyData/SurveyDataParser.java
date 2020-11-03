@@ -3,7 +3,6 @@ package autocadDrawingChecker.data.excel.surveyData;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.data.excel.ExcelParser;
-import autocadDrawingChecker.data.excel.ExcelRecordConverter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

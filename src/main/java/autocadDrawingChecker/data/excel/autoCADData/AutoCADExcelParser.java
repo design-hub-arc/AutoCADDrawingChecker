@@ -2,8 +2,6 @@ package autocadDrawingChecker.data.excel.autoCADData;
 
 import autocadDrawingChecker.data.excel.ExcelParser;
 import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.data.excel.ExcelRecordConverter;
-import java.util.Map;
 
 /**
  * The AutoCADExcelParser is used to 
