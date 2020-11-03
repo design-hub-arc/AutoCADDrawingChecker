@@ -2,6 +2,7 @@ package autocadDrawingChecker.data.core;
 
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.function.BiConsumer;
  * @param <RowType> the class each row from the table this parses is stored as
  */
 public abstract class AbstractTableParser<SheetType, RowType> {
-        
+    
     protected final String sanitize(String s){
         return s.trim(); // may not want to uppercase
     }
