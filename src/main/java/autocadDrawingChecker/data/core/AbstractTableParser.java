@@ -50,10 +50,20 @@ public abstract class AbstractTableParser<SheetType, RowType> {
                 ret.setAttribute(header, doGetCell(row, index));
             }
         });
+        
         return ret;
     }
     
-    
+    private boolean canConvert(Map<String, Integer> columns, RowType row){
+        boolean ret = true;
+        String[] reqCols = this.getRequiredColumns();
+        for(int i = 0; i < reqCols.length && ret; i++){
+            if(!this.doesRowHaveCell(row, columns.get(sanitize(reqCols[i])))){
+                ret = false;
+            }
+        }
+        return ret;
+    }
     
     protected final String sanitize(String s){
         return s.trim().toUpperCase(); // not sure if I want to uppercase
@@ -93,7 +103,9 @@ public abstract class AbstractTableParser<SheetType, RowType> {
             if(isValidRow(row)){
                 Record converted = null;
                 try {
-                    converted = this.convertRecord(headers, row);
+                    if(canConvert(headers, row)){
+                        converted = this.convertRecord(headers, row);
+                    }
                 } catch (Exception ex){
                     Logger.logError(ex);
                 }
