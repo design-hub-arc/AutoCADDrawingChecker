@@ -3,6 +3,7 @@ package autocadDrawingChecker.grading.criteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.grading.MathUtil;
+import java.util.Objects;
 
 /**
  *
@@ -17,6 +18,18 @@ public class CompareColumn implements AbstractElementCriteria<DataSet, Record> {
      */
     public CompareColumn(String column){
         this.column = column;
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        return obj != null && obj instanceof CompareColumn && ((CompareColumn)obj).column.equals(this.column);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.column);
+        return hash;
     }
 
     @Override

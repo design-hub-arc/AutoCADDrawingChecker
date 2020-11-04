@@ -16,15 +16,14 @@ import java.util.List;
  * @author Matt
  */
 public class DrawingCheckerData {
-    private final List<AbstractGradableDataType> gradableDataTypes; 
-    private final HashMap<String, AbstractGradingCriteria<? extends DataSet>> nameToCriteria;
-    
+    private final List<AbstractGradableDataType> gradableDataTypes;
     private AbstractGradableDataType selectedDataType;
     
     private String instructorFilePath;
     private String[] studentFilePaths;
     
-    private final HashMap<String, Boolean> selectedCriteria;
+    private final HashSet<AbstractGradingCriteria<? extends DataSet>> availableCriteria;
+    private final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> selectedCriteria;
     
     /**
      * The maximum difference between
@@ -39,7 +38,7 @@ public class DrawingCheckerData {
         selectedDataType = null;
         gradableDataTypes = new LinkedList<>();
         selectedCriteria = new HashMap<>();
-        nameToCriteria = new HashMap<>();
+        availableCriteria = new HashSet<>();
         criteriaThreshold = 0.0;
     }
     
@@ -53,8 +52,8 @@ public class DrawingCheckerData {
         return selectedCriteria.values().contains(Boolean.TRUE);
     }
     public final boolean isCriteriaSelected(AbstractGradingCriteria<? extends DataSet> criteria){
-        //                      has this loaded the criteria?                       is it toggled to true?
-        return selectedCriteria.containsKey(criteria.getName()) && selectedCriteria.get(criteria.getName());
+        //                      has this loaded the criteria?                 is it toggled to true?
+        return selectedCriteria.containsKey(criteria) && selectedCriteria.get(criteria);
     }
     
     public final String getInstructorFilePath(){
@@ -94,11 +93,11 @@ public class DrawingCheckerData {
     
     public final void clearCriteria(){
         selectedCriteria.clear();
-        nameToCriteria.clear();
+        availableCriteria.clear();
     }
     public final void addCriteria(AbstractGradingCriteria<? extends DataSet> crit){
-        selectedCriteria.put(crit.getName(), Boolean.TRUE);
-        nameToCriteria.put(crit.getName(), crit);
+        selectedCriteria.put(crit, Boolean.TRUE);
+        availableCriteria.add(crit);
     }    
     /**
      * If their is not instructor file selected, or the data type is not set,
@@ -108,7 +107,7 @@ public class DrawingCheckerData {
     private List<AbstractGradingCriteria<? extends DataSet>> getGradableCriteria(){
         LinkedList<AbstractGradingCriteria<? extends DataSet>> crit = new LinkedList<>();
         DataSet instructorFile = parseInstructorFile();
-        this.nameToCriteria.values().forEach((availableCrit)->{
+        this.availableCriteria.forEach((availableCrit)->{
             // maybe just add a check for AbstractGradingCriteria.canGradeDataType(...)
             if(instructorFile == null || availableCrit.tryCastDataSet(instructorFile) != null){
                 crit.add(availableCrit);
@@ -181,7 +180,7 @@ public class DrawingCheckerData {
         return this;
     }
     public final DrawingCheckerData setCriteriaSelected(AbstractGradingCriteria<? extends DataSet> criteria, boolean isSelected){
-        selectedCriteria.put(criteria.getName(), isSelected);
+        selectedCriteria.put(criteria, isSelected);
         return this;
     }
     
