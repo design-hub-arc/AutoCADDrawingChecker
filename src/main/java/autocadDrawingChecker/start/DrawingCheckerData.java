@@ -5,6 +5,7 @@ import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.Grader;
 import autocadDrawingChecker.grading.GradingReport;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
+import autocadDrawingChecker.grading.criteria.CompareColumn;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -113,6 +114,13 @@ public class DrawingCheckerData {
                 crit.add(availableCrit);
             }
         });
+        if(instructorFile != null){
+            instructorFile.getColumns().forEach((String colName)->{
+                CompareColumn compCol = new CompareColumn(colName);
+                crit.add(compCol);
+                this.setCriteriaSelected(compCol, true);
+            });
+        }
         return crit;
     }
     public final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> getGradableCriteriaToIsSelected(){

@@ -4,15 +4,12 @@ import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.data.core.AbstractTableParser;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.grading.criteria.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -90,30 +87,11 @@ public class Grader {
         
         cmp = getStudentFiles(parser);
         
-        /*
-        see which columns exist in the instructor export,
-        and add those columns to the list of criteria this
-        should grade on. Don't directly add them to this.criteria
-        though, as that could cause problems
-        */
-        Set<String> colsToGrade = (src == null) ? new HashSet<>() : src.getColumns();
-        LinkedList<AbstractGradingCriteria<? extends DataSet>> colCriteria = new LinkedList<>();
-        for(String column : colsToGrade){
-            colCriteria.add(new CompareColumn(column));
-        }
-        
-        List<AbstractGradingCriteria<? extends DataSet>> finalGradedCriteria = new ArrayList<>();
-        finalGradedCriteria.addAll(criteria);
-        finalGradedCriteria.addAll(colCriteria);
-        finalGradedCriteria.forEach((c)->report.addCriteria(c));
-        
-        
-        
-        
+        criteria.forEach((c)->report.addCriteria(c));
         
         for(DataSet studentData : cmp){
             GradedExport graded = new GradedExport(src, studentData);
-            for(AbstractGradingCriteria<? extends DataSet> currCriteria : finalGradedCriteria){
+            for(AbstractGradingCriteria<? extends DataSet> currCriteria : criteria){
                 graded.addGradeFor(currCriteria);
             }
             report.add(graded);

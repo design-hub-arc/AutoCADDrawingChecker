@@ -1,6 +1,5 @@
 package autocadDrawingChecker.start;
 
-import autocadDrawingChecker.gui.PageRenderer;
 import autocadDrawingChecker.gui.ViewController;
 
 /**
@@ -33,12 +32,6 @@ public class Application {
             window.dispose();
         }
         window = new ViewController();
-        PageRenderer pane = window.getAppPane();
-        /*
-        ChooseCriteriaPage chooseCriteria = (ChooseCriteriaPage)pane.getPage(PageRenderer.CHOOSE_CRITERIA);
-        data.getGradableCriteriaToIsSelected().forEach((criteria, isSel)->{
-            chooseCriteria.setCriteriaSelected(criteria, isSel);
-        });*/
         
         return this;
     }

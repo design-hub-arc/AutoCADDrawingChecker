@@ -3,8 +3,6 @@ package autocadDrawingChecker.grading;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,6 +35,12 @@ public class GradedExport {
         grades = new HashMap<>();
     }
     
+    /**
+     * Grades the student file on the given criteria, and adds it to the list of criteria
+     * this has graded.
+     * 
+     * @param criteria the criteria to grade on. 
+     */
     public final void addGradeFor(AbstractGradingCriteria<? extends DataSet> criteria){
         grades.put(criteria, criteria.castThenGrade(instructorExport, studentExport));
     }
@@ -77,6 +81,14 @@ public class GradedExport {
      */
     public final double getGradeFor(AbstractGradingCriteria<? extends DataSet> criteria){
         return (grades.containsKey(criteria)) ? grades.get(criteria) : 0.0;
+    }
+    
+    /**
+     * 
+     * @return the criteria this has graded on 
+     */
+    public final Set<AbstractGradingCriteria<? extends DataSet>> getGradedCriteria(){
+        return grades.keySet();
     }
     
     /**
