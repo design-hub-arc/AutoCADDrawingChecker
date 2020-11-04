@@ -7,7 +7,8 @@ import java.io.File;
  */
 public enum FileType {
     EXCEL("Excel Workbook", new String[]{"xlsx", "xls"}),
-    NON_FOLDER("Excel Workbook or CSV file", new String[]{"xlsx", "xls", "csv"}),
+    CSV("Comma Separated Values", new String[]{"csv"}),
+    NON_FOLDER("Excel or CSV", new String[]{"xlsx", "xls", "csv"}),
     EXCEL_OR_FOLDER("Excel Workbook or a folder", new String[]{"xlsx", "xls"}),
     ANYTHING("Excel Workbook, CSV file, or a folder", new String[]{"xlsx", "xls", "csv"});
     

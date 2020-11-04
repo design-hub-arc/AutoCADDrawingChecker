@@ -2,6 +2,7 @@ package autocadDrawingChecker.data.excel;
 
 import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.data.core.AbstractTableParser;
+import autocadDrawingChecker.util.FileType;
 
 /**
  *
@@ -21,5 +22,10 @@ public class GenericExcelDataType implements AbstractGradableDataType {
     @Override
     public AbstractTableParser createParser() {
         return new ExcelParser();
+    }
+
+    @Override
+    public FileType getRequiredFileType() {
+        return FileType.EXCEL;
     }
 }

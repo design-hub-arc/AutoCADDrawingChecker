@@ -1,6 +1,7 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.data.AbstractGradableDataType;
+import autocadDrawingChecker.data.core.AbstractTableParser;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.CompareColumn;
@@ -44,21 +45,14 @@ public class Grader {
         criteria = gradeThese;
     }
     
-    private DataSet parseFileSingle(String path) throws IOException {
-        return dataType.createParser().parseFirstSheet(path);
-    };
-    private List<DataSet> parseFileMultiple(String path) throws IOException {
-        return dataType.createParser().parseAllSheets(path);
-    }
-    private List<DataSet> getStudentFiles(){
+    private List<DataSet> getStudentFiles(AbstractTableParser parser){
         return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{
-            // locate all Excel files in all given paths...
-            //                                                change this
-            return FileLocator.locateExcelFilesInDir(cmpPath, FileType.NON_FOLDER).stream();
+            // locate all relevant files in all given paths...
+            return FileLocator.locateFilesInDir(cmpPath, dataType.getRequiredFileType()).stream();
         }).flatMap((fileName)->{
             List<DataSet> r = new LinkedList<>();
             try {
-                r = parseFileMultiple(fileName);
+                r = parser.parseAllSheets(fileName);
             } catch (IOException ex) {
                 Logger.logError(ex);
             }
@@ -82,12 +76,12 @@ public class Grader {
      */
     public final GradingReport grade(){
         GradingReport report = new GradingReport();
-        
+        AbstractTableParser parser = dataType.createParser();
         DataSet trySrc = null;
         List<DataSet> cmp = null;
         
         try {
-            trySrc = parseFileSingle(this.instrFilePath);
+            trySrc = parser.parseFirstSheet(this.instrFilePath);
         } catch (IOException ex) {
             Logger.logError(String.format("Failed to locate source file %s", instrFilePath));
             Logger.logError(ex);
@@ -95,7 +89,7 @@ public class Grader {
         
         DataSet src = trySrc; // need this to be effectively final for lambda
         
-        cmp = getStudentFiles();
+        cmp = getStudentFiles(parser);
         
         /*
         see which columns exist in the instructor export,

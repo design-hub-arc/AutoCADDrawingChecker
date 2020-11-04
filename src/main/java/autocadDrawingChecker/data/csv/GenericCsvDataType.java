@@ -2,6 +2,7 @@ package autocadDrawingChecker.data.csv;
 
 import autocadDrawingChecker.data.AbstractGradableDataType;
 import autocadDrawingChecker.data.core.AbstractTableParser;
+import autocadDrawingChecker.util.FileType;
 /**
  *
  * @author Matt
@@ -26,5 +27,10 @@ public class GenericCsvDataType implements AbstractGradableDataType {
     @Override
     public AbstractTableParser createParser() {
         return new CsvParser(hasHeaders);
+    }
+
+    @Override
+    public FileType getRequiredFileType() {
+        return FileType.CSV;
     }
 }

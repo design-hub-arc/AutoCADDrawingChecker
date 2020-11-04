@@ -25,13 +25,13 @@ public class FileLocator {
      * @param type the type of files to locate
      * @return a list of the complete path to each Excel file this locates
      */
-    public static final ArrayList<String> locateExcelFilesInDir(String rootPath, FileType type){ 
+    public static final ArrayList<String> locateFilesInDir(String rootPath, FileType type){ 
         ArrayList<String> xlFiles = new ArrayList<>();
         File root = Paths.get(rootPath).toFile();
         if(root.isDirectory()){
             for(String subFile : root.list()){
                 // root.list() does not give the full path, so need Paths.get() here
-                xlFiles.addAll(locateExcelFilesInDir(Paths.get(rootPath, subFile).toString(), type));
+                xlFiles.addAll(locateFilesInDir(Paths.get(rootPath, subFile).toString(), type));
             }
         } else {
             if(type.fileIsOfThisType(root)){
@@ -44,6 +44,6 @@ public class FileLocator {
     }
     
     public static void main(String[] args){
-        FileLocator.locateExcelFilesInDir("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker", FileType.NON_FOLDER).forEach(System.out::println);
+        FileLocator.locateFilesInDir("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker", FileType.CSV).forEach(System.out::println);
     }
 }

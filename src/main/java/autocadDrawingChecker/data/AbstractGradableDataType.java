@@ -1,9 +1,7 @@
 package autocadDrawingChecker.data;
 
 import autocadDrawingChecker.data.core.AbstractTableParser;
-import autocadDrawingChecker.data.core.DataSet;
-import autocadDrawingChecker.data.excel.ExcelParser;
-import java.io.IOException;
+import autocadDrawingChecker.util.FileType;
 
 /**
  * AbstractGradableDataType represents a type of data the program can grade.
@@ -32,4 +30,11 @@ public interface AbstractGradableDataType {
      * @return the autocadDrawingChecker.data.core.AbstractTableParser
      */
     public AbstractTableParser createParser();
+    
+    /**
+     * 
+     * @return the types of files this expects
+     * to parse.
+     */
+    public FileType getRequiredFileType();
 }

@@ -16,6 +16,14 @@ public class CompareExcelFileChooser extends AbstractFileChooser<File[]> {
     public CompareExcelFileChooser(String title, String popupText) {
         super(title, popupText);
     }
+    
+    private FileType getRequiredFileType(){
+        FileType reqType = (Application.getInstance().getData().isDataTypeSelected()) 
+            ? Application.getInstance().getData().getSelectedDataType().getRequiredFileType() 
+            : FileType.ANYTHING;
+        return reqType;
+    }
+
 
     @Override
     public boolean isFileSelected() {
@@ -31,7 +39,7 @@ public class CompareExcelFileChooser extends AbstractFileChooser<File[]> {
     
     @Override
     protected void selectButtonPressed() {
-        FileChooserUtil.askChooseFiles(getPopupTitle(), FileType.ANYTHING, (File[] fs)->{
+        FileChooserUtil.askChooseFiles(getPopupTitle(), getRequiredFileType(), (File[] fs)->{
             userSelectedFile(fs);
         });
     }
@@ -50,6 +58,6 @@ public class CompareExcelFileChooser extends AbstractFileChooser<File[]> {
 
     @Override
     protected boolean canAccept(File f) {
-        return f.isDirectory() || FileType.ANYTHING.fileIsOfThisType(f);
+        return f.isDirectory() || getRequiredFileType().fileIsOfThisType(f);
     }
 }
