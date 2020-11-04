@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The GradedExport class
@@ -20,9 +21,7 @@ import java.util.Set;
 public class GradedExport {
     private final DataSet instructorExport;
     private final DataSet studentExport;
-    private final Set<AbstractGradingCriteria<? extends DataSet>> gradedCriteria;
     private final HashMap<AbstractGradingCriteria<? extends DataSet>, Double> grades;
-    private final double finalGrade;
     
     /**
      * Note that this constructor is is package-private,
@@ -31,35 +30,15 @@ public class GradedExport {
      * 
      * @param instructorsExport the instructor's export
      * @param studentsExport the student's export
-     * @param gradeOnThese the criteria to grade on. 
      */
-    GradedExport(DataSet instructorsExport, DataSet studentsExport, List<AbstractGradingCriteria<? extends DataSet>> gradeOnThese){
+    GradedExport(DataSet instructorsExport, DataSet studentsExport){
         instructorExport = instructorsExport;
         studentExport = studentsExport;
-        gradedCriteria = new HashSet<>(gradeOnThese);
         grades = new HashMap<>();
-        finalGrade = runComparison();
     }
     
-    /**
-     * Computes the grade for the student
-     * file. It grades the export on each
-     * provided criteria, and gives the final
-     * grade as the average of the grades for
-     * each criteria.
-     * 
-     * @return the student's final grade. 
-     */
-    private double runComparison(){
-        double similarityScore = 0.0;
-        double newScore = 0.0;
-        for(AbstractGradingCriteria<? extends DataSet> attr : gradedCriteria){
-            newScore = attr.castThenGrade(instructorExport, studentExport);
-            grades.put(attr, newScore);
-            similarityScore += newScore;
-        }
-        
-        return similarityScore / (gradedCriteria.size()); // average similarity score
+    public final void addGradeFor(AbstractGradingCriteria<? extends DataSet> criteria){
+        grades.put(criteria, criteria.castThenGrade(instructorExport, studentExport));
     }
     
     /**
@@ -87,7 +66,7 @@ public class GradedExport {
      * @return the final grade for this export. 
      */
     public final double getFinalGrade(){
-        return finalGrade;
+        return grades.values().stream().collect(Collectors.averagingDouble((d)->d));
     }
     
     /**
@@ -97,7 +76,7 @@ public class GradedExport {
      * or null if this didn't grade on the given criteria.
      */
     public final double getGradeFor(AbstractGradingCriteria<? extends DataSet> criteria){
-        return grades.get(criteria);
+        return (grades.containsKey(criteria)) ? grades.get(criteria) : 0.0;
     }
     
     /**
@@ -117,7 +96,7 @@ public class GradedExport {
         grades.forEach((attr, score)->{
             sb.append(String.format("\n* %s: %d%%", attr.getName(), (int)(score * 100)));
         });
-        sb.append(String.format("\nFinal Grade: %d%%", (int)(finalGrade * 100)));
+        sb.append(String.format("\nFinal Grade: %d%%", (int)(getFinalGrade() * 100)));
         return sb.toString();
     }
 }

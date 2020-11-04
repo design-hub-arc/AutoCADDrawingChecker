@@ -6,7 +6,6 @@ import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.CompareColumn;
 import autocadDrawingChecker.logging.Logger;
-import autocadDrawingChecker.util.FileType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,9 +107,17 @@ public class Grader {
         finalGradedCriteria.addAll(colCriteria);
         finalGradedCriteria.forEach((c)->report.addCriteria(c));
         
-        cmp.stream().forEach((exp)->{
-            report.add(new GradedExport(src, exp, finalGradedCriteria));
-        });
+        
+        
+        
+        
+        for(DataSet studentData : cmp){
+            GradedExport graded = new GradedExport(src, studentData);
+            for(AbstractGradingCriteria<? extends DataSet> currCriteria : finalGradedCriteria){
+                graded.addGradeFor(currCriteria);
+            }
+            report.add(graded);
+        }
         
         return report;
     }
