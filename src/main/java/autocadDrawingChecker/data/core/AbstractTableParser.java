@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  * This class uses the Algorithm design pattern, allowing developers to pick-and-choose what functionality they
  * wish to override when subclassing.
  * 
+ * 
  * @author Matt Crow
  * @param <SheetType> the class representing each individual sheet in the files this should parse.
  * @param <RowType> the class each row from the table this parses is stored as

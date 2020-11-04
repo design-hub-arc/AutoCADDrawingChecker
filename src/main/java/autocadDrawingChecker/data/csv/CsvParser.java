@@ -16,7 +16,7 @@ import org.apache.commons.csv.CSVRecord;
 
 /**
  *
- * @author Matt
+ * @author Matt Crow
  */
 public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
     private final boolean hasHeaders;
@@ -25,13 +25,23 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         super();
         this.hasHeaders = hasHeaders;
     }
-
     
     @Override
-    protected boolean isValidRow(CSVRecord row) {
-        return row.isConsistent();
+    protected final String getSheetName(List<CSVRecord> sheet) {
+        return "data";
     }
     
+    @Override
+    protected List<List<CSVRecord>> extractSheets(String path) throws IOException {
+        List<List<CSVRecord>> sheets = new LinkedList<>();
+        CSVFormat format = (this.hasHeaders) ? CSVFormat.DEFAULT.withHeader() : CSVFormat.DEFAULT;
+        try (CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(path)), format)) {
+            sheets.add(parser.getRecords());
+        } catch (Exception ex){
+            Logger.logError(ex);
+        }
+        return sheets;
+    }
     
     @Override
     protected Map<String, Integer> doGetHeadersFrom(List<CSVRecord> sheet) {
@@ -52,38 +62,26 @@ public class CsvParser extends AbstractTableParser<List<CSVRecord>, CSVRecord> {
         }
         return headerMap;
     }
-    
+        
     @Override
-    protected void forEachRowIn(List<CSVRecord> sheet, Consumer<CSVRecord> doThis) {
+    protected final boolean isValidRow(CSVRecord row) {
+        return row.isConsistent();
+    }
+        
+    @Override
+    protected final void forEachRowIn(List<CSVRecord> sheet, Consumer<CSVRecord> doThis) {
         sheet.stream().forEach((CSVRecord apacheRecord)->{
             doThis.accept(apacheRecord);
         });
     }
-
-    @Override
-    protected List<List<CSVRecord>> extractSheets(String path) throws IOException {
-        List<List<CSVRecord>> sheets = new LinkedList<>();
-        CSVFormat format = (this.hasHeaders) ? CSVFormat.DEFAULT.withHeader() : CSVFormat.DEFAULT;
-        try (CSVParser parser = new CSVParser(new InputStreamReader(new FileInputStream(path)), format)) {
-            sheets.add(parser.getRecords());
-        } catch (Exception ex){
-            Logger.logError(ex);
-        }
-        return sheets;
-    }
-
-    @Override
-    protected String getSheetName(List<CSVRecord> sheet) {
-        return "data";
-    }
     
     @Override
-    protected boolean doesRowHaveCell(CSVRecord currRow, int idx) {
+    protected final boolean doesRowHaveCell(CSVRecord currRow, int idx) {
         return currRow.isSet(idx) && currRow.get(idx) != null;
     }
     
     @Override
-    protected Object doGetCell(CSVRecord currRow, int idx) {
+    protected final Object doGetCell(CSVRecord currRow, int idx) {
         Object ret = currRow.get(idx);
         boolean foundType = false;
         // see if it's numeric

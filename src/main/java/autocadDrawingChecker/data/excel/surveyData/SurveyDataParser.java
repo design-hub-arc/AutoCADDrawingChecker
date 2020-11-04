@@ -3,9 +3,7 @@ package autocadDrawingChecker.data.excel.surveyData;
 import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.data.core.Record;
 import autocadDrawingChecker.data.excel.ExcelParser;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -19,12 +17,6 @@ public class SurveyDataParser extends ExcelParser {
     protected DataSet createExtractionHolder(String name){
         return new SurveyDataSet(name);
     }
-    
-    /*
-    @Override
-    protected ExcelRecordConverter createExtractor(Map<String, Integer> columns){
-        return new SurveyDataConverter(columns);
-    }*/
     
     @Override
     protected Row locateHeaderRow(Sheet sheet){
