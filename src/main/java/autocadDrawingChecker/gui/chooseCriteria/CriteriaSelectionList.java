@@ -46,7 +46,7 @@ public class CriteriaSelectionList extends JComponent {
         add(scroll, BorderLayout.CENTER);
     }
     
-    final void setCriteriaOptions(List<AbstractGradingCriteria<? extends DataSet>> criteria){
+    final void setCriteriaOptions(List<AbstractGradingCriteria> criteria){
         criteriaList.clear();
         content.removeAll();
         
@@ -56,10 +56,10 @@ public class CriteriaSelectionList extends JComponent {
         });
     }
     
-    public final void setCriteriaSelected(AbstractGradingCriteria<? extends DataSet> crit, boolean isSelected){
+    public final void setCriteriaSelected(AbstractGradingCriteria crit, boolean isSelected){
         criteriaList.get(crit.getName()).setSelected(isSelected);
     }
-    public final List<AbstractGradingCriteria<? extends DataSet>> getSelectedCriteria(){
+    public final List<AbstractGradingCriteria> getSelectedCriteria(){
         return criteriaList.values().stream().filter((ct)->ct.isSelected()).map((ct)->ct.getCriteria()).collect(Collectors.toList());
     }
 }

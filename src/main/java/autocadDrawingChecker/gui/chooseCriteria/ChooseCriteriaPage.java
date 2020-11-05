@@ -32,11 +32,11 @@ public class ChooseCriteriaPage extends AbstractPage {
         add(bottom, BorderLayout.PAGE_END);
     }
     
-    public final void setCriteriaSelected(AbstractGradingCriteria<? extends DataSet> crit, boolean isSelected){
+    public final void setCriteriaSelected(AbstractGradingCriteria crit, boolean isSelected){
         critList.setCriteriaSelected(crit, isSelected);
     }
     
-    public final List<AbstractGradingCriteria<? extends DataSet>> getSelectedCriteria(){
+    public final List<AbstractGradingCriteria> getSelectedCriteria(){
         return critList.getSelectedCriteria();
     }
 
@@ -51,7 +51,7 @@ public class ChooseCriteriaPage extends AbstractPage {
 
     @Override
     protected void dataUpdated(DrawingCheckerData newData) {
-        HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = newData.getGradableCriteriaToIsSelected();
+        HashMap<AbstractGradingCriteria, Boolean> critToIsSel = newData.getGradableCriteriaToIsSelected();
         critList.setCriteriaOptions(new LinkedList<>(critToIsSel.keySet()));
         critToIsSel.entrySet().forEach((entry)->{
             critList.setCriteriaSelected(entry.getKey(), entry.getValue());

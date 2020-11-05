@@ -31,7 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class GradingReport extends LinkedList<GradedExport> {
     private final HashMap<String, Integer> headerToCol;
     private final ArrayList<String> headers;
-    private final HashMap<String, AbstractGradingCriteria<? extends DataSet>> gradedCriteria;
+    private final HashMap<String, AbstractGradingCriteria> gradedCriteria;
     
     private static final String SRC_FILE_HEADER = "Instructor File";
     private static final String CMP_FILE_HEADER = "Student File";
@@ -65,7 +65,7 @@ public class GradingReport extends LinkedList<GradedExport> {
      * 
      * @param criteria the criteria to include in this' output.
      */
-    public final void addCriteria(AbstractGradingCriteria<? extends DataSet> criteria){
+    public final void addCriteria(AbstractGradingCriteria criteria){
         gradedCriteria.put(criteria.getName(), criteria);
         addHeader(criteria.getName());
     }

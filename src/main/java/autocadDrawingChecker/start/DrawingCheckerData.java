@@ -36,8 +36,8 @@ public class DrawingCheckerData {
     private String instructorFilePath;
     private String[] studentFilePaths;
     
-    private final HashSet<AbstractGradingCriteria<? extends DataSet>> availableCriteria;
-    private final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> selectedCriteria;
+    private final HashSet<AbstractGradingCriteria> availableCriteria;
+    private final HashMap<AbstractGradingCriteria, Boolean> selectedCriteria;
     
     /**
      * The maximum difference between
@@ -203,7 +203,7 @@ public class DrawingCheckerData {
      * 
      * @param crit the criteria to add 
      */
-    final void addCriteria(AbstractGradingCriteria<? extends DataSet> crit){
+    final void addCriteria(AbstractGradingCriteria crit){
         selectedCriteria.put(crit, Boolean.TRUE);
         availableCriteria.add(crit);
     }
@@ -215,7 +215,7 @@ public class DrawingCheckerData {
      * @param isSelected whether or not the given criteria should be used when grading student files
      * @return this, for chaining purposes
      */
-    public final DrawingCheckerData setCriteriaSelected(AbstractGradingCriteria<? extends DataSet> criteria, boolean isSelected){
+    public final DrawingCheckerData setCriteriaSelected(AbstractGradingCriteria criteria, boolean isSelected){
         selectedCriteria.put(criteria, isSelected);
         return this;
     }
@@ -233,7 +233,7 @@ public class DrawingCheckerData {
      * @param criteria the criteria to check if it is selected
      * @return whether or not the given criteria is selected
      */
-    public final boolean isCriteriaSelected(AbstractGradingCriteria<? extends DataSet> criteria){
+    public final boolean isCriteriaSelected(AbstractGradingCriteria criteria){
         //                      has this loaded the criteria?                 is it toggled to true?
         return selectedCriteria.containsKey(criteria) && selectedCriteria.get(criteria);
     }
@@ -243,8 +243,8 @@ public class DrawingCheckerData {
      * returns all criteria this can grade on.
      * @return the list of criteria this has which can grade the current data type 
      */
-    private List<AbstractGradingCriteria<? extends DataSet>> getGradableCriteria(){
-        LinkedList<AbstractGradingCriteria<? extends DataSet>> crit = new LinkedList<>();
+    private List<AbstractGradingCriteria> getGradableCriteria(){
+        LinkedList<AbstractGradingCriteria> crit = new LinkedList<>();
         DataSet instructorFile = parseInstructorFile();
         this.availableCriteria.forEach((availableCrit)->{
             // maybe just add a check for AbstractGradingCriteria.canGradeDataType(...)
@@ -267,8 +267,8 @@ public class DrawingCheckerData {
      * @return a mapping of criteria to whether or not they are selected and gradable for the currently selected 
      * instructor file
      */
-    public final HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> getGradableCriteriaToIsSelected(){
-        HashMap<AbstractGradingCriteria<? extends DataSet>, Boolean> critToIsSel = new HashMap<>();
+    public final HashMap<AbstractGradingCriteria, Boolean> getGradableCriteriaToIsSelected(){
+        HashMap<AbstractGradingCriteria, Boolean> critToIsSel = new HashMap<>();
         // filters based on if the current set is gradable by the criteria
         getGradableCriteria().forEach((crit)->{
             critToIsSel.put(crit, this.isCriteriaSelected(crit));
@@ -282,8 +282,8 @@ public class DrawingCheckerData {
      * 
      * @return the criteria this can and should grade based on
      */
-    private HashSet<AbstractGradingCriteria<? extends DataSet>> getCriteriaToGradeOn(){
-        HashSet<AbstractGradingCriteria<? extends DataSet>> criteriaToGradeOn = new HashSet<>();
+    private HashSet<AbstractGradingCriteria> getCriteriaToGradeOn(){
+        HashSet<AbstractGradingCriteria> criteriaToGradeOn = new HashSet<>();
         getGradableCriteriaToIsSelected().entrySet().stream().filter((entry)->{
             return entry.getValue();
         }).map((entry)->entry.getKey()).forEach(criteriaToGradeOn::add);

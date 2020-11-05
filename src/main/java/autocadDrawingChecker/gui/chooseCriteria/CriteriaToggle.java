@@ -17,10 +17,10 @@ import javax.swing.JTextArea;
  * @author Matt Crow
  */
 public class CriteriaToggle extends JComponent {
-    private final AbstractGradingCriteria<? extends DataSet> criteria;
+    private final AbstractGradingCriteria criteria;
     private final JCheckBox selectBox;
     
-    public CriteriaToggle(AbstractGradingCriteria<? extends DataSet> forCriteria){
+    public CriteriaToggle(AbstractGradingCriteria forCriteria){
         super();
         criteria = forCriteria;
         
@@ -47,7 +47,7 @@ public class CriteriaToggle extends JComponent {
         return selectBox.isSelected();
     }
     
-    public final AbstractGradingCriteria<? extends DataSet> getCriteria(){
+    public final AbstractGradingCriteria getCriteria(){
         return criteria;
     }
 }

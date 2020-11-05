@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class GradedExport {
     private final DataSet instructorExport;
     private final DataSet studentExport;
-    private final HashMap<AbstractGradingCriteria<? extends DataSet>, Double> grades;
+    private final HashMap<AbstractGradingCriteria, Double> grades;
     
     /**
      * Note that this constructor is is package-private,
@@ -41,7 +41,7 @@ public class GradedExport {
      * 
      * @param criteria the criteria to grade on. 
      */
-    public final void addGradeFor(AbstractGradingCriteria<? extends DataSet> criteria){
+    public final void addGradeFor(AbstractGradingCriteria criteria){
         grades.put(criteria, criteria.castThenGrade(instructorExport, studentExport));
     }
     
@@ -79,7 +79,7 @@ public class GradedExport {
      * @return the grade the student got for the given criteria,
      * or null if this didn't grade on the given criteria.
      */
-    public final double getGradeFor(AbstractGradingCriteria<? extends DataSet> criteria){
+    public final double getGradeFor(AbstractGradingCriteria criteria){
         return (grades.containsKey(criteria)) ? grades.get(criteria) : 0.0;
     }
     
@@ -87,7 +87,7 @@ public class GradedExport {
      * 
      * @return the criteria this has graded on 
      */
-    public final Set<AbstractGradingCriteria<? extends DataSet>> getGradedCriteria(){
+    public final Set<AbstractGradingCriteria> getGradedCriteria(){
         return grades.keySet();
     }
     

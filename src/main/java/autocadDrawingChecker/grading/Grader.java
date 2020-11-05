@@ -25,7 +25,7 @@ public class Grader {
     private final AbstractGradableDataType dataType;
     private final String instrFilePath;
     private final String[] studentFilePaths;
-    private final HashSet<AbstractGradingCriteria<? extends DataSet>> criteria;
+    private final HashSet<AbstractGradingCriteria> criteria;
     
     /**
      * 
@@ -34,7 +34,7 @@ public class Grader {
      * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(AbstractGradableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, HashSet<AbstractGradingCriteria<? extends DataSet>> gradeThese){
+    public Grader(AbstractGradableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, HashSet<AbstractGradingCriteria> gradeThese){
         this.dataType = dataType;
         instrFilePath = pathToInstructorFile;
         studentFilePaths = pathsToStudentFiles;
@@ -53,9 +53,9 @@ public class Grader {
                 Logger.logError(ex);
             }
             return r.stream();
-        }).filter((e)->{
+        }).filter((DataSet set)->{
             // ignore any conversions that fail...
-            return e != null;
+            return set != null;
         }).collect(Collectors.toList()); // and return those successful conversions as a list
     }
     
@@ -91,7 +91,7 @@ public class Grader {
         
         for(DataSet studentData : cmp){
             GradedExport graded = new GradedExport(src, studentData);
-            for(AbstractGradingCriteria<? extends DataSet> currCriteria : criteria){
+            for(AbstractGradingCriteria currCriteria : criteria){
                 graded.addGradeFor(currCriteria);
             }
             report.add(graded);
