@@ -1,5 +1,5 @@
 # AutoCAD Drawing Checker
-A simple, extendable Java program used to compare Excel exports from AutoCAD.
+A simple, extendable Java program used to compare Excel and CSV files
 
 ## Project Summary
 Instructors and teachers in college classes are expected to teach their students by giving lectures and providing learning resources.
@@ -10,9 +10,10 @@ Fortunately, computers are very good at doing tedious processes with objective s
 This program is meant to compare data exports from AutoCAD to each other, grading them based upon how similar they both are.
 These AutoCAD exports are in either XLS or XLSX format, which is easily parse-able by the Apache POI Library.
 
-This application is currently being extended to support a wider variety of Excel files, including:
+This application also supports a wider variety of files, including:
 * any Excel file with headers in the first row
-* GPS data
+* CSV data with or without headers
+* GPS survey data (see an example under src/main/resources/exports
 
 ## Required Software
 * Users need only ensure they have [Java](https://java.com/en/) installed on their computer to run the application.
