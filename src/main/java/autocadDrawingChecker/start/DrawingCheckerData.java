@@ -68,6 +68,9 @@ public class DrawingCheckerData {
      */
     final void addGradableDataType(AbstractGradableDataType type){
         gradableDataTypes.add(type);
+        if(gradableDataTypes.size() == 1){
+            setSelectedDataType(type);
+        }
     }
     
     /**

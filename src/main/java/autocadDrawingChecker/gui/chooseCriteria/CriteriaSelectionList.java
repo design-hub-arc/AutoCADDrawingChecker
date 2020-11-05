@@ -1,11 +1,10 @@
 package autocadDrawingChecker.gui.chooseCriteria;
 
-import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.start.Application;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +42,7 @@ public class CriteriaSelectionList extends JComponent {
         JScrollPane scroll = new JScrollPane(content);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.getVerticalScrollBar().setUnitIncrement(10);
         add(scroll, BorderLayout.CENTER);
     }
     
@@ -50,10 +50,15 @@ public class CriteriaSelectionList extends JComponent {
         criteriaList.clear();
         content.removeAll();
         
-        criteria.stream().map((crit)->new CriteriaToggle(crit)).forEach((toggle)->{
+        CriteriaToggle toggle = null;
+        // sort criteria by name
+        criteria = criteria.subList(0, criteria.size()); // copy to avoid changing the original
+        Collections.sort(criteria, (crit1, crit2)->crit1.getName().compareTo(crit2.getName()));
+        for(AbstractGradingCriteria crit : criteria){
+            toggle = new CriteriaToggle(crit);
             criteriaList.put(toggle.getCriteria().getName(), toggle);
             content.add(toggle, gbc.clone());
-        });
+        }
     }
     
     public final void setCriteriaSelected(AbstractGradingCriteria crit, boolean isSelected){
