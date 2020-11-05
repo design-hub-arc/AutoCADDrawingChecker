@@ -27,10 +27,10 @@ public class LineLength implements AbstractAutoCADElementCriteria {
     }
     
     @Override
-    public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
+    public double doGrade(AutoCADExport exp1, AutoCADExport exp2) {
         double srcTotalLength = getTotalLineLength(exp1);
         double cmpTotalLength = getTotalLineLength(exp2);
-        double avgLenScore = AbstractAutoCADElementCriteria.super.computeScore(exp1, exp2);
+        double avgLenScore = AbstractAutoCADElementCriteria.super.doGrade(exp1, exp2);
         double totalLengthScore = MathUtil.gradeSimilarity(srcTotalLength, cmpTotalLength);
         return (avgLenScore + totalLengthScore) / 2;
     }

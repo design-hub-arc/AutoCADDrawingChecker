@@ -20,7 +20,7 @@ public interface AbstractGradingCriteria<DataSetType extends DataSet> {
      * @param exp2 The student file to grade.
      * @return a double from 0.0 to 1.0.
      */
-    public abstract double computeScore(DataSetType exp1, DataSetType exp2);
+    public abstract double doGrade(DataSetType exp1, DataSetType exp2);
     
     /**
      * 
@@ -41,14 +41,31 @@ public interface AbstractGradingCriteria<DataSetType extends DataSet> {
      */
     public abstract String getDescription();
     
+    /**
+     * Attempts to cast the given data set to the DataSetType this
+     * expects. Java does not allow notation of casting to a generic
+     * type, so this handles the casting instead.
+     * 
+     * @param contents the DataSet to attempt to cast
+     * @return the given DataSet, upcasted to the data type this 
+     * expects, or null if the conversion is not possible.
+     */
     public abstract DataSetType tryCastDataSet(DataSet contents);
     
-    public default double castThenGrade(DataSet s1, DataSet s2){
+    /**
+     * Grades the two given data sets, and returns their score.
+     * Implementations should rarely need to override this method.
+     * 
+     * @param s1 the instructor data set
+     * @param s2 the student data set
+     * @return the student's grade
+     */
+    public default double grade(DataSet s1, DataSet s2){
         double ret = 0.0;
         DataSetType casted1 = tryCastDataSet(s1);
         DataSetType casted2 = tryCastDataSet(s2);
         if(casted1 != null && casted2 != null){
-            ret = this.computeScore(casted1, casted2);
+            ret = this.doGrade(casted1, casted2);
         }
         return ret;
     }

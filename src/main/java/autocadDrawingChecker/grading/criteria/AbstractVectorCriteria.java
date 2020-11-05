@@ -10,6 +10,8 @@ import autocadDrawingChecker.grading.MathUtil;
  * but I may change to normalized dot product later.
  * 
  * @author Matt Crow
+ * @param <DataSetType> the type of DataSet this expects to grade
+ * @param <RecordType> the type of Record this expects to grade
  */
 public interface AbstractVectorCriteria<DataSetType extends DataSet, RecordType extends Record> extends AbstractElementCriteria<DataSetType, RecordType> {
     @Override

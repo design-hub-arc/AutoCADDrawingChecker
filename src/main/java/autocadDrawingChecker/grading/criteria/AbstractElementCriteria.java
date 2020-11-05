@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
  * is graded based on how well its individual elements score.
  * 
  * @author Matt Crow
+ * @param <DataSetType> the type of DataSet this expects to grade
+ * @param <RecordType> the type of Record this expects to grade
  */
-public interface AbstractElementCriteria<DataSetType extends DataSet, T extends Record> extends AbstractGradingCriteria<DataSetType> {
+public interface AbstractElementCriteria<DataSetType extends DataSet, RecordType extends Record> extends AbstractGradingCriteria<DataSetType> {
     /**
      * Calculates the grade for the two given elements.
      * Returns a value between 0.0 and 1.0, with 1.0 meaning
@@ -25,7 +27,7 @@ public interface AbstractElementCriteria<DataSetType extends DataSet, T extends 
      * @param e2 the student element
      * @return the student's score for the given element
      */
-    public abstract double getMatchScore(T e1, T e2);
+    public abstract double getMatchScore(RecordType e1, RecordType e2);
     
     /**
      * Computes the average match score of elements in the given exports.
@@ -34,14 +36,14 @@ public interface AbstractElementCriteria<DataSetType extends DataSet, T extends 
      * @return the student's net score for this criteria. Ranges from 0.0 to 1.0
      */
     @Override
-    public default double computeScore(DataSetType exp1, DataSetType exp2){
-        List<T> gradableElements = exp1.stream().map(this::tryCastRecord).filter((T converted)->{
+    public default double doGrade(DataSetType exp1, DataSetType exp2){
+        List<RecordType> gradableElements = exp1.stream().map(this::tryCastRecord).filter((RecordType converted)->{
             return converted != null;
-        }).filter((T nonNullConv)->{
+        }).filter((RecordType nonNullConv)->{
             return getMatchScore(nonNullConv, nonNullConv) != 0; // filter out non-gradable rows
         }).collect(Collectors.toList());
-        List<MatchingElements<T>> matches = new ElementMatcher<>(gradableElements, exp2, this::tryCastRecord, this::getMatchScore).findMatches();
-        double netScore = matches.stream().map((MatchingElements<T> match)->{
+        List<MatchingElements<RecordType>> matches = new ElementMatcher<>(gradableElements, exp2, this::tryCastRecord, this::getMatchScore).findMatches();
+        double netScore = matches.stream().map((MatchingElements<RecordType> match)->{
             return getMatchScore(tryCastRecord(match.getElement1()), tryCastRecord(match.getElement2()));
         }).reduce(0.0, Double::sum);
         
@@ -51,5 +53,12 @@ public interface AbstractElementCriteria<DataSetType extends DataSet, T extends 
         return netScore;
     }
     
-    public abstract T tryCastRecord(Record rec);
+    /**
+     * Attempts to cast the given Record to the RecordType
+     * this expects.
+     * 
+     * @param rec the Record to cast
+     * @return the casted Record, or null if the conversion is impossible
+     */
+    public abstract RecordType tryCastRecord(Record rec);
 }

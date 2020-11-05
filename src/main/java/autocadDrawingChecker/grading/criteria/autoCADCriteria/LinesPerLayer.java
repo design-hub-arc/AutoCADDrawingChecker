@@ -14,7 +14,7 @@ import java.util.Objects;
 public class LinesPerLayer implements AbstractGradingCriteria<AutoCADExport> {
 
     @Override
-    public double computeScore(AutoCADExport exp1, AutoCADExport exp2) {
+    public double doGrade(AutoCADExport exp1, AutoCADExport exp2) {
         double score = 0.0;
         HashMap<Object, Integer> srcLines = exp1.getCountsPerColumnValue("Layer");
         HashMap<Object, Integer> cmpLines = exp2.getCountsPerColumnValue("Layer");

@@ -42,7 +42,7 @@ public class GradedExport {
      * @param criteria the criteria to grade on. 
      */
     public final void addGradeFor(AbstractGradingCriteria criteria){
-        grades.put(criteria, criteria.castThenGrade(instructorExport, studentExport));
+        grades.put(criteria, criteria.grade(instructorExport, studentExport));
     }
     
     /**

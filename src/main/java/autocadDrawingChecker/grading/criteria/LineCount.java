@@ -9,7 +9,7 @@ import autocadDrawingChecker.grading.MathUtil;
 public class LineCount implements AbstractGradingCriteria<DataSet> {
 
     @Override
-    public double computeScore(DataSet exp1, DataSet exp2) {
+    public double doGrade(DataSet exp1, DataSet exp2) {
         return MathUtil.gradeSimilarity(exp1.size(), exp2.size());
     }
 
