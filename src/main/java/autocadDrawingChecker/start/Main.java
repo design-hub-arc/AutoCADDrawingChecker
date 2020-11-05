@@ -36,8 +36,6 @@ public class Main {
         new GradingCriteriaLoader().getAll().forEach(data::addCriteria);
         new GradableDataTypeLoader().getAll().forEach(data::addGradableDataType);
         
-        data.setSelectedDataType(data.getGradableDataTypes().get(1));
-        
         System.out.println("Args are " + Arrays.toString(args));
         
         HashSet<String> argSet = new HashSet<>();
