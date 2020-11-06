@@ -1,11 +1,11 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.data.AutoCADElement;
-import autocadDrawingChecker.data.AutoCADExport;
-import autocadDrawingChecker.grading.AutoCADElementMatcher;
-import autocadDrawingChecker.grading.MatchingAutoCADElements;
-import java.util.Arrays;
+import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.data.core.Record;
+import autocadDrawingChecker.grading.ElementMatcher;
+import autocadDrawingChecker.grading.MatchingElements;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * AbstractElementCriteria adds behavior to AbstractGradingCriteria to add
@@ -13,11 +13,21 @@ import java.util.List;
  * is graded based on how well its individual elements score.
  * 
  * @author Matt Crow
+ * @param <DataSetType> the type of DataSet this expects to grade
+ * @param <RecordType> the type of Record this expects to grade
  */
-public interface AbstractElementCriteria extends AbstractGradingCriteria {
-    public static final String[] ANY_TYPE = new String[0];
-    
-    public abstract double getMatchScore(AutoCADElement e1, AutoCADElement e2);
+public interface AbstractElementCriteria<DataSetType extends DataSet, RecordType extends Record> extends AbstractGradingCriteria<DataSetType> {
+    /**
+     * Calculates the grade for the two given elements.
+     * Returns a value between 0.0 and 1.0, with 1.0 meaning
+     * they match perfectly, and 0.0 meaning they don't match
+     * at all, or are ungradable by this criteria.
+     * 
+     * @param e1 the instructor element
+     * @param e2 the student element
+     * @return the student's score for the given element
+     */
+    public abstract double getMatchScore(RecordType e1, RecordType e2);
     
     /**
      * Computes the average match score of elements in the given exports.
@@ -26,44 +36,29 @@ public interface AbstractElementCriteria extends AbstractGradingCriteria {
      * @return the student's net score for this criteria. Ranges from 0.0 to 1.0
      */
     @Override
-    public default double computeScore(AutoCADExport exp1, AutoCADExport exp2){
-        List<MatchingAutoCADElements> matches = new AutoCADElementMatcher(exp1, exp2, this::canAccept, this::getMatchScore).findMatches();
-        double netScore = matches.stream().map((MatchingAutoCADElements match)->{
-            return getMatchScore(match.getElement1(), match.getElement2());
+    public default double doGrade(DataSetType exp1, DataSetType exp2){
+        List<RecordType> gradableElements = exp1.stream().map(this::tryCastRecord).filter((RecordType converted)->{
+            return converted != null;
+        }).filter((RecordType nonNullConv)->{
+            return getMatchScore(nonNullConv, nonNullConv) != 0; // filter out non-gradable rows
+        }).collect(Collectors.toList());
+        List<MatchingElements<RecordType>> matches = new ElementMatcher<>(gradableElements, exp2, this::tryCastRecord, this::getMatchScore).findMatches();
+        double netScore = matches.stream().map((MatchingElements<RecordType> match)->{
+            return getMatchScore(tryCastRecord(match.getElement1()), tryCastRecord(match.getElement2()));
         }).reduce(0.0, Double::sum);
         
         if(!matches.isEmpty()){
-            netScore /= matches.size();
+            netScore /= gradableElements.size();
         }
         return netScore;
     }
     
     /**
-     * Checks to see if the given AutoCADElement can -or should-
-     * be graded by this criteria. This is used by the AutoCADElementMatcher
-     * to decide if the given element should be graded.
-     * @see AutoCADElementMatcher
-     * @param e the AutoCADElement to check
-     * @return whether or not this criteria can grade e
-     */
-    public default boolean canAccept(AutoCADElement e){
-        String[] types = getAllowedTypes();
-        String eType = e.getName();
-        boolean acceptable = Arrays.equals(types, ANY_TYPE);
-        for(int i = 0; i < types.length && !acceptable; i++){
-            acceptable = eType.equalsIgnoreCase(types[i]);
-        }        
-        return acceptable;
-    }
-    
-    /**
+     * Attempts to cast the given Record to the RecordType
+     * this expects.
      * 
-     * @return a list of AutoCAD Name column values.
-     * This is meant to filter out unwanted rows.
-     * May remove later.
-     * 
-     * You can make this return AbstractElementCriteria.ANY_TYPE
-     * to allow all record types.
+     * @param rec the Record to cast
+     * @return the casted Record, or null if the conversion is impossible
      */
-    public abstract String[] getAllowedTypes();
+    public abstract RecordType tryCastRecord(Record rec);
 }

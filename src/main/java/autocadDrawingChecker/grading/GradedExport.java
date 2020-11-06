@@ -1,11 +1,10 @@
 package autocadDrawingChecker.grading;
 
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.AutoCADExport;
+import autocadDrawingChecker.data.core.DataSet;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The GradedExport class
@@ -18,55 +17,39 @@ import java.util.Set;
  * @author Matt Crow.
  */
 public class GradedExport {
-    private final AutoCADExport instructorExport;
-    private final AutoCADExport studentExport;
-    private final Set<AbstractGradingCriteria> gradedCriteria;
+    private final DataSet instructorExport;
+    private final DataSet studentExport;
     private final HashMap<AbstractGradingCriteria, Double> grades;
-    private final double finalGrade;
     
     /**
      * Note that this constructor is is package-private,
      * so it can only be instantiated from within this package.
      * This is done by the Grader class.
      * 
-     * @param instructorsExport the instructor's AutoCADExport
-     * @param studentsExport the student's AutoCADExport
-     * @param gradeOnThese the criteria to grade on. 
+     * @param instructorsExport the instructor's export
+     * @param studentsExport the student's export
      */
-    GradedExport(AutoCADExport instructorsExport, AutoCADExport studentsExport, List<AbstractGradingCriteria> gradeOnThese){
+    GradedExport(DataSet instructorsExport, DataSet studentsExport){
         instructorExport = instructorsExport;
         studentExport = studentsExport;
-        gradedCriteria = new HashSet<>(gradeOnThese);
         grades = new HashMap<>();
-        finalGrade = runComparison();
     }
     
     /**
-     * Computes the grade for the student
-     * file. It grades the export on each
-     * provided criteria, and gives the final
-     * grade as the average of the grades for
-     * each criteria.
+     * Grades the student file on the given criteria, and adds it to the list of criteria
+     * this has graded.
      * 
-     * @return the student's final grade. 
+     * @param criteria the criteria to grade on. 
      */
-    private double runComparison(){
-        double similarityScore = 0.0;
-        double newScore = 0.0;
-        for(AbstractGradingCriteria attr : gradedCriteria){
-            newScore = attr.computeScore(instructorExport, studentExport);
-            grades.put(attr, newScore);
-            similarityScore += newScore;
-        }
-        
-        return similarityScore / (gradedCriteria.size()); // average similarity score
+    public final void addGradeFor(AbstractGradingCriteria criteria){
+        grades.put(criteria, criteria.grade(instructorExport, studentExport));
     }
     
     /**
      * 
      * @return the instructor file this grades based on. 
      */
-    public final AutoCADExport getInstructorFile(){
+    public final DataSet getInstructorFile(){
         return instructorExport;
     }
     
@@ -74,7 +57,7 @@ public class GradedExport {
      * 
      * @return the student file this grades.
      */
-    public final AutoCADExport getStudentFile(){
+    public final DataSet getStudentFile(){
         return studentExport;
     }
     
@@ -87,7 +70,7 @@ public class GradedExport {
      * @return the final grade for this export. 
      */
     public final double getFinalGrade(){
-        return finalGrade;
+        return grades.values().stream().collect(Collectors.averagingDouble((d)->d));
     }
     
     /**
@@ -97,7 +80,15 @@ public class GradedExport {
      * or null if this didn't grade on the given criteria.
      */
     public final double getGradeFor(AbstractGradingCriteria criteria){
-        return grades.get(criteria);
+        return (grades.containsKey(criteria)) ? grades.get(criteria) : 0.0;
+    }
+    
+    /**
+     * 
+     * @return the criteria this has graded on 
+     */
+    public final Set<AbstractGradingCriteria> getGradedCriteria(){
+        return grades.keySet();
     }
     
     /**
@@ -117,7 +108,7 @@ public class GradedExport {
         grades.forEach((attr, score)->{
             sb.append(String.format("\n* %s: %d%%", attr.getName(), (int)(score * 100)));
         });
-        sb.append(String.format("\nFinal Grade: %d%%", (int)(finalGrade * 100)));
+        sb.append(String.format("\nFinal Grade: %d%%", (int)(getFinalGrade() * 100)));
         return sb.toString();
     }
 }

@@ -1,13 +1,16 @@
 package autocadDrawingChecker.grading.criteria;
 
-import autocadDrawingChecker.grading.criteria.implementations.LinesPerLayer;
-import autocadDrawingChecker.grading.criteria.implementations.LineStart;
-import autocadDrawingChecker.grading.criteria.implementations.LineLength;
-import autocadDrawingChecker.grading.criteria.implementations.LineEnd;
-import autocadDrawingChecker.grading.criteria.implementations.LineCount;
-import autocadDrawingChecker.grading.criteria.implementations.LineAngle;
-import autocadDrawingChecker.grading.criteria.implementations.TextMatches;
+import autocadDrawingChecker.data.core.DataSet;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LinesPerLayer;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineStart;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineLength;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineEnd;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.LineAngle;
+import autocadDrawingChecker.grading.criteria.autoCADCriteria.TextMatches;
+import autocadDrawingChecker.grading.criteria.surveyCriteria.GradeCoords;
 import autocadDrawingChecker.util.AbstractLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The GradingCriteriaLoader is used
@@ -17,15 +20,16 @@ import autocadDrawingChecker.util.AbstractLoader;
  */
 public class GradingCriteriaLoader extends AbstractLoader<AbstractGradingCriteria>{
     @Override
-    public final AbstractGradingCriteria[] getAll(){
-        return new AbstractGradingCriteria[]{
-            new LineCount(),
-            new LinesPerLayer(),
-            new LineLength(),
-            new LineAngle(),
-            new LineStart(),
-            new LineEnd(),
-            new TextMatches()
-        };
+    public final List<AbstractGradingCriteria> getAll(){
+        ArrayList<AbstractGradingCriteria> ret = new ArrayList<>();
+        ret.add(new LineCount());
+        ret.add(new LinesPerLayer());
+        ret.add(new LineLength());
+        ret.add(new LineAngle());
+        ret.add(new LineStart());
+        ret.add(new LineEnd());
+        ret.add(new TextMatches());
+        ret.add(new GradeCoords());
+        return ret;
     }
 }

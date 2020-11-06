@@ -1,9 +1,11 @@
+# Ignored directories
 .gradle/
 .nb-gradle/
+
+# https://stackoverflow.com/questions/5533050/gitignore-exclude-folder-but-include-specific-subfolder
+/build/*
+!/build/libs/
+
+# Ignored files
 .nb-gradle-properties
-/build/classes/*
-/build/tmp/*
-/build/docs/*
-/build/distributions/*
-!/build/libs/*
 gradle.properties

@@ -1,6 +1,7 @@
 package autocadDrawingChecker.grading;
 
-import autocadDrawingChecker.logging.Logger;
+import autocadDrawingChecker.start.Application;
+
 
 /**
  * MathUtil is a static class used to hold helpful math-related functions
@@ -31,6 +32,22 @@ public class MathUtil {
             ret = 1.0;
         }
         return ret;
+    }
+    private static double gradeDouble(double d1, double d2){
+        return (Math.abs(d2 - d1) <= Application.getInstance().getData().getCriteriaThreshold()) ? 1.0 : 0.0;
+    }
+    private static double gradeInt(int i1, int i2){
+        return (Math.abs(i2 - i1) <= Application.getInstance().getData().getCriteriaThreshold()) ? 1.0 : 0.0;
+    }
+    
+    public static double gradeSimilarity(Object obj1, Object obj2){
+        double score = (obj1.equals(obj2)) ? 1.0 : 0.0;
+        if(obj1 instanceof Double && obj2 instanceof Double){
+            score = gradeDouble(((Double)obj1), ((Double)obj2));
+        } else if(obj1 instanceof Integer && obj2 instanceof Integer){
+            score = gradeInt((Integer)obj1, (Integer)obj2);
+        }
+        return score;
     }
     
     public static int rotate180(int theta){
