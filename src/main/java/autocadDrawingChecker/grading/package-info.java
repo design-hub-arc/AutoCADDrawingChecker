@@ -1,6 +1,6 @@
 /**
  * The grading package contains classes
- * relevant to comparing two AutoCADExports,
+ * relevant to comparing two DataSets,
  * and assigning a grade to them. The primary
  * classes of interest are the AbstractGradingCriteria 
  * class, which serves as the base for 

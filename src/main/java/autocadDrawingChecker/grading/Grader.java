@@ -1,17 +1,15 @@
 package autocadDrawingChecker.grading;
 
+import autocadDrawingChecker.data.AbstractGradableDataType;
+import autocadDrawingChecker.data.core.AbstractTableParser;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
-import autocadDrawingChecker.data.AutoCADExcelParser;
-import autocadDrawingChecker.data.AutoCADExport;
-import autocadDrawingChecker.grading.criteria.implementations.CompareColumn;
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.logging.Logger;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -24,42 +22,40 @@ import java.util.stream.Collectors;
  * @author Matt Crow
  */
 public class Grader {
+    private final AbstractGradableDataType dataType;
     private final String instrFilePath;
     private final String[] studentFilePaths;
-    private final List<AbstractGradingCriteria> criteria;
+    private final HashSet<AbstractGradingCriteria> criteria;
     
     /**
      * 
+     * @param dataType the data type the given files are in
      * @param pathToInstructorFile the complete path to the instructor file to compare to.
      * @param pathsToStudentFiles a series of complete paths to student files, or folders containing them.
      * @param gradeThese the criteria to grade on.
      */
-    public Grader(String pathToInstructorFile, String[] pathsToStudentFiles, List<AbstractGradingCriteria> gradeThese){
+    public Grader(AbstractGradableDataType dataType, String pathToInstructorFile, String[] pathsToStudentFiles, HashSet<AbstractGradingCriteria> gradeThese){
+        this.dataType = dataType;
         instrFilePath = pathToInstructorFile;
         studentFilePaths = pathsToStudentFiles;
         criteria = gradeThese;
     }
     
-    private AutoCADExport getInstructorFile() throws IOException{
-        return AutoCADExcelParser.parse(instrFilePath);
-    }
-    
-    private List<AutoCADExport> getStudentFiles(){
+    private List<DataSet> getStudentFiles(AbstractTableParser parser){
         return Arrays.stream(studentFilePaths).flatMap((cmpPath)->{
-            // locate all Excel files in all given paths...
-            return ExcelFileLocator.locateExcelFilesInDir(cmpPath).stream();
-        }).map((fileName)->{
-            // try to convert them to AutoCADExports...
-            AutoCADExport r = null;
+            // locate all relevant files in all given paths...
+            return FileLocator.locateFilesInDir(cmpPath, dataType.getRequiredFileType()).stream();
+        }).flatMap((fileName)->{
+            List<DataSet> r = new LinkedList<>();
             try {
-                r = AutoCADExcelParser.parse(fileName);
+                r = parser.parseAllSheets(fileName);
             } catch (IOException ex) {
                 Logger.logError(ex);
             }
-            return r;
-        }).filter((e)->{
+            return r.stream();
+        }).filter((DataSet set)->{
             // ignore any conversions that fail...
-            return e != null;
+            return set != null;
         }).collect(Collectors.toList()); // and return those successful conversions as a list
     }
     
@@ -76,41 +72,30 @@ public class Grader {
      */
     public final GradingReport grade(){
         GradingReport report = new GradingReport();
-        
-        AutoCADExport trySrc = null;
-        List<AutoCADExport> cmp = null;
+        AbstractTableParser parser = dataType.createParser();
+        DataSet trySrc = null;
+        List<DataSet> cmp = null;
         
         try {
-            trySrc = getInstructorFile();
+            trySrc = parser.parseFirstSheet(this.instrFilePath);
         } catch (IOException ex) {
             Logger.logError(String.format("Failed to locate source file %s", instrFilePath));
             Logger.logError(ex);
         }
         
-        AutoCADExport src = trySrc; // need this to be effectively final for lambda
+        DataSet src = trySrc; // need this to be effectively final for lambda
         
-        cmp = getStudentFiles();
+        cmp = getStudentFiles(parser);
         
-        /*
-        see which columns exist in the instructor export,
-        and add those columns to the list of criteria this
-        should grade on. Don't directly add them to this.criteria
-        though, as that could cause problems
-        */
-        Set<String> colsToGrade = (src == null) ? new HashSet<>() : src.getColumns();
-        LinkedList<AbstractGradingCriteria> colCriteria = new LinkedList<>();
-        for(String column : colsToGrade){
-            colCriteria.add(new CompareColumn(column));
+        criteria.forEach((c)->report.addCriteria(c));
+        
+        for(DataSet studentData : cmp){
+            GradedExport graded = new GradedExport(src, studentData);
+            for(AbstractGradingCriteria currCriteria : criteria){
+                graded.addGradeFor(currCriteria);
+            }
+            report.add(graded);
         }
-        
-        List<AbstractGradingCriteria> finalGradedCriteria = new ArrayList<>();
-        finalGradedCriteria.addAll(criteria);
-        finalGradedCriteria.addAll(colCriteria);
-        finalGradedCriteria.forEach((c)->report.addCriteria(c));
-        
-        cmp.stream().forEach((exp)->{
-            report.add(new GradedExport(src, exp, finalGradedCriteria));
-        });
         
         return report;
     }

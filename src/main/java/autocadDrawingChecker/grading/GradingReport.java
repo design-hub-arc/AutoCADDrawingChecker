@@ -1,5 +1,6 @@
 package autocadDrawingChecker.grading;
 
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import java.util.ArrayList;
 import java.util.HashMap;

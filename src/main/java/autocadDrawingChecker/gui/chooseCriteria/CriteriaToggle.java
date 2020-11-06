@@ -1,5 +1,6 @@
 package autocadDrawingChecker.gui.chooseCriteria;
 
+import autocadDrawingChecker.data.core.DataSet;
 import autocadDrawingChecker.grading.criteria.AbstractGradingCriteria;
 import autocadDrawingChecker.start.Application;
 import java.awt.BorderLayout;
@@ -10,8 +11,8 @@ import javax.swing.JTextArea;
 
 /**
  * A CriteriaToggle allow the user to choose whether 
- * or not they want to grade a student's submission
- * based on a given criteria.
+ or not they want to grade a student's submission
+ based on a given criteria.
  * 
  * @author Matt Crow
  */

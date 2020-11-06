@@ -24,5 +24,5 @@ public abstract class AbstractLoader<T> {
      * 
      * @return a list of objects of T.
      */
-    public abstract T[] getAll();
+    public abstract List<T> getAll();
 }

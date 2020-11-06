@@ -1,6 +1,10 @@
 package autocadDrawingChecker.start;
 
+import autocadDrawingChecker.data.GradableDataTypeLoader;
+import autocadDrawingChecker.data.csv.CsvParser;
+import autocadDrawingChecker.data.excel.surveyData.SurveyDataParser;
 import autocadDrawingChecker.grading.criteria.GradingCriteriaLoader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -28,9 +32,9 @@ public class Main {
      */
     public static void main(String[] args) {
         Main main = new Main();
-        main.app.setLoadedCriteria(new GradingCriteriaLoader().getAll());
-        
-        
+        DrawingCheckerData data = main.app.getData();
+        new GradingCriteriaLoader().getAll().forEach(data::addCriteria);
+        new GradableDataTypeLoader().getAll().forEach(data::addGradableDataType);
         
         System.out.println("Args are " + Arrays.toString(args));
         
@@ -39,13 +43,29 @@ public class Main {
             argSet.add(arg.toLowerCase());
         }
         boolean debug = argSet.contains("--debug");
+        boolean noGui = argSet.contains("--no-gui");
         
         if(debug){
-            main.app.getData()
-            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample\\Check Sample - Master File.xls.xlsx")
-            .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\sample");
-            System.out.println(main.app.grade().toString());
-        } else {
+            try {
+                new SurveyDataParser().parseAllSheets("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\template\\GPS Style - Survey Field Notes - Template.xlsx").forEach(System.out::println);
+                new CsvParser(true).parseFirstSheet("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Csv Data\\nodeCoords.csv").forEach(System.out::println);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            /*
+            data
+            .setInstructorFilePath("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\civil67\\67Civi-Student 1 - GPS Style Survey Simulation - Survey Field Notes.xlsx")
+              .setStudentFilePaths("C:\\Users\\Matt\\Desktop\\AutoCAD Drawing Checker\\sample files to work with\\Survey Data\\civil67");
+            for(double d = 0.0; d < 1000.0; d += 100.0){
+                data.setCriteriaThreshold(d);
+                System.out.printf("\nWhen threshold is %f...\n", d);
+                data.grade().forEach((gradedExport)->{
+                    System.out.printf("%5.3f ", gradedExport.getFinalGrade());
+                });
+            }*/
+        } 
+        
+        if(!noGui){
             main.app.createGui();
         }
     }

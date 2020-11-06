@@ -10,9 +10,16 @@ import java.util.List;
  *
  * @author Matt
  */
-public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
+public class SourceExcelFileChooser extends AbstractFileChooser<File>{
     public SourceExcelFileChooser(String title, String popupText) {
         super(title, popupText);
+    }
+    
+    private FileType getRequiredFileType(){
+        FileType reqType = (Application.getInstance().getData().isDataTypeSelected()) 
+            ? Application.getInstance().getData().getSelectedDataType().getRequiredFileType() 
+            : FileType.NON_FOLDER;
+        return reqType;
     }
 
     @Override
@@ -28,7 +35,8 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
 
     @Override
     protected void selectButtonPressed() {
-        FileChooserUtil.askChooseFile(getPopupTitle(), FileType.EXCEL, (File f)->{
+        
+        FileChooserUtil.askChooseFile(getPopupTitle(), getRequiredFileType(), (File f)->{
             userSelectedFile(f);
         });
     }
@@ -48,6 +56,6 @@ public class SourceExcelFileChooser extends AbstractExcelFileChooser<File>{
 
     @Override
     protected boolean canAccept(File f) {
-        return FileType.EXCEL.fileIsOfThisType(f);
+        return getRequiredFileType().fileIsOfThisType(f);
     }
 }

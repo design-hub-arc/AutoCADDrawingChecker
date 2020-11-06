@@ -1,10 +1,12 @@
 package autocadDrawingChecker.gui.chooseFiles;
 
 import autocadDrawingChecker.gui.AbstractPage;
+import autocadDrawingChecker.start.DrawingCheckerData;
 import java.awt.GridLayout;
 import java.io.File;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 
@@ -56,5 +58,16 @@ public class ChooseFilesPage extends AbstractPage {
             JOptionPane.showMessageDialog(this, "Please choose both an instructor file and at least one student file");
         }
         return ready;
+    }
+
+    @Override
+    protected void dataUpdated(DrawingCheckerData newData) {
+        if(newData.isInstructorFilePathSet()){
+            srcChooser.setSelected(new File(newData.getInstructorFilePath()));
+        }
+        if(newData.isStudentFilePathsSet()){
+            File[] fs = Arrays.stream(newData.getStudentFilePaths()).map((p)->new File(p)).toArray((s)->new File[s]);
+            cmpChooser.setSelected(fs);
+        }
     }
 }
