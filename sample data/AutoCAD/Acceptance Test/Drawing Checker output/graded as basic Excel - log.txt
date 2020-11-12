@@ -1,0 +1,125 @@
+Grading...Grading report:
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\instructor file.xls to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\instructor file.xls - Summary:
+* NAME column: 100%
+* Line count: 100%
+* LAYER column: 100%
+* TOTAL EDITING TIME column: 100%
+* LINETYPE column: 100%
+* COUNT column: 100%
+* DELTA X column: 100%
+* DIM STYLE column: 100%
+* LENGTH column: 100%
+* DELTA Y column: 100%
+* DELTA Z column: 100%
+* DIAMETER column: 100%
+* LINEWEIGHT column: 100%
+* START Y column: 100%
+* START Z column: 100%
+* TEXTDEFINEDSIZE column: 100%
+* ROTATION column: 100%
+* FILE NAME column: 100%
+* ANGLE column: 100%
+* FILE CREATED column: 100%
+* CENTER Z column: 100%
+* CENTER Y column: 100%
+* CENTER X column: 100%
+* END X column: 100%
+* END Y column: 100%
+* START X column: 100%
+* END Z column: 100%
+* VALUE column: 100%
+Final Grade: 100%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\instructor file.xls to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\student file 1.xls - Summary:
+* NAME column: 100%
+* Line count: 100%
+* LAYER column: 100%
+* TOTAL EDITING TIME column: 100%
+* LINETYPE column: 100%
+* COUNT column: 100%
+* DELTA X column: 100%
+* DIM STYLE column: 100%
+* LENGTH column: 100%
+* DELTA Y column: 100%
+* DELTA Z column: 100%
+* DIAMETER column: 100%
+* LINEWEIGHT column: 100%
+* START Y column: 100%
+* START Z column: 100%
+* TEXTDEFINEDSIZE column: 100%
+* ROTATION column: 100%
+* FILE NAME column: 0%
+* ANGLE column: 100%
+* FILE CREATED column: 0%
+* CENTER Z column: 100%
+* CENTER Y column: 100%
+* CENTER X column: 100%
+* END X column: 100%
+* END Y column: 100%
+* START X column: 100%
+* END Z column: 100%
+* VALUE column: 100%
+Final Grade: 92%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\instructor file.xls to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\student file 2.xls - Summary:
+* NAME column: 100%
+* Line count: 100%
+* LAYER column: 100%
+* TOTAL EDITING TIME column: 0%
+* LINETYPE column: 100%
+* COUNT column: 100%
+* DELTA X column: 100%
+* DIM STYLE column: 100%
+* LENGTH column: 85%
+* DELTA Y column: 84%
+* DELTA Z column: 100%
+* DIAMETER column: 100%
+* LINEWEIGHT column: 100%
+* START Y column: 84%
+* START Z column: 100%
+* TEXTDEFINEDSIZE column: 100%
+* ROTATION column: 100%
+* FILE NAME column: 0%
+* ANGLE column: 100%
+* FILE CREATED column: 0%
+* CENTER Z column: 100%
+* CENTER Y column: 100%
+* CENTER X column: 100%
+* END X column: 100%
+* END Y column: 84%
+* START X column: 100%
+* END Z column: 100%
+* VALUE column: 100%
+Final Grade: 87%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\instructor file.xls to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\data extracts\student file 3.xls - Summary:
+* NAME column: 100%
+* Line count: 100%
+* LAYER column: 100%
+* TOTAL EDITING TIME column: 0%
+* LINETYPE column: 100%
+* COUNT column: 100%
+* DELTA X column: 92%
+* DIM STYLE column: 100%
+* LENGTH column: 78%
+* DELTA Y column: 84%
+* DELTA Z column: 100%
+* DIAMETER column: 0%
+* LINEWEIGHT column: 100%
+* START Y column: 84%
+* START Z column: 100%
+* TEXTDEFINEDSIZE column: 100%
+* ROTATION column: 100%
+* FILE NAME column: 0%
+* ANGLE column: 100%
+* FILE CREATED column: 0%
+* CENTER Z column: 100%
+* CENTER Y column: 0%
+* CENTER X column: 0%
+* END X column: 92%
+* END Y column: 84%
+* START X column: 100%
+* END Z column: 100%
+* VALUE column: 100%
+Final Grade: 75%Successfully saved report to C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\AutoCAD\Acceptance Test\AutoCAD Drawing Checker 11-12-2020_09_55_AM Grading Report.xlsxDone grading!
