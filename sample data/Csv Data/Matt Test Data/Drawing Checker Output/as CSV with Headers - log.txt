@@ -1,0 +1,15 @@
+Grading...Grading report:
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Matt Test Data\nodeCoords.csv to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Matt Test Data\nodeCoords.csv - data:
+* ID column: 100%
+* Line count: 100%
+* X column: 100%
+* Y column: 100%
+Final Grade: 100%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Matt Test Data\nodeCoords.csv to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Matt Test Data\testCoords.csv - data:
+* ID column: 70%
+* Line count: 0%
+* X column: 10%
+* Y column: 10%
+Final Grade: 22%Successfully saved report to C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Matt Test Data\AutoCAD Drawing Checker 11-12-2020_10_12_AM Grading Report.xlsxDone grading!
