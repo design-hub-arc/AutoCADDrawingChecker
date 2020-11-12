@@ -1,0 +1,36 @@
+Grading...Grading report:
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Master - CSV Generator - Sheet1.csv to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Duplicate - CSV Generator - Sheet1.csv - data:
+* COLUMN#1 column: 100%
+* COLUMN#3 column: 100%
+* COLUMN#2 column: 100%
+* Line count: 100%
+Final Grade: 100%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Master - CSV Generator - Sheet1.csv to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Master - CSV Generator - Sheet1.csv - data:
+* COLUMN#1 column: 100%
+* COLUMN#3 column: 100%
+* COLUMN#2 column: 100%
+* Line count: 100%
+Final Grade: 100%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Master - CSV Generator - Sheet1.csv to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Student 1 - CSV Generator - Should match but order is changed - Sheet1.csv - data:
+* COLUMN#1 column: 100%
+* COLUMN#3 column: 100%
+* COLUMN#2 column: 100%
+* Line count: 100%
+Final Grade: 100%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Master - CSV Generator - Sheet1.csv to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Student 2 - CSV Generator - Should match but order is random - Sheet1.csv - data:
+* COLUMN#1 column: 100%
+* COLUMN#3 column: 100%
+* COLUMN#2 column: 100%
+* Line count: 100%
+Final Grade: 100%
+Comparing C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Master - CSV Generator - Sheet1.csv to 
+C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\input\Student 3 - CSV Generator with 8 Typos and out of order - Sheet1.csv - data:
+* COLUMN#1 column: 85%
+* COLUMN#3 column: 94%
+* COLUMN#2 column: 97%
+* Line count: 100%
+Final Grade: 94%Successfully saved report to C:\Users\Matt\Documents\GitHub\AutoCADDrawingChecker\sample data\Csv Data\Randy Test Data\AutoCAD Drawing Checker 11-12-2020_10_15_AM Grading Report.xlsxDone grading!
